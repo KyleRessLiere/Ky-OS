@@ -1,13 +1,13 @@
 {
-    "compilerOptions": {
-      "target"              : "ES2017",
-      "rootDir"             : "source",
-      "outDir"              : "distrib",
-      "sourceMap"           : true,
-      "extendedDiagnostics" : true
-    },
+  "compilerOptions": {
+    "target"              : "ES2017",
+    "rootDir"             : "source",
+    "outDir"              : "distrib",
+    "sourceMap"           : true,
+    "extendedDiagnostics" : true
+  },
 
-    "include": [
-        "source/**/*"
-    ],
+  "include": [
+    "source/**/*"
+  ]
 }
