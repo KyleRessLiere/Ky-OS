@@ -226,13 +226,17 @@ module TSOS {
             _StdOut.clearScreen();     
             _StdOut.resetXY();
         }
-
+        
+        //Provides descriptive details about shell commands 
         public shellMan(args: string[]) {
             if (args.length > 0) {
                 var topic = args[0];
                 switch (topic) {
                     case "help":
                         _StdOut.putText("Help displays a list of (hopefully) valid commands.");
+                        break;
+                    case "date":
+                        _StdOut.putText("Date display the current date and time");
                         break;
                     // TODO: Make descriptive MANual page entries for the the rest of the shell commands here.
                     default:
