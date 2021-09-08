@@ -45,6 +45,12 @@ var TSOS;
             //location
             sc = new TSOS.ShellCommand(this.shellLocation, "whereami", "- Displays the user's current location.");
             this.commandList[this.commandList.length] = sc;
+            //status
+            sc = new TSOS.ShellCommand(this.shellStatus, "status", "- Changes the current status");
+            this.commandList[this.commandList.length] = sc;
+            //load
+            sc = new TSOS.ShellCommand(this.shellLoad, "load", "	validates the user code in the	HTML5 text area");
+            this.commandList[this.commandList.length] = sc;
             // trace <on | off>
             sc = new TSOS.ShellCommand(this.shellTrace, "trace", "<on | off> - Turns the OS trace on or off.");
             this.commandList[this.commandList.length] = sc;
@@ -176,6 +182,9 @@ var TSOS;
         //display current status
         shellStatus(args) {
         }
+        //	validates the user code in the	HTML5 text area
+        shellLoad() {
+        }
         // Although args is unused in some of these functions, it is always provided in the 
         // actual parameter list when this function is called, so I feel like we need it.
         shellVer(args) {
@@ -208,7 +217,7 @@ var TSOS;
         }
         //Display "current" location
         shellLocation(args) {
-            _StdOut.putText("Hat verloren .. Perdida .. Hilang  .. Жоғалды");
+            _StdOut.putText("Hat verloren .. Perdida .. Hilang ");
         }
         //Provides descriptive details about shell commands 
         shellMan(args) {
@@ -224,8 +233,11 @@ var TSOS;
                     case "whereami":
                         _StdOut.putText("Displays current location");
                         break;
-                    case "whereami":
-                        _StdOut.putText("Displays current location");
+                    case "load":
+                        _StdOut.putText("validates the user code in the	HTML5 text area");
+                        break;
+                    case "status":
+                        _StdOut.putText("Updates status in Host Log");
                         break;
                     // TODO: Make descriptive MANual page entries for the the rest of the shell commands here.
                     default:
