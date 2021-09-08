@@ -314,9 +314,6 @@ module TSOS {
                         _Trace = false;
                         _StdOut.putText("Trace OFF");
                         break;
-                    case "loc":
-                         _StdOut.putText("Tells the user where they are.");
-                         break;
                     default:
                         _StdOut.putText("Invalid arguement.  Usage: trace <on | off>.");
                 }

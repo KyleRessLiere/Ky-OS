@@ -33,8 +33,17 @@ var TSOS;
             // cls
             sc = new TSOS.ShellCommand(this.shellCls, "cls", "- Clears the screen and resets the cursor position.");
             this.commandList[this.commandList.length] = sc;
+            //date 
+            sc = new TSOS.ShellCommand(this.shellDate, "date", "<date> - displays date");
+            this.commandList[this.commandList.length] = sc;
             // man <topic>
             sc = new TSOS.ShellCommand(this.shellMan, "man", "<topic> - Displays the MANual page for <topic>.");
+            this.commandList[this.commandList.length] = sc;
+            //status
+            sc = new TSOS.ShellCommand(this.shellStatus, "status", "<string> - Changes the current status.");
+            this.commandList[this.commandList.length] = sc;
+            //location
+            sc = new TSOS.ShellCommand(this.shellLocation, "whereami", "- Displays the user's current location.");
             this.commandList[this.commandList.length] = sc;
             // trace <on | off>
             sc = new TSOS.ShellCommand(this.shellTrace, "trace", "<on | off> - Turns the OS trace on or off.");
@@ -164,6 +173,9 @@ var TSOS;
                 _StdOut.putText("For what?");
             }
         }
+        //display current status
+        shellStatus(args) {
+        }
         // Although args is unused in some of these functions, it is always provided in the 
         // actual parameter list when this function is called, so I feel like we need it.
         shellVer(args) {
@@ -186,6 +198,18 @@ var TSOS;
             _StdOut.clearScreen();
             _StdOut.resetXY();
         }
+        //displays current date
+        shellDate() {
+            var today = new Date();
+            var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+            var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+            var dateTime = date + ' ' + time;
+            _StdOut.putText("TODAYS DATE IS " + dateTime);
+        }
+        //Display "current" location
+        shellLocation(args) {
+            _StdOut.putText("Hat verloren .. Perdida .. Hilang  .. Жоғалды");
+        }
         //Provides descriptive details about shell commands 
         shellMan(args) {
             if (args.length > 0) {
@@ -196,6 +220,12 @@ var TSOS;
                         break;
                     case "date":
                         _StdOut.putText("Date display the current date and time");
+                        break;
+                    case "whereami":
+                        _StdOut.putText("Displays current location");
+                        break;
+                    case "whereami":
+                        _StdOut.putText("Displays current location");
                         break;
                     // TODO: Make descriptive MANual page entries for the the rest of the shell commands here.
                     default:
