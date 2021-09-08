@@ -72,6 +72,18 @@ module TSOS {
                 "whereami",
                 "- Displays the user's current location.");
             this.commandList[this.commandList.length] = sc;
+            
+            //status
+            sc = new ShellCommand(this.shellStatus,
+                "status",
+                "- Changes the current status");
+            this.commandList[this.commandList.length] = sc;
+
+            //load
+            sc = new ShellCommand(this.shellLoad,
+                "load",
+                "	validates the user code in the	HTML5 text area");
+            this.commandList[this.commandList.length] = sc;
 
             // trace <on | off>
             sc = new ShellCommand(this.shellTrace,
@@ -226,6 +238,11 @@ module TSOS {
         public shellStatus(args: string[]){
         }
 
+        //	validates the user code in the	HTML5 text area
+        public shellLoad(){
+
+        }
+
         // Although args is unused in some of these functions, it is always provided in the 
         // actual parameter list when this function is called, so I feel like we need it.
 
@@ -285,9 +302,12 @@ module TSOS {
                         case "whereami":
                             _StdOut.putText("Displays current location");
                             break;
-                        case "whereami":
-                            _StdOut.putText("Displays current location");
+                        case "load":
+                            _StdOut.putText("validates the user code in the	HTML5 text area");
                             break;
+                            case "status":
+                                _StdOut.putText("Updates status in Host Log");
+                                break;
 
                     // TODO: Make descriptive MANual page entries for the the rest of the shell commands here.
                     default:
