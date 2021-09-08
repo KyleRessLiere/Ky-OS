@@ -181,6 +181,8 @@ var TSOS;
         }
         //display current status
         shellStatus(args) {
+            _StdOut.putText("ASDASD");
+            TSOS.Control.hostStatus("test");
         }
         //	validates the user code in the	HTML5 text area
         shellLoad() {
