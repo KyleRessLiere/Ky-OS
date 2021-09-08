@@ -92,7 +92,7 @@ var TSOS;
             // page from its cache, which is not what we want.
         }
         static hostStatus(status) {
-            document.getElementById("status").textContent = "HAHAHHA";
+            document.getElementById("status").textContent = status;
         }
     }
     TSOS.Control = Control;

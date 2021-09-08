@@ -113,7 +113,7 @@ module TSOS {
             // page from its cache, which is not what we want.
         }
         public static hostStatus(status: string): void {
-            document.getElementById("status").textContent="HAHAHHA";
+            document.getElementById("status").textContent= status;
         }
     }
 }

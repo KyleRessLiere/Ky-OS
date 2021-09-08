@@ -236,8 +236,9 @@ module TSOS {
 
         //display current status
         public shellStatus(args: string[]){
-            _StdOut.putText("ASDASD")
-            Control.hostStatus("test")
+            var status = args[0]
+            Control.hostStatus(status)
+            _StdOut.putText("Staus updated")
         }
 
         //	validates the user code in the	HTML5 text area
