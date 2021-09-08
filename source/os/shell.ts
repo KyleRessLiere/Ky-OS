@@ -48,11 +48,29 @@ module TSOS {
                                   "cls",
                                   "- Clears the screen and resets the cursor position.");
             this.commandList[this.commandList.length] = sc;
+             
+            //date 
+             sc = new ShellCommand(this.shellDate,
+                "date",
+                "<date> - displays date")
+            this.commandList[this.commandList.length] = sc;
 
             // man <topic>
             sc = new ShellCommand(this.shellMan,
                                   "man",
                                   "<topic> - Displays the MANual page for <topic>.");
+            this.commandList[this.commandList.length] = sc;
+
+            //status
+              sc = new ShellCommand(this.shellStatus,
+                "status",
+                "<string> - Changes the current status.");
+                this.commandList[this.commandList.length] = sc;
+            
+             //location
+             sc = new ShellCommand(this.shellLocation,
+                "whereami",
+                "- Displays the user's current location.");
             this.commandList[this.commandList.length] = sc;
 
             // trace <on | off>
@@ -72,6 +90,10 @@ module TSOS {
                                   "prompt",
                                   "<string> - Sets the prompt.");
             this.commandList[this.commandList.length] = sc;
+
+            
+
+           
 
             // ps  - list the running processes and their IDs
             // kill <id> - kills the specified process id.
@@ -200,6 +222,10 @@ module TSOS {
            }
         }
 
+        //display current status
+        public shellStatus(args: string[]){
+        }
+
         // Although args is unused in some of these functions, it is always provided in the 
         // actual parameter list when this function is called, so I feel like we need it.
 
@@ -228,6 +254,22 @@ module TSOS {
             _StdOut.clearScreen();     
             _StdOut.resetXY();
         }
+        //displays current date
+        public shellDate(){
+            var today = new Date();
+            var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+            var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+            var dateTime = date+' '+time;
+            _StdOut.putText("TODAYS DATE IS " + dateTime);
+            
+        }
+
+        //Display "current" location
+        public shellLocation(args: string[]) {
+            _StdOut.putText("Hat verloren .. Perdida .. Hilang ");
+            
+        }
+
         
         //Provides descriptive details about shell commands 
         public shellMan(args: string[]) {
@@ -240,6 +282,13 @@ module TSOS {
                     case "date":
                         _StdOut.putText("Date display the current date and time");
                         break;
+                        case "whereami":
+                            _StdOut.putText("Displays current location");
+                            break;
+                        case "whereami":
+                            _StdOut.putText("Displays current location");
+                            break;
+
                     // TODO: Make descriptive MANual page entries for the the rest of the shell commands here.
                     default:
                         _StdOut.putText("No manual entry for " + args[0] + ".");
@@ -265,6 +314,9 @@ module TSOS {
                         _Trace = false;
                         _StdOut.putText("Trace OFF");
                         break;
+                    case "loc":
+                         _StdOut.putText("Tells the user where they are.");
+                         break;
                     default:
                         _StdOut.putText("Invalid arguement.  Usage: trace <on | off>.");
                 }
