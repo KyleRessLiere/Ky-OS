@@ -236,9 +236,21 @@ module TSOS {
 
         //display current status
         public shellStatus(args: string[]){
-            var status = args[0]
-            Control.hostStatus(status)
-            _StdOut.putText("Staus updated")
+
+            var status = ""
+            if(args.length >0){
+                for(var i=0;i<args.length;i++){
+                status += " " + args[i]
+                }
+                Control.hostStatus(status)
+                _StdOut.putText("Status updated to " + status)
+            }
+            else{
+                _StdOut.putText("Missing argument for status command: status <arg>");
+               
+            }
+
+            
         }
 
         //	validates the user code in the	HTML5 text area
@@ -302,15 +314,15 @@ module TSOS {
                     case "date":
                         _StdOut.putText("Date display the current date and time");
                         break;
-                        case "whereami":
+                    case "whereami":
                             _StdOut.putText("Displays current location");
                             break;
-                        case "load":
+                    case "load":
                             _StdOut.putText("validates the user code in the	HTML5 text area");
                             break;
-                            case "status":
-                                _StdOut.putText("Updates status in Host Log");
-                                break;
+                     case "status":
+                            _StdOut.putText("Updates status in Host Log");
+                            break;
 
                     // TODO: Make descriptive MANual page entries for the the rest of the shell commands here.
                     default:

@@ -181,9 +181,17 @@ var TSOS;
         }
         //display current status
         shellStatus(args) {
-            var status = args[0];
-            TSOS.Control.hostStatus(status);
-            _StdOut.putText("Staus updated");
+            var status = "";
+            if (args.length > 0) {
+                for (var i = 0; i < args.length; i++) {
+                    status += " " + args[i];
+                }
+                TSOS.Control.hostStatus(status);
+                _StdOut.putText("Status updated to " + status);
+            }
+            else {
+                _StdOut.putText("Missing argument for status command: status <arg>");
+            }
         }
         //	validates the user code in the	HTML5 text area
         shellLoad() {

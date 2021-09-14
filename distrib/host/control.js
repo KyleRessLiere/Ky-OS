@@ -41,6 +41,8 @@ var TSOS;
                 // the global (and properly capitalized) _GLaDOS variable.
                 _GLaDOS = new Glados();
                 _GLaDOS.init();
+                //intiats the current date 
+                this.date();
             }
         }
         static hostLog(msg, source = "?") {
@@ -91,8 +93,15 @@ var TSOS;
             // be reloaded from the server. If it is false or not specified the browser may reload the
             // page from its cache, which is not what we want.
         }
+        //changes host status
         static hostStatus(status) {
             document.getElementById("status").textContent = status;
+        }
+        //displays current time and date 
+        static date() {
+            var today = new Date();
+            var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+            document.getElementById("date").textContent = date;
         }
     }
     TSOS.Control = Control;

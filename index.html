@@ -31,15 +31,16 @@
    <!-- Other Routines -->
    <script type="text/javascript" src="distrib/utils.js"></script>
    <!-- Uncomment the line below to enable GLaDOS testing. -->
-   <script type="text/javascript" src="http://alanclasses.github.io/TSOS/test/glados-ip0.js"></script>
+  <!-- <script type="text/javascript" src="http://alanclasses.github.io/TSOS/test/glados-ip0.js"></script> -->
    
 </head>
 
 <body onload="onDocumentLoad()">
 
 <div id="divMain" style="width:100%;">
-   <h1>KyOS <i> is a superior OS to TSOS built in typscript</i></h1>
+   <h1>KyOS</h1>
    <p>Status: <span id="status">Waking</span></p>
+   <p>Date: <span id="date"></span></p>
 
    <div id="divButtonBar" style="margin:4px;">
       <input type="button"
@@ -69,11 +70,13 @@
              onclick="TSOS.Control.hostBtnReset_click(this);">
    </div>
 
-   <div id="divConsole" style="margin:4px; width:500px; height:500px; float:left;">
+   <div id="divConsole" style="margin:4px; width:500px; height:500px; float:left;color:">
       <canvas id="display"
               width="500px"
-              height="500px"
-              tabindex="3">
+              height="550px"
+              tabindex="3"
+              >
+              
       </canvas>
    </div>
 

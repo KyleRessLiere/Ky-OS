@@ -15,10 +15,10 @@ function Glados() {
    this.afterStartup = function() {
 
       // Test the 'help' command.
-      _KernelInputQueue.enqueue('h');
+      _KernelInputQueue.enqueue('v');
       _KernelInputQueue.enqueue('e');
-      _KernelInputQueue.enqueue('l');
-      _KernelInputQueue.enqueue('p');
+      _KernelInputQueue.enqueue('r');
+      _KernelInputQueue.enqueue('r');
       TSOS.Kernel.prototype.krnInterruptHandler(KEYBOARD_IRQ, [13, false]);
       
       // Test the 'ver' command.
