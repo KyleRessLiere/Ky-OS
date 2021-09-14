@@ -72,12 +72,6 @@ module TSOS {
                 "whereami",
                 "- Displays the user's current location.");
             this.commandList[this.commandList.length] = sc;
-            
-            //status
-            sc = new ShellCommand(this.shellStatus,
-                "status",
-                "- Changes the current status");
-            this.commandList[this.commandList.length] = sc;
 
             //load
             sc = new ShellCommand(this.shellLoad,
@@ -106,8 +100,9 @@ module TSOS {
             //crashes the OS
             sc = new ShellCommand(this.shellCrash,
                 "bsod",
-                "Crashes OS and displays a BSOD message");
+                "Crashes shelll and brings up BSOD MESSAGE");
             this.commandList[this.commandList.length] = sc;
+            
 
             
 
@@ -256,8 +251,6 @@ module TSOS {
                 _StdOut.putText("Missing argument for status command: status <arg>");
                
             }
-
-            
         }
 
         //	validates the user code in the	HTML5 text area
@@ -368,8 +361,8 @@ module TSOS {
         }
 
         //test when the kernel crashes
-        public shellCrash(){
-
+        public shellCrash(): void{
+           _Kernel.krnTrapError("Test crash");
         }
 
         public shellRot13(args: string[]) {

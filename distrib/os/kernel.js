@@ -13,7 +13,7 @@ var TSOS;
         // OS Startup and Shutdown Routines
         //
         krnBootstrap() {
-            TSOS.Control.hostLog("bootstrap", "host"); // Use hostLog because we ALWAYS want this, even if _Trace is off.
+            TSOS.Control.hostLog("bootstrap", "host"); // Use hostLog be use we ALWAYS want this, even if _Trace is off.
             // Initialize our global queues.
             _KernelInterruptQueue = new TSOS.Queue(); // A (currently) non-priority queue for interrupt requests (IRQs).
             _KernelBuffers = new Array(); // Buffers... for the kernel.
@@ -149,7 +149,8 @@ var TSOS;
         }
         krnTrapError(msg) {
             TSOS.Control.hostLog("OS ERROR - TRAP: " + msg);
-            // TODO: Display error on console, perhaps in some sort of colored screen. (Maybe blue?)
+            TSOS.Control.crashDisplay(msg);
+            _StdOut.putText("MAJOR ERROR TRAPPED :" + msg);
             this.krnShutdown();
         }
     }

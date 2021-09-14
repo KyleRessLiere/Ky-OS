@@ -127,5 +127,8 @@ module TSOS {
             var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
             document.getElementById("date").textContent= date;
         }
+        public static crashDisplay(message: string): void {
+            document.getElementById("display").style.backgroundColor = "blue";
+        }
     }
 }

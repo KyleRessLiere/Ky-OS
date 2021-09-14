@@ -45,9 +45,6 @@ var TSOS;
             //location
             sc = new TSOS.ShellCommand(this.shellLocation, "whereami", "- Displays the user's current location.");
             this.commandList[this.commandList.length] = sc;
-            //status
-            sc = new TSOS.ShellCommand(this.shellStatus, "status", "- Changes the current status");
-            this.commandList[this.commandList.length] = sc;
             //load
             sc = new TSOS.ShellCommand(this.shellLoad, "load", "	validates the user code in the	HTML5 text area");
             this.commandList[this.commandList.length] = sc;
@@ -59,6 +56,9 @@ var TSOS;
             this.commandList[this.commandList.length] = sc;
             // prompt <string>
             sc = new TSOS.ShellCommand(this.shellPrompt, "prompt", "<string> - Sets the prompt.");
+            this.commandList[this.commandList.length] = sc;
+            //crashes the OS
+            sc = new TSOS.ShellCommand(this.shellCrash, "bsod", "Crashes shelll and brings up BSOD MESSAGE");
             this.commandList[this.commandList.length] = sc;
             // ps  - list the running processes and their IDs
             // kill <id> - kills the specified process id.
@@ -182,6 +182,7 @@ var TSOS;
         //display current status
         shellStatus(args) {
             var status = "";
+            //checks for a non empty string
             if (args.length > 0) {
                 for (var i = 0; i < args.length; i++) {
                     status += " " + args[i];
@@ -250,6 +251,9 @@ var TSOS;
                     case "status":
                         _StdOut.putText("Updates status in Host Log");
                         break;
+                    case "bsod":
+                        _StdOut.putText("Simlulates a crash to the system by crashing system and displaying BSOD message");
+                        break;
                     // TODO: Make descriptive MANual page entries for the the rest of the shell commands here.
                     default:
                         _StdOut.putText("No manual entry for " + args[0] + ".");
@@ -283,6 +287,10 @@ var TSOS;
             else {
                 _StdOut.putText("Usage: trace <on | off>");
             }
+        }
+        //test when the kernel crashes
+        shellCrash() {
+            _Kernel.krnTrapError("Test crash");
         }
         shellRot13(args) {
             if (args.length > 0) {
