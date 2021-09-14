@@ -102,6 +102,12 @@ module TSOS {
                                   "prompt",
                                   "<string> - Sets the prompt.");
             this.commandList[this.commandList.length] = sc;
+            
+            //crashes the OS
+            sc = new ShellCommand(this.shellCrash,
+                "bsod",
+                "Crashes OS and displays a BSOD message");
+            this.commandList[this.commandList.length] = sc;
 
             
 
@@ -238,6 +244,7 @@ module TSOS {
         public shellStatus(args: string[]){
 
             var status = ""
+            //checks for a non empty string
             if(args.length >0){
                 for(var i=0;i<args.length;i++){
                 status += " " + args[i]
@@ -323,6 +330,9 @@ module TSOS {
                      case "status":
                             _StdOut.putText("Updates status in Host Log");
                             break;
+                    case "bsod":
+                                _StdOut.putText("Simlulates a crash to the system by crashing system and displaying BSOD message");
+                            break;
 
                     // TODO: Make descriptive MANual page entries for the the rest of the shell commands here.
                     default:
@@ -355,6 +365,11 @@ module TSOS {
             } else {
                 _StdOut.putText("Usage: trace <on | off>");
             }
+        }
+
+        //test when the kernel crashes
+        public shellCrash(){
+
         }
 
         public shellRot13(args: string[]) {
