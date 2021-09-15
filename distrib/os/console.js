@@ -84,7 +84,7 @@ var TSOS;
                 //replace cleared screen with prevous state at coords 0,0
                 _DrawingContext.putImageData(currentScreen, 0, 0);
                 //set current postion to edge of screen
-                this.currentYPosition = 480;
+                this.currentYPosition -= textHeight;
             }
         }
     }
