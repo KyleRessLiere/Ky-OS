@@ -70,17 +70,24 @@ module TSOS {
          }
 
         public advanceLine(): void {
+            let textHeight = _DefaultFontSize + 
+                                                _DrawingContext.fontDescent(this.currentFont, this.currentFontSize) +
+                                                _FontHeightMargin;
             this.currentXPosition = 0;
             /*
              * Font size measures from the baseline to the highest point in the font.
              * Font descent measures from the baseline to the lowest point in the font.
              * Font height margin is extra spacing between the lines.
              */
+            
             this.currentYPosition += _DefaultFontSize + 
                                      _DrawingContext.fontDescent(this.currentFont, this.currentFontSize) +
                                      _FontHeightMargin;
 
             // TODO: Handle scrolling. (iProject 1)
+            if(this.currentYPosition > _Canvas.height){
+                this.currentYPosition = this.currentYPosition - textHeight;
+            }
         }
     }
  }

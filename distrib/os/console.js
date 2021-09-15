@@ -64,6 +64,9 @@ var TSOS;
             }
         }
         advanceLine() {
+            let textHeight = _DefaultFontSize +
+                _DrawingContext.fontDescent(this.currentFont, this.currentFontSize) +
+                _FontHeightMargin;
             this.currentXPosition = 0;
             /*
              * Font size measures from the baseline to the highest point in the font.
@@ -74,6 +77,9 @@ var TSOS;
                 _DrawingContext.fontDescent(this.currentFont, this.currentFontSize) +
                 _FontHeightMargin;
             // TODO: Handle scrolling. (iProject 1)
+            if (this.currentYPosition > _Canvas.height) {
+                this.currentYPosition = this.currentYPosition - textHeight;
+            }
         }
     }
     TSOS.Console = Console;
