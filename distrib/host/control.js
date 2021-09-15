@@ -34,6 +34,8 @@ var TSOS;
             // Set focus on the start button.
             // Use the TypeScript cast to HTMLInputElement
             document.getElementById("btnStartOS").focus();
+            //Gets the user code 
+            _UserCode = document.getElementById("taProgramInput");
             // Check for our testing and enrichment core, which
             // may be referenced here (from index.html) as function Glados().
             if (typeof Glados === "function") {
@@ -41,9 +43,9 @@ var TSOS;
                 // the global (and properly capitalized) _GLaDOS variable.
                 _GLaDOS = new Glados();
                 _GLaDOS.init();
-                //intiats the current date 
-                this.date();
             }
+            //intiats the current date 
+            this.date();
         }
         static hostLog(msg, source = "?") {
             // Note the OS CLOCK.

@@ -42,6 +42,9 @@ module TSOS {
             // Use the TypeScript cast to HTMLInputElement
             (<HTMLInputElement> document.getElementById("btnStartOS")).focus();
 
+            //Gets the user code 
+            _UserCode = document.getElementById("taProgramInput")
+
             // Check for our testing and enrichment core, which
             // may be referenced here (from index.html) as function Glados().
             if (typeof Glados === "function") {
@@ -50,9 +53,11 @@ module TSOS {
                 _GLaDOS = new Glados();
                 _GLaDOS.init();
            
+            
+            }
             //intiats the current date 
             this.date()
-            }
+
         }
 
         public static hostLog(msg: string, source: string = "?"): void {

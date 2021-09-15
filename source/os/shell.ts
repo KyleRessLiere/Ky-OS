@@ -255,6 +255,45 @@ module TSOS {
 
         //	validates the user code in the	HTML5 text area
         public shellLoad(){
+            let code = _UserCode.value;
+            code = code.replace(/\s/g,'');
+            let valid = true;
+
+            
+            for(let char in code){
+                if(!valid){
+                    break;
+                }
+               
+                switch(char){
+                    case " ": break;
+                    case "0": break;
+                    case "1": break;
+                    case "2": break;
+                    case "3": break;
+                    case "4": break;
+                    case "5": break;
+                    case "6": break;
+                    case "7": break;
+                    case "8": break;
+                    case "9": break;
+                    case "A": break;
+                    case "B": break;
+                    case "C": break;
+                    case "D": break;
+                    case "E": break;
+                    case "F": break;
+                default:
+                    valid = false;
+                }
+            }
+            if(!valid){
+                _StdOut.putText("Invalid Hex Code")
+            }
+            else{
+                _StdOut.putText("User Program Submitted")
+            }
+
 
         }
 

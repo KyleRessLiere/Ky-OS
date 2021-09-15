@@ -185,6 +185,9 @@ module TSOS {
             ctx.restore();
             return total;
         }
+        public static erase(ctx, font, size, x, y, str){
+            
+        }
 
         public static enable(ctx) {
             ctx.drawText = function(font,size,x,y,text) { return CanvasTextFunctions.draw( ctx, font,size,x,y,text); };
