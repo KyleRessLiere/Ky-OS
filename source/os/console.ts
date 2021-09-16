@@ -41,7 +41,13 @@ module TSOS {
                     _OsShell.handleInput(this.buffer);
                     // ... and reset our buffer.
                     this.buffer = "";
-                } else {
+                } 
+                else if(chr === String.fromCharCode(8)){
+                    var currChr = this.buffer[this.buffer]
+                    this.deleteChr(currChr);
+                    this.buffer =this.buffer.slice(0,-1)
+                }
+                else {
                     // This is a "normal" character, so ...
                     // ... draw it on the screen...
                     this.putText(chr);
@@ -95,6 +101,17 @@ module TSOS {
                 this.currentYPosition -=  textHeight;
                 
             }
+        }
+        public deleteChr(char): void{
+            var offset = _DrawingContext.measureText(this.currentFont, this.currentFontSize, char);
+            _StdOut.putText(offset);
+            //var deleteDistance = this.currentXPosition - offset;
+            //let currentScreen = _DrawingContext.getImageData(0, 0, deleteDistance, _Canvas.height);
+           //this.clearScreen();
+            //_DrawingContext.putImageData(currentScreen,0,0);
+
+
+        
         }
     }
  }
