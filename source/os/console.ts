@@ -86,12 +86,12 @@ module TSOS {
 
             // TODO: Handle scrolling. (iProject 1)
             if(this.currentYPosition > _Canvas.height){
-                //takes a screenshot excludingf the top line
+                //takes a screenshot excluding the top line
                 let currentScreen = _DrawingContext.getImageData(0, textHeight, _Canvas.width, _Canvas.height)
                 this.clearScreen();
                 //replace cleared screen with prevous state at coords 0,0
                 _DrawingContext.putImageData(currentScreen, 0, 0);
-                //set current postion to edge of screen
+                //set current position to edge of screen
                 this.currentYPosition -=  textHeight;
                 
             }

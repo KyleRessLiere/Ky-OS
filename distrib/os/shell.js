@@ -325,6 +325,7 @@ var TSOS;
         }
         //test when the kernel crashes
         shellCrash() {
+            _Console.clearScreen();
             _Kernel.krnTrapError("Test crash");
         }
         shellRot13(args) {
