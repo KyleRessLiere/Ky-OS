@@ -80,6 +80,10 @@ var TSOS;
             return total;
         }
         static erase(ctx, font, size, x, y, str) {
+            let textHeight = size + _FontHeightMargin;
+            let textWidth = this.measure(font, size, str);
+            let rectHeight = y - size;
+            ctx.clearRect(x, rectHeight, textWidth, textHeight);
         }
         static enable(ctx) {
             ctx.drawText = function (font, size, x, y, text) { return CanvasTextFunctions.draw(ctx, font, size, x, y, text); };

@@ -97,15 +97,8 @@ var TSOS;
                 this.currentYPosition -= textHeight;
             }
         }
+        //screnshoot the current line
         deleteChr(char) {
-            //width of a charcter
-            let offset = _DrawingContext.measureText(this.currentFont, this.currentFontSize, char);
-            let deleteDistance = this.currentXPosition - offset;
-            //screenshots current screen minus width of char
-            let currentScreen = _DrawingContext.getImageData(0, 0, deleteDistance, _Canvas.height);
-            this.clearScreen();
-            _DrawingContext.putImageData(currentScreen, 0, 0);
-            this.currentXPosition -= offset;
         }
     }
     TSOS.Console = Console;

@@ -186,6 +186,10 @@ module TSOS {
             return total;
         }
         public static erase(ctx, font, size, x, y, str){
+            let textHeight = size + _FontHeightMargin;
+            let textWidth = this.measure(font,size,str);
+            let rectHeight = y - size;
+            ctx.clearRect(x,rectHeight,textWidth,textHeight);
             
         }
 
