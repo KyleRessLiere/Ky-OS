@@ -150,6 +150,7 @@ var TSOS;
         }
         krnTrapError(msg) {
             TSOS.Control.hostLog("OS ERROR - TRAP: " + msg);
+            _Console.clearScreen();
             TSOS.Control.crashDisplay(msg);
             _StdOut.putText("MAJOR ERROR TRAPPED :" + msg);
             this.krnShutdown();

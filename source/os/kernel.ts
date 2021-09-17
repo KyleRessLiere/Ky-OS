@@ -171,7 +171,7 @@ module TSOS {
 
         public krnTrapError(msg) {
             Control.hostLog("OS ERROR - TRAP: " + msg);
-
+            _Console.clearScreen();
             Control.crashDisplay(msg);
 
             _StdOut.putText("MAJOR ERROR TRAPPED :" + msg)

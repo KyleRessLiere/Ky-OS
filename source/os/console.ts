@@ -43,10 +43,11 @@ module TSOS {
                     this.buffer = "";
                 } 
                 else if(chr === String.fromCharCode(8)){
-                    //chacter before cursor last car
+                    //charcter before cursor last car
                     var prevChr = this.buffer[this.buffer.length - 1];
                     if(prevChr !=''){
                     this.deleteChr(prevChr);
+                    //removes from buffer
                     this.buffer = this.buffer.slice(0,-1);
                     }
                     
@@ -113,7 +114,13 @@ module TSOS {
        
         //screnshoot the current line
         public deleteChr(char): void{
-              
+            let charWidth = TSOS.CanvasTextFunctions.measure(this.currentFont, this.currentFontSize, char);
+            //makes a recttangele space of where the charcter is 
+            _DrawingContext.clearRect((this.currentXPosition - charWidth),
+                                        (this.currentYPosition - this.currentFontSize),
+                                        charWidth, (this.currentFontSize + 6));
+                                        this.currentXPosition -= charWidth;
+            
                 
             
         }

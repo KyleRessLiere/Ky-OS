@@ -42,6 +42,7 @@ var TSOS;
                     var prevChr = this.buffer[this.buffer.length - 1];
                     if (prevChr != '') {
                         this.deleteChr(prevChr);
+                        //removes from buffer
                         this.buffer = this.buffer.slice(0, -1);
                     }
                 }
@@ -99,6 +100,9 @@ var TSOS;
         }
         //screnshoot the current line
         deleteChr(char) {
+            let charWidth = TSOS.CanvasTextFunctions.measure(this.currentFont, this.currentFontSize, char);
+            _DrawingContext.clearRect((this.currentXPosition - charWidth), (this.currentYPosition - this.currentFontSize), charWidth, (this.currentFontSize + 5));
+            this.currentXPosition -= charWidth;
         }
     }
     TSOS.Console = Console;

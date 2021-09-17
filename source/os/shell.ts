@@ -401,7 +401,7 @@ module TSOS {
 
         //test when the kernel crashes
         public shellCrash(): void{
-            _Console.clearScreen();
+           
            _Kernel.krnTrapError("Test crash");
         }
 
