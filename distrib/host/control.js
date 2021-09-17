@@ -102,7 +102,9 @@ var TSOS;
         static date() {
             var today = new Date();
             var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
-            document.getElementById("date").textContent = date;
+            var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+            var dateTime = date + ' ' + time;
+            document.getElementById("date").textContent = dateTime;
         }
         static crashDisplay(message) {
             document.getElementById("display").style.backgroundColor = "blue";

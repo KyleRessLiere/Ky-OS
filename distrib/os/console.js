@@ -87,7 +87,6 @@ var TSOS;
             this.currentYPosition += _DefaultFontSize +
                 _DrawingContext.fontDescent(this.currentFont, this.currentFontSize) +
                 _FontHeightMargin;
-            // TODO: Handle scrolling. (iProject 1)
             if (this.currentYPosition > _Canvas.height) {
                 //takes a screenshot excluding the top line
                 let currentScreen = _DrawingContext.getImageData(0, textHeight, _Canvas.width, _Canvas.height);
@@ -99,9 +98,10 @@ var TSOS;
             }
         }
         deleteChr(char) {
-            console.log(char);
+            //width of a charcter
             let offset = _DrawingContext.measureText(this.currentFont, this.currentFontSize, char);
             let deleteDistance = this.currentXPosition - offset;
+            //screenshots current screen minus width of char
             let currentScreen = _DrawingContext.getImageData(0, 0, deleteDistance, _Canvas.height);
             this.clearScreen();
             _DrawingContext.putImageData(currentScreen, 0, 0);
