@@ -43,9 +43,17 @@ module TSOS {
                     this.buffer = "";
                 } 
                 else if(chr === String.fromCharCode(8)){
-                    var currChr = this.buffer[this.buffer]
-                    this.deleteChr(currChr);
-                    this.buffer =this.buffer.slice(0,-1)
+                    //chacter before cursor last car
+                    var prevChr = this.buffer[this.buffer.length - 1];
+                    if(prevChr !=''){
+                    this.deleteChr(prevChr);
+                    this.buffer = this.buffer.slice(0,-1);
+                    }
+                    
+                }
+                else if(chr === String.fromCharCode(9)){
+                    _StdOut.putText(_OsShell.commandList[0];
+
                 }
                 else {
                     // This is a "normal" character, so ...
@@ -103,15 +111,13 @@ module TSOS {
             }
         }
         public deleteChr(char): void{
-            var offset = _DrawingContext.measureText(this.currentFont, this.currentFontSize, char);
-            _StdOut.putText(offset);
-            //var deleteDistance = this.currentXPosition - offset;
-            //let currentScreen = _DrawingContext.getImageData(0, 0, deleteDistance, _Canvas.height);
-           //this.clearScreen();
-            //_DrawingContext.putImageData(currentScreen,0,0);
-
-
-        
+            console.log(char)
+            let offset = _DrawingContext.measureText(this.currentFont, this.currentFontSize, char);
+                let deleteDistance = this.currentXPosition - offset;
+                let currentScreen = _DrawingContext.getImageData(0, 0, deleteDistance, _Canvas.height);
+                this.clearScreen();
+                _DrawingContext.putImageData(currentScreen,0,0);
+                this.currentXPosition -= offset;
         }
     }
  }

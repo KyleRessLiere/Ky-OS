@@ -45,7 +45,6 @@ var TSOS;
                 _GLaDOS.init();
             }
             //intiats the current date 
-            this.date();
         }
         static hostLog(msg, source = "?") {
             // Note the OS CLOCK.

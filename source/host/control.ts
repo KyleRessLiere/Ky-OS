@@ -56,8 +56,7 @@ module TSOS {
             
             }
             //intiats the current date 
-            this.date()
-
+            
         }
 
         public static hostLog(msg: string, source: string = "?"): void {
