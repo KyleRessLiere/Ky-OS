@@ -1,6 +1,5 @@
 /* ------------
      Console.ts
-
      The OS Console - stdIn and stdOut by default.
      Note: This is not the Shell. The Shell is the "command line interface" (CLI) or interpreter for this console.
      ------------ */
@@ -93,12 +92,12 @@ module TSOS {
 
     public putText(text): void {
       /*  My first inclination here was to write two functions: putChar() and putString().
-                Then I remembered that JavaScript is (sadly) untyped and it won't differentiate
-                between the two. (Although TypeScript would. But we're compiling to JavaScipt anyway.)
-                So rather than be like PHP and write two (or more) functions that
-                do the same thing, thereby encouraging confusion and decreasing readability, I
-                decided to write one function and use the term "text" to connote string or char.
-            */
+                    Then I remembered that JavaScript is (sadly) untyped and it won't differentiate
+                    between the two. (Although TypeScript would. But we're compiling to JavaScipt anyway.)
+                    So rather than be like PHP and write two (or more) functions that
+                    do the same thing, thereby encouraging confusion and decreasing readability, I
+                    decided to write one function and use the term "text" to connote string or char.
+                */
       if (text !== "") {
         // Draw the text at the current X and Y coordinates.
         _DrawingContext.drawText(
@@ -180,7 +179,9 @@ module TSOS {
       this.currentXPosition = carrotWidth;
       this.historyIndex += indexIncr;
 
-      let command = this.commmandHistory[this.historyIndex];
+      let command = this.commmandHistory[
+        this.commmandHistory.length - this.historyIndex
+      ];
 
       //clears buffer
       this.buffer = "";
