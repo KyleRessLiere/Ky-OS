@@ -1,14 +1,10 @@
 /* ------------
    Shell.ts
-
    The OS Shell - The "command line interface" (CLI) for the console.
-
     Note: While fun and learning are the primary goals of all enrichment center activities,
           serious injuries may occur when trying to write your own Operating System.
    ------------ */
-
 // TODO: Write a base class / prototype for system services and let Shell inherit from it.
-
 module TSOS {
   export class Shell {
     // Properties
@@ -17,14 +13,11 @@ module TSOS {
     public curses =
       "[fuvg],[cvff],[shpx],[phag],[pbpxfhpxre],[zbgureshpxre],[gvgf]";
     public apologies = "[sorry]";
-
     constructor() {}
-
     public init() {
       var sc: ShellCommand;
       //
       // Load the command list.
-
       // ver
       sc = new ShellCommand(
         this.shellVer,
@@ -32,7 +25,6 @@ module TSOS {
         "- Displays the current version data."
       );
       this.commandList[this.commandList.length] = sc;
-
       // help
       sc = new ShellCommand(
         this.shellHelp,
@@ -40,7 +32,6 @@ module TSOS {
         "- This is the help command. Seek help."
       );
       this.commandList[this.commandList.length] = sc;
-
       // shutdown
       sc = new ShellCommand(
         this.shellShutdown,
@@ -48,7 +39,6 @@ module TSOS {
         "- Shuts down the virtual OS but leaves the underlying host / hardware simulation running."
       );
       this.commandList[this.commandList.length] = sc;
-
       // cls
       sc = new ShellCommand(
         this.shellCls,
@@ -56,11 +46,9 @@ module TSOS {
         "- Clears the screen and resets the cursor position."
       );
       this.commandList[this.commandList.length] = sc;
-
       //date
       sc = new ShellCommand(this.shellDate, "date", "<date> - displays date");
       this.commandList[this.commandList.length] = sc;
-
       // man <topic>
       sc = new ShellCommand(
         this.shellMan,
@@ -68,7 +56,6 @@ module TSOS {
         "<topic> - Displays the MANual page for <topic>."
       );
       this.commandList[this.commandList.length] = sc;
-
       //status
       sc = new ShellCommand(
         this.shellStatus,
@@ -76,7 +63,6 @@ module TSOS {
         "<string> - Changes the current status."
       );
       this.commandList[this.commandList.length] = sc;
-
       //location
       sc = new ShellCommand(
         this.shellLocation,
@@ -84,7 +70,6 @@ module TSOS {
         "- Displays the user's current location."
       );
       this.commandList[this.commandList.length] = sc;
-
       //load
       sc = new ShellCommand(
         this.shellLoad,
@@ -92,7 +77,6 @@ module TSOS {
         "	validates the user code in the	HTML5 text area"
       );
       this.commandList[this.commandList.length] = sc;
-
       // trace <on | off>
       sc = new ShellCommand(
         this.shellTrace,
@@ -100,7 +84,6 @@ module TSOS {
         "<on | off> - Turns the OS trace on or off."
       );
       this.commandList[this.commandList.length] = sc;
-
       // rot13 <string>
       sc = new ShellCommand(
         this.shellRot13,
@@ -108,7 +91,6 @@ module TSOS {
         "<string> - Does rot13 obfuscation on <string>."
       );
       this.commandList[this.commandList.length] = sc;
-
       // prompt <string>
       sc = new ShellCommand(
         this.shellPrompt,
@@ -116,7 +98,6 @@ module TSOS {
         "<string> - Sets the prompt."
       );
       this.commandList[this.commandList.length] = sc;
-
       //crashes the OS
       sc = new ShellCommand(
         this.shellCrash,
@@ -124,18 +105,14 @@ module TSOS {
         "Crashes shelll and brings up BSOD MESSAGE"
       );
       this.commandList[this.commandList.length] = sc;
-
       // ps  - list the running processes and their IDs
       // kill <id> - kills the specified process id.
-
       // Display the initial prompt.
       this.putPrompt();
     }
-
     public putPrompt() {
       _StdOut.putText(this.promptStr);
     }
-
     public handleInput(buffer) {
       _Kernel.krnTrace("Shell Command~" + buffer);
       //
@@ -178,7 +155,6 @@ module TSOS {
         }
       }
     }
-
     // Note: args is an optional parameter, ergo the ? which allows TypeScript to understand that.
     public execute(fn, args?) {
       // We just got a command, so advance the line...
@@ -192,26 +168,20 @@ module TSOS {
       // ... and finally write the prompt again.
       this.putPrompt();
     }
-
     public parseInput(buffer: string): UserCommand {
       var retVal = new UserCommand();
-
       // 1. Remove leading and trailing spaces.
       buffer = Utils.trim(buffer);
-
       // 2. Lower-case it.
       buffer = buffer.toLowerCase();
-
       // 3. Separate on spaces so we can determine the command and command-line args, if any.
       var tempList = buffer.split(" ");
-
       // 4. Take the first (zeroth) element and use that as the command.
       var cmd = tempList.shift(); // Yes, you can do that to an array in JavaScript. See the Queue class.
       // 4.1 Remove any left-over spaces.
       cmd = Utils.trim(cmd);
       // 4.2 Record it in the return value.
       retVal.command = cmd;
-
       // 5. Now create the args array from what's left.
       for (var i in tempList) {
         var arg = Utils.trim(tempList[i]);
@@ -221,7 +191,6 @@ module TSOS {
       }
       return retVal;
     }
-
     //
     // Shell Command Functions. Kinda not part of Shell() class exactly, but
     // called from here, so kept here to avoid violating the law of least astonishment.
@@ -236,14 +205,12 @@ module TSOS {
         _StdOut.putText("Type 'help' for, well... help.");
       }
     }
-
     public shellCurse() {
       _StdOut.putText("Oh, so that's how it's going to be, eh? Fine.");
       _StdOut.advanceLine();
       _StdOut.putText("Bitch.");
       _SarcasticMode = true;
     }
-
     public shellApology() {
       if (_SarcasticMode) {
         _StdOut.putText("I think we can put our differences behind us.");
@@ -254,7 +221,6 @@ module TSOS {
         _StdOut.putText("For what?");
       }
     }
-
     //display current status
     public shellStatus(args: string[]) {
       var status = "";
@@ -269,13 +235,12 @@ module TSOS {
         _StdOut.putText("Missing argument for status command: status <arg>");
       }
     }
-
     //	validates the user code in the	HTML5 text area
     public shellLoad() {
       let code = _UserCode.value;
       code = code.replace(/\s/g, "");
       let valid = true;
-      if (code[0] != "") {
+      if (code[0] == "") {
         valid = false;
       }
 
@@ -283,8 +248,7 @@ module TSOS {
         if (!valid) {
           break;
         }
-
-        switch (char) {
+        switch (char.toUpperCase()) {
           case " ":
             break;
           case "0":
@@ -329,14 +293,11 @@ module TSOS {
         _StdOut.putText("User Program Submitted");
       }
     }
-
     // Although args is unused in some of these functions, it is always provided in the
     // actual parameter list when this function is called, so I feel like we need it.
-
     public shellVer(args: string[]) {
       _StdOut.putText(APP_NAME + " version " + APP_VERSION);
     }
-
     public shellHelp(args: string[]) {
       _StdOut.putText("Commands:");
       for (var i in _OsShell.commandList) {
@@ -349,14 +310,12 @@ module TSOS {
         );
       }
     }
-
     public shellShutdown(args: string[]) {
       _StdOut.putText("Shutting down...");
       // Call Kernel shutdown routine.
       _Kernel.krnShutdown();
       // TODO: Stop the final prompt from being displayed. If possible. Not a high priority. (Damn OCD!)
     }
-
     public shellCls(args: string[]) {
       _StdOut.clearScreen();
       _StdOut.resetXY();
@@ -375,12 +334,10 @@ module TSOS {
       var dateTime = date + " " + time;
       _StdOut.putText("TODAYS DATE IS " + dateTime);
     }
-
     //Display "current" location
     public shellLocation(args: string[]) {
       _StdOut.putText("Hat verloren .. Perdida .. Hilang ");
     }
-
     //Provides descriptive details about shell commands
     public shellMan(args: string[]) {
       if (args.length > 0) {
@@ -408,7 +365,6 @@ module TSOS {
               "Simulates a crash to the system by crashing system and displaying BSOD message"
             );
             break;
-
           // TODO: Make descriptive MANual page entries for the the rest of the shell commands here.
           default:
             _StdOut.putText("No manual entry for " + args[0] + ".");
@@ -417,7 +373,6 @@ module TSOS {
         _StdOut.putText("Usage: man <topic>  Please supply a topic.");
       }
     }
-
     public shellTrace(args: string[]) {
       if (args.length > 0) {
         var setting = args[0];
@@ -441,12 +396,10 @@ module TSOS {
         _StdOut.putText("Usage: trace <on | off>");
       }
     }
-
     //test when the kernel crashes
     public shellCrash(): void {
       _Kernel.krnTrapError("Test crash");
     }
-
     public shellRot13(args: string[]) {
       if (args.length > 0) {
         // Requires Utils.ts for rot13() function.
@@ -457,7 +410,6 @@ module TSOS {
         _StdOut.putText("Usage: rot13 <string>  Please supply a string.");
       }
     }
-
     public shellPrompt(args: string[]) {
       if (args.length > 0) {
         _OsShell.promptStr = args[0];

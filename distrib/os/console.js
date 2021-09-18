@@ -40,7 +40,7 @@ var TSOS;
                 else if (chr === String.fromCharCode(8)) {
                     //character before cursor last car
                     //if end of line don't delete
-                    if (this.currentXPosition >= 20) {
+                    if (this.currentXPosition >= 0) {
                         let prevChr = this.buffer[this.buffer.length - 1];
                         this.deleteChr(prevChr);
                         //removes from buffer

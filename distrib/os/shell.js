@@ -1,8 +1,6 @@
 /* ------------
    Shell.ts
-
    The OS Shell - The "command line interface" (CLI) for the console.
-
     Note: While fun and learning are the primary goals of all enrichment center activities,
           serious injuries may occur when trying to write your own Operating System.
    ------------ */
@@ -202,14 +200,14 @@ var TSOS;
             let code = _UserCode.value;
             code = code.replace(/\s/g, "");
             let valid = true;
-            if (code[0] != "") {
+            if (code[0] == "") {
                 valid = false;
             }
             for (let char in code) {
                 if (!valid) {
                     break;
                 }
-                switch (char) {
+                switch (char.toUpperCase()) {
                     case " ":
                         break;
                     case "0":
