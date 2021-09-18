@@ -298,6 +298,7 @@ module TSOS {
     public shellVer(args: string[]) {
       _StdOut.putText(APP_NAME + " version " + APP_VERSION);
     }
+
     public shellHelp(args: string[]) {
       _StdOut.putText("Commands:");
       for (var i in _OsShell.commandList) {

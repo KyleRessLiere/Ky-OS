@@ -29,7 +29,8 @@ var TSOS;
             _Kernel.krnTrace("Key code:" + keyCode + " shifted:" + isShifted);
             var chr = "";
             // Check to see if we even want to deal with the key that was pressed.
-            if ((keyCode >= 65) && (keyCode <= 90)) { // letter
+            if (keyCode >= 65 && keyCode <= 90) {
+                // letter
                 if (isShifted === true) {
                     chr = String.fromCharCode(keyCode); // Uppercase A-Z
                 }
@@ -39,15 +40,19 @@ var TSOS;
                 // TODO: Check for caps-lock and handle as shifted if so.
                 _KernelInputQueue.enqueue(chr);
             }
-            else if ( // digits
-            (keyCode == 32) || // space
-                (keyCode == 13) || // enter
-                (keyCode == 9) || //tab
-                (keyCode == 8)) { //backspace
+            else if (
+            // digits
+            keyCode == 32 || // space
+                keyCode == 13 || // enter
+                keyCode == 9 || //tab
+                keyCode == 8 || //backspace
+                keyCode == 38 || //up arrow
+                keyCode == 40) {
                 chr = String.fromCharCode(keyCode);
                 _KernelInputQueue.enqueue(chr);
             }
-            else if ((keyCode >= 48) && (keyCode <= 57)) { //numbers and their shifty friends
+            else if (keyCode >= 48 && keyCode <= 57) {
+                //numbers and their shifty friends
                 if (isShifted) {
                     switch (keyCode) {
                         case 48:
@@ -87,8 +92,8 @@ var TSOS;
                 }
                 _KernelInputQueue.enqueue(chr);
             }
-            else if (((keyCode >= 186) && (keyCode <= 192)) || //special characters 
-                ((keyCode >= 219) && (keyCode <= 222))) {
+            else if ((keyCode >= 186 && keyCode <= 192) || //special characters
+                (keyCode >= 219 && keyCode <= 222)) {
                 switch (keyCode) {
                     case 186:
                         if (isShifted) {
@@ -172,7 +177,7 @@ var TSOS;
                         break;
                     case 222:
                         if (isShifted) {
-                            chr = "\"";
+                            chr = '"';
                         }
                         else {
                             chr = "'";
