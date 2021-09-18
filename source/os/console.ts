@@ -68,11 +68,14 @@ module TSOS {
         }
         //up arrow
         else if (chr === String.fromCharCode(38)) {
-          if (this.commmandHistory.length > 1) {
+          if (
+            this.commmandHistory.length > 1 &&
+            this.commmandHistory.length > this.historyIndex
+          ) {
             this.commandHistoryRecall(1);
           }
         } else if (chr === String.fromCharCode(40)) {
-          if (this.commmandHistory.length > 1) {
+          if (this.commmandHistory.length > 1 && this.historyIndex > 0) {
             this.commandHistoryRecall(-1);
           } else {
             this.commandHistoryRecall(0);
@@ -193,9 +196,11 @@ module TSOS {
         _Canvas.width,
         this.currentFontSize + 6
       );
+      if (this.historyIndex > 0) {
+        //puts command on line
+        this.putText(command);
+      }
 
-      //puts command on line
-      this.putText(command);
       this.currentXPosition =
         carrotWidth +
         TSOS.CanvasTextFunctions.measure(

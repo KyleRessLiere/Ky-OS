@@ -59,12 +59,13 @@ var TSOS;
                 }
                 //up arrow
                 else if (chr === String.fromCharCode(38)) {
-                    if (this.commmandHistory.length > 1) {
+                    if (this.commmandHistory.length > 1 &&
+                        this.commmandHistory.length > this.historyIndex) {
                         this.commandHistoryRecall(1);
                     }
                 }
                 else if (chr === String.fromCharCode(40)) {
-                    if (this.commmandHistory.length > 1) {
+                    if (this.commmandHistory.length > 1 && this.historyIndex > 0) {
                         this.commandHistoryRecall(-1);
                     }
                     else {
@@ -141,8 +142,10 @@ var TSOS;
             this.buffer = "";
             //clears line
             _DrawingContext.clearRect(carrotWidth, charHeight, _Canvas.width, this.currentFontSize + 6);
-            //puts command on line
-            this.putText(command);
+            if (this.historyIndex > 0) {
+                //puts command on line
+                this.putText(command);
+            }
             this.currentXPosition =
                 carrotWidth +
                     TSOS.CanvasTextFunctions.measure(this.currentFont, this.currentFontSize, command);
