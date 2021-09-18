@@ -38,9 +38,9 @@ var TSOS;
                     this.buffer = "";
                 }
                 else if (chr === String.fromCharCode(8)) {
-                    //chacter before cursor last car
-                    var prevChr = this.buffer[this.buffer.length - 1];
-                    if (prevChr != '') {
+                    //charcter before cursor last car
+                    if (this.currentXPosition >= 20) {
+                        let prevChr = this.buffer[this.buffer.length - 1];
                         this.deleteChr(prevChr);
                         //removes from buffer
                         this.buffer = this.buffer.slice(0, -1);
@@ -100,8 +100,10 @@ var TSOS;
         }
         //screnshoot the current line
         deleteChr(char) {
+            let charHeight = this.currentYPosition - this.currentFontSize;
             let charWidth = TSOS.CanvasTextFunctions.measure(this.currentFont, this.currentFontSize, char);
-            _DrawingContext.clearRect((this.currentXPosition - charWidth), (this.currentYPosition - this.currentFontSize), charWidth, (this.currentFontSize + 5));
+            //makes a recttangele space of where the charcter is 
+            _DrawingContext.clearRect((this.currentXPosition - charWidth), charHeight, charWidth, (this.currentFontSize + 6));
             this.currentXPosition -= charWidth;
         }
     }
