@@ -33,7 +33,7 @@ var TSOS;
             // cls
             sc = new TSOS.ShellCommand(this.shellCls, "cls", "- Clears the screen and resets the cursor position.");
             this.commandList[this.commandList.length] = sc;
-            //date 
+            //date
             sc = new TSOS.ShellCommand(this.shellDate, "date", "<date> - displays date");
             this.commandList[this.commandList.length] = sc;
             // man <topic>
@@ -81,7 +81,7 @@ var TSOS;
             // Determine the command and execute it.
             //
             // TypeScript/JavaScript may not support associative arrays in all browsers so we have to iterate over the
-            // command list in attempt to find a match. 
+            // command list in attempt to find a match.
             // TODO: Is there a better way? Probably. Someone work it out and tell me in class.
             var index = 0;
             var found = false;
@@ -100,13 +100,16 @@ var TSOS;
             }
             else {
                 // It's not found, so check for curses and apologies before declaring the command invalid.
-                if (this.curses.indexOf("[" + TSOS.Utils.rot13(cmd) + "]") >= 0) { // Check for curses.
+                if (this.curses.indexOf("[" + TSOS.Utils.rot13(cmd) + "]") >= 0) {
+                    // Check for curses.
                     this.execute(this.shellCurse);
                 }
-                else if (this.apologies.indexOf("[" + cmd + "]") >= 0) { // Check for apologies.
+                else if (this.apologies.indexOf("[" + cmd + "]") >= 0) {
+                    // Check for apologies.
                     this.execute(this.shellApology);
                 }
-                else { // It's just a bad command. {
+                else {
+                    // It's just a bad command. {
                     this.execute(this.shellInvalidCommand);
                 }
             }
@@ -197,30 +200,50 @@ var TSOS;
         //	validates the user code in the	HTML5 text area
         shellLoad() {
             let code = _UserCode.value;
-            code = code.replace(/\s/g, '');
+            code = code.replace(/\s/g, "");
             let valid = true;
+            if (code[0] != "") {
+                valid = false;
+            }
             for (let char in code) {
                 if (!valid) {
                     break;
                 }
                 switch (char) {
-                    case " ": break;
-                    case "0": break;
-                    case "1": break;
-                    case "2": break;
-                    case "3": break;
-                    case "4": break;
-                    case "5": break;
-                    case "6": break;
-                    case "7": break;
-                    case "8": break;
-                    case "9": break;
-                    case "A": break;
-                    case "B": break;
-                    case "C": break;
-                    case "D": break;
-                    case "E": break;
-                    case "F": break;
+                    case " ":
+                        break;
+                    case "0":
+                        break;
+                    case "1":
+                        break;
+                    case "2":
+                        break;
+                    case "3":
+                        break;
+                    case "4":
+                        break;
+                    case "5":
+                        break;
+                    case "6":
+                        break;
+                    case "7":
+                        break;
+                    case "8":
+                        break;
+                    case "9":
+                        break;
+                    case "A":
+                        break;
+                    case "B":
+                        break;
+                    case "C":
+                        break;
+                    case "D":
+                        break;
+                    case "E":
+                        break;
+                    case "F":
+                        break;
                     default:
                         valid = false;
                 }
@@ -232,7 +255,7 @@ var TSOS;
                 _StdOut.putText("User Program Submitted");
             }
         }
-        // Although args is unused in some of these functions, it is always provided in the 
+        // Although args is unused in some of these functions, it is always provided in the
         // actual parameter list when this function is called, so I feel like we need it.
         shellVer(args) {
             _StdOut.putText(APP_NAME + " version " + APP_VERSION);
@@ -241,7 +264,10 @@ var TSOS;
             _StdOut.putText("Commands:");
             for (var i in _OsShell.commandList) {
                 _StdOut.advanceLine();
-                _StdOut.putText("  " + _OsShell.commandList[i].command + " " + _OsShell.commandList[i].description);
+                _StdOut.putText("  " +
+                    _OsShell.commandList[i].command +
+                    " " +
+                    _OsShell.commandList[i].description);
             }
         }
         shellShutdown(args) {
@@ -257,16 +283,20 @@ var TSOS;
         //displays current date
         shellDate() {
             var today = new Date();
-            var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+            var date = today.getFullYear() +
+                "-" +
+                (today.getMonth() + 1) +
+                "-" +
+                today.getDate();
             var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-            var dateTime = date + ' ' + time;
+            var dateTime = date + " " + time;
             _StdOut.putText("TODAYS DATE IS " + dateTime);
         }
         //Display "current" location
         shellLocation(args) {
             _StdOut.putText("Hat verloren .. Perdida .. Hilang ");
         }
-        //Provides descriptive details about shell commands 
+        //Provides descriptive details about shell commands
         shellMan(args) {
             if (args.length > 0) {
                 var topic = args[0];
@@ -287,7 +317,7 @@ var TSOS;
                         _StdOut.putText("Updates status in Host Log");
                         break;
                     case "bsod":
-                        _StdOut.putText("Simlulates a crash to the system by crashing system and displaying BSOD message");
+                        _StdOut.putText("Simulates a crash to the system by crashing system and displaying BSOD message");
                         break;
                     // TODO: Make descriptive MANual page entries for the the rest of the shell commands here.
                     default:
@@ -330,7 +360,7 @@ var TSOS;
         shellRot13(args) {
             if (args.length > 0) {
                 // Requires Utils.ts for rot13() function.
-                _StdOut.putText(args.join(' ') + " = '" + TSOS.Utils.rot13(args.join(' ')) + "'");
+                _StdOut.putText(args.join(" ") + " = '" + TSOS.Utils.rot13(args.join(" ")) + "'");
             }
             else {
                 _StdOut.putText("Usage: rot13 <string>  Please supply a string.");

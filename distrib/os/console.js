@@ -38,7 +38,8 @@ var TSOS;
                     this.buffer = "";
                 }
                 else if (chr === String.fromCharCode(8)) {
-                    //charcter before cursor last car
+                    //character before cursor last car
+                    //if end of line don't delete
                     if (this.currentXPosition >= 20) {
                         let prevChr = this.buffer[this.buffer.length - 1];
                         this.deleteChr(prevChr);
@@ -92,17 +93,17 @@ var TSOS;
                 //takes a screenshot excluding the top line
                 let currentScreen = _DrawingContext.getImageData(0, textHeight, _Canvas.width, _Canvas.height);
                 this.clearScreen();
-                //replace cleared screen with prevous state at coords 0,0
+                //replace cleared screen with previous state at coords 0,0
                 _DrawingContext.putImageData(currentScreen, 0, 0);
                 //set current position to edge of screen
                 this.currentYPosition -= textHeight;
             }
         }
-        //screnshoot the current line
+        //screenshot the current line
         deleteChr(char) {
             let charHeight = this.currentYPosition - this.currentFontSize;
             let charWidth = TSOS.CanvasTextFunctions.measure(this.currentFont, this.currentFontSize, char);
-            //makes a recttangele space of where the charcter is 
+            //makes a rectangle space of where the character is 
             _DrawingContext.clearRect((this.currentXPosition - charWidth), charHeight, charWidth, (this.currentFontSize + 6));
             this.currentXPosition -= charWidth;
         }

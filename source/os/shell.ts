@@ -275,6 +275,9 @@ module TSOS {
       let code = _UserCode.value;
       code = code.replace(/\s/g, "");
       let valid = true;
+      if (code[0] != "") {
+        valid = false;
+      }
 
       for (let char in code) {
         if (!valid) {
