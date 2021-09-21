@@ -43,6 +43,11 @@ var TSOS;
                     this.buffer = "";
                     //resets index of command history when
                 }
+                else if (chr === String.fromCharCode(9)) { //tab
+                    if (this.buffer.length != 0) {
+                        this.tabComplete();
+                    }
+                }
                 //if delete key is pressed
                 else if (chr === String.fromCharCode(8)) {
                     //character before cursor last car
@@ -140,16 +145,47 @@ var TSOS;
             let command = this.commmandHistory[this.commmandHistory.length - this.historyIndex];
             //clears buffer
             this.buffer = "";
-            //clears line
-            _DrawingContext.clearRect(carrotWidth, charHeight, _Canvas.width, this.currentFontSize + 6);
             if (this.historyIndex > 0) {
                 //puts command on line
                 this.putText(command);
             }
+            //moves x pos to called command
             this.currentXPosition =
                 carrotWidth +
                     TSOS.CanvasTextFunctions.measure(this.currentFont, this.currentFontSize, command);
             console.log(this.commmandHistory[this.historyIndex]);
+        }
+        tabComplete() {
+            let currentCommmand = this.buffer;
+            let charHeight = this.currentYPosition - this.currentFontSize;
+            let matchCommands = [];
+            //starting line xpos
+            const carrotWidth = TSOS.CanvasTextFunctions.measure(this.currentFont, this.currentFontSize, ">");
+            //console.log(_OsShell.commandList[0].command);
+            //checks for command with matching the buffer then puts them in the match command array
+            for (let i = 0; i < _OsShell.commandList.length; i++) {
+                let charMatchCount = 0;
+                for (let j = 0; j < this.buffer.length; j++) {
+                    if (this.buffer[j] == _OsShell.commandList[i].command[j])
+                        charMatchCount += 1;
+                    if (charMatchCount == this.buffer.length)
+                        matchCommands.push(_OsShell.commandList[i].command);
+                }
+            }
+            if (matchCommands.length > 1) {
+            }
+            else {
+                let command = matchCommands[0];
+                this.buffer = "";
+                this.currentXPosition = carrotWidth;
+                //clears line
+                _DrawingContext.clearRect(carrotWidth, charHeight, _Canvas.width, this.currentFontSize + 6);
+                this.putText(command);
+                //moves current x pos to end of
+                this.currentXPosition =
+                    carrotWidth +
+                        TSOS.CanvasTextFunctions.measure(this.currentFont, this.currentFontSize, command);
+            }
         }
     }
     TSOS.Console = Console;

@@ -23,7 +23,7 @@ var TSOS;
         static hostInit() {
             // This is called from index.html's onLoad event via the onDocumentLoad function pointer.
             // Get a global reference to the canvas.  TODO: Should we move this stuff into a Display Device Driver?
-            _Canvas = document.getElementById('display');
+            _Canvas = document.getElementById("display");
             // Get a global reference to the drawing context.
             _DrawingContext = _Canvas.getContext("2d");
             // Enable the added-in canvas text functions (see canvastext.ts for provenance and details).
@@ -34,7 +34,7 @@ var TSOS;
             // Set focus on the start button.
             // Use the TypeScript cast to HTMLInputElement
             document.getElementById("btnStartOS").focus();
-            //Gets the user code 
+            //Gets the user code
             _UserCode = document.getElementById("taProgramInput");
             // Check for our testing and enrichment core, which
             // may be referenced here (from index.html) as function Glados().
@@ -44,7 +44,7 @@ var TSOS;
                 _GLaDOS = new Glados();
                 _GLaDOS.init();
             }
-            //intiats the current date 
+            //intiats the current date
         }
         static hostLog(msg, source = "?") {
             // Note the OS CLOCK.
@@ -52,7 +52,16 @@ var TSOS;
             // Note the REAL clock in milliseconds since January 1, 1970.
             var now = new Date().getTime();
             // Build the log string.
-            var str = "({ clock:" + clock + ", source:" + source + ", msg:" + msg + ", now:" + now + " })" + "\n";
+            var str = "({ clock:" +
+                clock +
+                ", source:" +
+                source +
+                ", msg:" +
+                msg +
+                ", now:" +
+                now +
+                " })" +
+                "\n";
             // Update the log console.
             var taLog = document.getElementById("taHostLog");
             taLog.value = str + taLog.value;
@@ -65,7 +74,7 @@ var TSOS;
             // Disable the (passed-in) start button...
             btn.disabled = true;
             // .. enable the Halt and Reset buttons ...
-            document.getElementById("btnHaltOS").disabled = false;
+            (document.getElementById("btnHaltOS")).disabled = false;
             document.getElementById("btnReset").disabled = false;
             // .. set focus on the OS console display ...
             document.getElementById("display").focus();
@@ -98,12 +107,16 @@ var TSOS;
         static hostStatus(status) {
             document.getElementById("status").textContent = status;
         }
-        //displays current time and date 
+        //displays current time and date
         static date() {
             var today = new Date();
-            var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+            var date = today.getFullYear() +
+                "-" +
+                (today.getMonth() + 1) +
+                "-" +
+                today.getDate();
             var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-            var dateTime = date + ' ' + time;
+            var dateTime = date + " " + time;
             document.getElementById("date").textContent = dateTime;
         }
         static crashDisplay(message) {
