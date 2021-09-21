@@ -55,6 +55,9 @@ var TSOS;
             // prompt <string>
             sc = new TSOS.ShellCommand(this.shellPrompt, "prompt", "<string> - Sets the prompt.");
             this.commandList[this.commandList.length] = sc;
+            // prompt <string>
+            sc = new TSOS.ShellCommand(this.shellZebra, "zebra", "Zebra swarm");
+            this.commandList[this.commandList.length] = sc;
             //crashes the OS
             sc = new TSOS.ShellCommand(this.shellCrash, "bsod", "Crashes shelll and brings up BSOD MESSAGE");
             this.commandList[this.commandList.length] = sc;
@@ -350,6 +353,10 @@ var TSOS;
             else {
                 _StdOut.putText("Usage: trace <on | off>");
             }
+        }
+        shellZebra() {
+            _StdOut.putText("THE ZEBRAS ARE MAKING EVERTTHING MORE UGLY NOOOOOOO!!!!");
+            TSOS.Control.zebraAttack();
         }
         //test when the kernel crashes
         shellCrash() {

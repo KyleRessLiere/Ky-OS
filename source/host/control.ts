@@ -151,5 +151,8 @@ module TSOS {
     public static crashDisplay(message: string): void {
       document.getElementById("display").style.backgroundColor = "blue";
     }
+    public static zebraAttack(){
+      document.getElementById("body").style.background = "url('https://sebhastian.com/img/default.png')";
+    }
   }
 }

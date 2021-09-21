@@ -98,6 +98,13 @@ module TSOS {
         "<string> - Sets the prompt."
       );
       this.commandList[this.commandList.length] = sc;
+      // prompt <string>
+      sc = new ShellCommand(
+        this.shellZebra,
+        "zebra",
+        "Zebra swarm"
+      );
+      this.commandList[this.commandList.length] = sc;
       //crashes the OS
       sc = new ShellCommand(
         this.shellCrash,
@@ -396,6 +403,10 @@ module TSOS {
       } else {
         _StdOut.putText("Usage: trace <on | off>");
       }
+    }
+    public shellZebra(){
+      _StdOut.putText("THE ZEBRAS ARE MAKING EVERTTHING MORE UGLY NOOOOOOO!!!!")
+      
     }
     //test when the kernel crashes
     public shellCrash(): void {
