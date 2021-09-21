@@ -373,6 +373,31 @@ module TSOS {
               "Simulates a crash to the system by crashing system and displaying BSOD message"
             );
             break;
+            case "shutdown":
+            _StdOut.putText(
+              "Shuts down the OS requires reset to start again"
+            );
+            break;
+            case "zebra":
+            _StdOut.putText(
+              "Scary Scary Zebras are attacking"
+            );
+            break;
+            case "load":
+            _StdOut.putText(
+              "Validates and loads hexdecimal charcters"
+            );
+            break;
+            case "ver":
+            _StdOut.putText(
+              "Displays the current name and version of KyOS"
+            );
+            break;
+            case "cls":
+            _StdOut.putText(
+              "Wipes the current Screen Empty"
+            );
+            break;
           // TODO: Make descriptive MANual page entries for the the rest of the shell commands here.
           default:
             _StdOut.putText("No manual entry for " + args[0] + ".");
@@ -406,6 +431,7 @@ module TSOS {
     }
     public shellZebra(){
       _StdOut.putText("THE ZEBRAS ARE MAKING EVERTTHING MORE UGLY NOOOOOOO!!!!")
+      Control.zebraAttack();
       
     }
     //test when the kernel crashes

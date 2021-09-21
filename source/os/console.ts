@@ -218,8 +218,7 @@
             );
           
         }
-        public tabComplete(): void {
-          let  currentCommmand = this.buffer;
+        public tabComplete(): void { // A wise once said, I farted so loud I shat myself
           let charHeight = this.currentYPosition - this.currentFontSize;
           let matchCommands = [];
           //starting line xpos
@@ -229,7 +228,6 @@
             ">"
           );
           
-          //console.log(_OsShell.commandList[0].command);
           //checks for command with matching the buffer then puts them in the match command array
           for(let i =0; i < _OsShell.commandList.length; i++){
             let charMatchCount =0;
@@ -244,6 +242,10 @@
             
           }
           if(matchCommands.length > 1){
+            for(let i = 0; i < matchCommands.length; i){
+              _StdOut.putText(matchCommands[i].output);
+              
+            }
 
           }
           else{

@@ -157,12 +157,10 @@ var TSOS;
                     TSOS.CanvasTextFunctions.measure(this.currentFont, this.currentFontSize, command);
         }
         tabComplete() {
-            let currentCommmand = this.buffer;
             let charHeight = this.currentYPosition - this.currentFontSize;
             let matchCommands = [];
             //starting line xpos
             const carrotWidth = TSOS.CanvasTextFunctions.measure(this.currentFont, this.currentFontSize, ">");
-            //console.log(_OsShell.commandList[0].command);
             //checks for command with matching the buffer then puts them in the match command array
             for (let i = 0; i < _OsShell.commandList.length; i++) {
                 let charMatchCount = 0;
@@ -174,6 +172,9 @@ var TSOS;
                 }
             }
             if (matchCommands.length > 1) {
+                for (let i = 0; i < matchCommands.length; i) {
+                    _StdOut.putText(matchCommands[i].output);
+                }
             }
             else {
                 let command = matchCommands[0];

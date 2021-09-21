@@ -123,7 +123,7 @@ var TSOS;
             document.getElementById("display").style.backgroundColor = "blue";
         }
         static zebraAttack() {
-            document.getElementById("body").style.background = "url('https://sebhastian.com/img/default.png')";
+            document.getElementById("display").style.background = "url('https://sebhastian.com/img/default.png')";
         }
     }
     TSOS.Control = Control;
