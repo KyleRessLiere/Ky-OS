@@ -43,11 +43,6 @@ var TSOS;
                     this.buffer = "";
                     //resets index of command history when
                 }
-                else if (chr === String.fromCharCode(9)) { //tab
-                    if (this.buffer.length != 0) {
-                        this.tabComplete();
-                    }
-                }
                 //if delete key is pressed
                 else if (chr === String.fromCharCode(8)) {
                     //character before cursor last car
@@ -60,6 +55,11 @@ var TSOS;
                         this.deleteChr(prevChr);
                         //removes from buffer
                         this.buffer = this.buffer.slice(0, -1);
+                    }
+                }
+                else if (chr === String.fromCharCode(9)) { //tab
+                    if (this.buffer.length != 0) {
+                        this.tabComplete();
                     }
                 }
                 //up arrow
@@ -145,11 +145,12 @@ var TSOS;
             let command = this.commmandHistory[this.commmandHistory.length - this.historyIndex];
             //clears buffer
             this.buffer = "";
+            //clears line
+            _DrawingContext.clearRect(carrotWidth, charHeight, _Canvas.width, this.currentFontSize + 6);
             if (this.historyIndex > 0) {
                 //puts command on line
                 this.putText(command);
             }
-            //moves x pos to called command
             this.currentXPosition =
                 carrotWidth +
                     TSOS.CanvasTextFunctions.measure(this.currentFont, this.currentFontSize, command);
