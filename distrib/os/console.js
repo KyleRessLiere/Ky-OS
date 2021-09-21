@@ -50,7 +50,7 @@ var TSOS;
                     //start of line
                     const carrotWidth = TSOS.CanvasTextFunctions.measure(this.currentFont, this.currentFontSize, ">");
                     //if not at end of console line
-                    if (this.currentXPosition >= carrotWidth) {
+                    if (this.buffer.length != 0) {
                         let prevChr = this.buffer[this.buffer.length - 1];
                         this.deleteChr(prevChr);
                         //removes from buffer
@@ -147,6 +147,7 @@ var TSOS;
             this.buffer = "";
             //clears line
             _DrawingContext.clearRect(carrotWidth, charHeight, _Canvas.width, this.currentFontSize + 6);
+            this.buffer = command;
             if (this.historyIndex > 0) {
                 //puts command on line
                 this.putText(command);
@@ -154,7 +155,6 @@ var TSOS;
             this.currentXPosition =
                 carrotWidth +
                     TSOS.CanvasTextFunctions.measure(this.currentFont, this.currentFontSize, command);
-            console.log(this.commmandHistory[this.historyIndex]);
         }
         tabComplete() {
             let currentCommmand = this.buffer;
@@ -181,6 +181,7 @@ var TSOS;
                 this.currentXPosition = carrotWidth;
                 //clears line
                 _DrawingContext.clearRect(carrotWidth, charHeight, _Canvas.width, this.currentFontSize + 6);
+                this.buffer = command;
                 this.putText(command);
                 //moves current x pos to end of
                 this.currentXPosition =

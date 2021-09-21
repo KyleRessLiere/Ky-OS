@@ -60,7 +60,7 @@
                 ">"
               );
               //if not at end of console line
-              if (this.currentXPosition >= carrotWidth) {
+              if (this.buffer.length != 0) {
                 let prevChr = this.buffer[this.buffer.length - 1];
                 this.deleteChr(prevChr);
                 //removes from buffer
@@ -203,6 +203,7 @@
             _Canvas.width,
             this.currentFontSize + 6
           );
+          this.buffer = command
           if (this.historyIndex > 0) {
             //puts command on line
             this.putText(command);
@@ -215,7 +216,7 @@
               this.currentFontSize,
               command
             );
-          console.log(this.commmandHistory[this.historyIndex]);
+          
         }
         public tabComplete(): void {
           let  currentCommmand = this.buffer;
@@ -256,6 +257,8 @@
             _Canvas.width,
             this.currentFontSize + 6
           );
+          
+          this.buffer = command;
           this.putText(command)
           
           //moves current x pos to end of
@@ -269,5 +272,7 @@
           }
           
         }
+          
+        
       }
     }
