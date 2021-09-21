@@ -152,7 +152,7 @@ module TSOS {
       document.getElementById("display").style.backgroundColor = "blue";
     }
     public static zebraAttack(){
-      document.getElementById("display").style.background = "url('https://sebhastian.com/img/default.png')";
+      document.getElementById("display").style.background = "url('distrib/images/zebraAnimal.jpeg')";
     }
   }
 }
