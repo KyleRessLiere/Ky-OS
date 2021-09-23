@@ -245,6 +245,8 @@
             }
           
           }
+         
+          if(matchCommands.length >0){
           //if there is more than one match
           if(matchCommands.length > 1){
             for(let i = 0; i < matchCommands.length; i++){
@@ -282,9 +284,10 @@
               command
             );
           }
-          
         }
-          
         
+        
+        
+        }
       }
     }

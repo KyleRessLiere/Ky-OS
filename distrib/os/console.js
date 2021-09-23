@@ -175,28 +175,30 @@ var TSOS;
                     matchFound = true;
                 }
             }
-            //if there is more than one match
-            if (matchCommands.length > 1) {
-                for (let i = 0; i < matchCommands.length; i++) {
+            if (matchCommands.length > 0) {
+                //if there is more than one match
+                if (matchCommands.length > 1) {
+                    for (let i = 0; i < matchCommands.length; i++) {
+                        _StdOut.advanceLine();
+                        _StdOut.putText(matchCommands[i]);
+                    }
                     _StdOut.advanceLine();
-                    _StdOut.putText(matchCommands[i]);
+                    _StdOut.putText(">");
+                    _StdOut.putText(this.buffer);
                 }
-                _StdOut.advanceLine();
-                _StdOut.putText(">");
-                _StdOut.putText(this.buffer);
-            }
-            else {
-                let command = matchCommands[0];
-                this.buffer = "";
-                this.currentXPosition = carrotWidth;
-                //clears line
-                _DrawingContext.clearRect(carrotWidth, charHeight, _Canvas.width, this.currentFontSize + 6);
-                this.buffer = command;
-                this.putText(command);
-                //moves current x pos to end of
-                this.currentXPosition =
-                    carrotWidth +
-                        TSOS.CanvasTextFunctions.measure(this.currentFont, this.currentFontSize, command);
+                else {
+                    let command = matchCommands[0];
+                    this.buffer = "";
+                    this.currentXPosition = carrotWidth;
+                    //clears line
+                    _DrawingContext.clearRect(carrotWidth, charHeight, _Canvas.width, this.currentFontSize + 6);
+                    this.buffer = command;
+                    this.putText(command);
+                    //moves current x pos to end of
+                    this.currentXPosition =
+                        carrotWidth +
+                            TSOS.CanvasTextFunctions.measure(this.currentFont, this.currentFontSize, command);
+                }
             }
         }
     }

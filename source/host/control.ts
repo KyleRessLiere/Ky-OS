@@ -153,6 +153,7 @@ module TSOS {
     }
     public static zebraAttack(){
       document.getElementById("display").style.background = "url('distrib/images/zebraAnimal.jpeg')";
+      document.body.style.background= "url('distrib/images/zebraAnimal.jpeg')";
     }
   }
 }
