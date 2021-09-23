@@ -370,10 +370,11 @@ var TSOS;
             }
         }
         shellZebra() {
+            /// put text then std.out.advanceline
             let zebra = `         #                       
                                        ##                      
                              #####    ###                      
-                         ########### ####                      
+                         ########### ####                       
                      ##############   ##                       
                   ################  ###                        
                ##################   ##                         
@@ -414,7 +415,7 @@ var TSOS;
             TSOS.Control.zebraAttack();
             _StdOut.putText("Cant Escape");
             _StdOut.putText('The Zebras have Atacked');
-            this.shellStatus("ZEBRAS INVADED");
+            this.shellStatus(["ZEBRAS INVADED"]);
         }
         //test when the kernel crashes
         shellCrash() {

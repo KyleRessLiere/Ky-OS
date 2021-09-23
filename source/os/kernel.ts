@@ -170,6 +170,7 @@ module TSOS {
         }
 
         public krnTrapError(msg) {
+            _StdOut.resetXY();
             Control.hostLog("OS ERROR - TRAP: " + msg);
             _Console.clearScreen();
             Control.crashDisplay(msg);

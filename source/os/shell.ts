@@ -430,10 +430,11 @@ module TSOS {
       }
     }
     public shellZebra(){
+      /// put text then std.out.advanceline
       let zebra =  `         #                       
                                        ##                      
                              #####    ###                      
-                         ########### ####                      
+                         ########### ####                       
                      ##############   ##                       
                   ################  ###                        
                ##################   ##                         
@@ -474,7 +475,7 @@ module TSOS {
     Control.zebraAttack();
     _StdOut.putText("Cant Escape")
      _StdOut.putText('The Zebras have Atacked');
-     this.shellStatus("ZEBRAS INVADED")
+     this.shellStatus(["ZEBRAS INVADED"])
       
       
     }

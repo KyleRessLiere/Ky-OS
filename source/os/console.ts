@@ -218,9 +218,11 @@
             );
           
         }
-        public tabComplete(): void { // A wise once said, I farted so loud I shat myself
+        public tabComplete(): void {
+          let  currentCommmand = this.buffer;
           let charHeight = this.currentYPosition - this.currentFontSize;
           let matchCommands = [];
+          let matchFound = false;
           //starting line xpos
           const carrotWidth = TSOS.CanvasTextFunctions.measure(
             this.currentFont,
@@ -228,6 +230,7 @@
             ">"
           );
           
+          //console.log(_OsShell.commandList[0].command);
           //checks for command with matching the buffer then puts them in the match command array
           for(let i =0; i < _OsShell.commandList.length; i++){
             let charMatchCount =0;
@@ -237,17 +240,24 @@
               
               if(charMatchCount == this.buffer.length )
                 matchCommands.push(_OsShell.commandList[i].command);
+                matchFound = true;
           
             }
-            
+          
           }
+          //if there is more than one match
           if(matchCommands.length > 1){
-            for(let i = 0; i < matchCommands.length; i){
-              _StdOut.putText(matchCommands[i].output);
-              
+            for(let i = 0; i < matchCommands.length; i++){
+              _StdOut.advanceLine()
+              _StdOut.putText(matchCommands[i])
+            
             }
-
-          }
+            _StdOut.advanceLine()
+            _StdOut.putText(">")
+            _StdOut.putText(this.buffer)
+            
+            
+            }
           else{
             let command = matchCommands[0];
             this.buffer = "";

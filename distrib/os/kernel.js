@@ -149,6 +149,7 @@ var TSOS;
             }
         }
         krnTrapError(msg) {
+            _StdOut.resetXY();
             TSOS.Control.hostLog("OS ERROR - TRAP: " + msg);
             _Console.clearScreen();
             TSOS.Control.crashDisplay(msg);
