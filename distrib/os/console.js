@@ -68,9 +68,10 @@ var TSOS;
                         this.commmandHistory.length > this.historyIndex) {
                         this.commandHistoryRecall(1);
                     }
+                    //down arrow
                 }
                 else if (chr === String.fromCharCode(40)) {
-                    if (this.commmandHistory.length > 1 && this.historyIndex > 0) {
+                    if (this.commmandHistory.length > 1) {
                         this.commandHistoryRecall(-1);
                     }
                     else {
@@ -152,6 +153,7 @@ var TSOS;
                 //puts command on line
                 this.putText(command);
             }
+            console.log(command);
             this.currentXPosition =
                 carrotWidth +
                     TSOS.CanvasTextFunctions.measure(this.currentFont, this.currentFontSize, command);
@@ -175,6 +177,7 @@ var TSOS;
                     matchFound = true;
                 }
             }
+            //checks for any amtches
             if (matchCommands.length > 0) {
                 //if there is more than one match
                 if (matchCommands.length > 1) {

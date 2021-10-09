@@ -81,8 +81,9 @@
               ) {
                 this.commandHistoryRecall(1);
               }
+              //down arrow
             } else if (chr === String.fromCharCode(40)) {
-              if (this.commmandHistory.length > 1 && this.historyIndex > 0) {
+              if (this.commmandHistory.length > 1 ) {
                 this.commandHistoryRecall(-1);
               } else {
                 this.commandHistoryRecall(0);
@@ -109,6 +110,7 @@
                         decided to write one function and use the term "text" to connote string or char.
                     */
           if (text !== "") {
+            
             // Draw the text at the current X and Y coordinates.
             _DrawingContext.drawText(
               this.currentFont,
@@ -126,7 +128,7 @@
             this.currentXPosition = this.currentXPosition + offset;
           }
         }
-    
+        
         public advanceLine(): void {
           let textHeight =
             _DefaultFontSize +
@@ -188,7 +190,7 @@
           );
           this.currentXPosition = carrotWidth;
           this.historyIndex += indexIncr;
-    
+          
           let command = this.commmandHistory[
             this.commmandHistory.length - this.historyIndex
           ];
@@ -208,7 +210,7 @@
             //puts command on line
             this.putText(command);
           }
-    
+          console.log(command);
           this.currentXPosition =
             carrotWidth +
             TSOS.CanvasTextFunctions.measure(
@@ -245,7 +247,7 @@
             }
           
           }
-         
+         //checks for any amtches
           if(matchCommands.length >0){
           //if there is more than one match
           if(matchCommands.length > 1){
