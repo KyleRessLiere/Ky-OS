@@ -33,6 +33,8 @@ var _MemoryAccessor: TSOS.MemoryAccessor;
 
 var _MemoryManager:any = null;
 
+var _PCBList: TSOS.PCB[] = [];
+
 
 var _OSclock: number = 0;  // Page 23.
 

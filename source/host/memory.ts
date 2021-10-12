@@ -1,7 +1,7 @@
 module TSOS {
 
     export class Memory {
-        public memoryArray: string[] = new Array(0x300);
+        public memoryArray: string[] = new Array(0x100);
 
       
 

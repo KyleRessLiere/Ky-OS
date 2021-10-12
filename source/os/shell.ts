@@ -245,6 +245,7 @@ module TSOS {
     //	validates the user code in the	HTML5 text area
     public shellLoad() {
       let code = _UserCode.value;
+      code = Utils.trim(code);
       code = code.replace(/\s/g, "");
       let valid = true;
       if (code[0] == "") {
@@ -297,7 +298,14 @@ module TSOS {
       if (!valid) {
         _StdOut.putText("Invalid Hex Code");
       } else {
+
         _StdOut.putText("User Program Submitted");
+        //load user oce into memory based on starting index
+        _MemoryManager.load(code,0); 
+        var PCB = new TSOS.PCB();
+        _StdOut.putText("User Code Loaded");
+        _StdOut.advanceLine();
+        _StdOut.putText("PID:" + PCB.PID);
       }
     }
     // Although args is unused in some of these functions, it is always provided in the
