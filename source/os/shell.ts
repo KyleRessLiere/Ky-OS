@@ -300,6 +300,8 @@ module TSOS {
       } else {
 
         _StdOut.putText("User Program Submitted");
+        //clears memory
+        _MemoryManager.clearMemory(0,255)
         //load user oce into memory based on starting index
         _MemoryManager.load(code,0); 
         var PCB = new TSOS.PCB();
