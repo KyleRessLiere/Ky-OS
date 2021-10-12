@@ -45,6 +45,10 @@ module TSOS {
         "cls",
         "- Clears the screen and resets the cursor position."
       );
+      sc = new ShellCommand(this.shellRun,
+        "run",
+        "<PID> - Runs a process given PID.");
+this.commandList[this.commandList.length] = sc;
       this.commandList[this.commandList.length] = sc;
       //date
       sc = new ShellCommand(this.shellDate, "date", "<date> - displays date");
@@ -242,74 +246,7 @@ module TSOS {
         _StdOut.putText("Missing argument for status command: status <arg>");
       }
     }
-    //	validates the user code in the	HTML5 text area
-    public shellLoad() {
-      let code = _UserCode.value;
-      code = Utils.trim(code);
-      code = code.replace(/\s/g, "");
-      let valid = true;
-      if (code[0] == "") {
-        valid = false;
-      }
-
-      for (let char in code) {
-        if (!valid) {
-          break;
-        }
-        switch (char.toUpperCase()) {
-          case " ":
-            break;
-          case "0":
-            break;
-          case "1":
-            break;
-          case "2":
-            break;
-          case "3":
-            break;
-          case "4":
-            break;
-          case "5":
-            break;
-          case "6":
-            break;
-          case "7":
-            break;
-          case "8":
-            break;
-          case "9":
-            break;
-          case "A":
-            break;
-          case "B":
-            break;
-          case "C":
-            break;
-          case "D":
-            break;
-          case "E":
-            break;
-          case "F":
-            break;
-          default:
-            valid = false;
-        }
-      }
-      if (!valid) {
-        _StdOut.putText("Invalid Hex Code");
-      } else {
-
-        _StdOut.putText("User Program Submitted");
-        //clears memory
-        _MemoryManager.clearMemory(0,255)
-        //load user oce into memory based on starting index
-        _MemoryManager.load(code,0); 
-        var PCB = new TSOS.PCB();
-        _StdOut.putText("User Code Loaded");
-        _StdOut.advanceLine();
-        _StdOut.putText("PID:" + PCB.PID);
-      }
-    }
+    
     // Although args is unused in some of these functions, it is always provided in the
     // actual parameter list when this function is called, so I feel like we need it.
     public shellVer(args: string[]) {
@@ -403,6 +340,11 @@ module TSOS {
               "Displays the current name and version of KyOS"
             );
             break;
+            case "run":
+            _StdOut.putText(
+              "Runs a program for a given PID"
+            );
+            break;
             case "cls":
             _StdOut.putText(
               "Wipes the current Screen Empty"
@@ -490,6 +432,60 @@ module TSOS {
         _OsShell.promptStr = args[0];
       } else {
         _StdOut.putText("Usage: prompt <string>  Please supply a string.");
+      }
+    }
+
+    public shellRun(args: string[]) {
+      // Check to see if the entered PID is valid
+
+      //Run the program
+  }
+    //	validates the user code in the	HTML5 text area
+    public shellLoad() {
+      let valid = true;
+      let code = _UserCode.value;
+      code = Utils.trim(code);  //removes fron or back spaces
+      var charList = code.split('');//gets the characters
+      var spaceList = code.split(' ');//get the spaces
+      //checks for hex code
+      for (var char of charList) {
+        char = char.toUpperCase();
+        switch (char){      
+            case " ": break;
+            case "0": break;
+            case "1": break;
+            case "2": break;
+            case "3": break;
+            case "4": break;
+            case "5": break;
+            case "6": break;
+            case "7": break;
+            case "8": break;
+            case "9": break;
+            case "A": break;
+            case "B": break;
+            case "C": break;
+            case "D": break;
+            case "E": break;
+            case "F": break;
+           
+            default:  valid = false;
+        }
+    }
+      
+      if (!valid) {
+        _StdOut.putText("Invalid Hex Code");
+      } else {
+
+        _StdOut.putText("User Program Submitted");
+        //clears memory
+        _MemoryManager.clearMemory(0,255)
+        //load user oce into memory based on starting index
+        _MemoryManager.load(code,0); 
+        var PCB = new TSOS.PCB();
+        _StdOut.putText("User Code Loaded");
+        _StdOut.advanceLine();
+        _StdOut.putText("PID:" + PCB.PID);
       }
     }
   }
