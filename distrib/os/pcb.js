@@ -8,7 +8,7 @@ var TSOS;
         X = 0, //X Register
         Y = 0, //Y Register
         Z = 0, //Z Flag
-        state = "New", //State of the process
+        state = "Resident", //State of the process
         location = "Memory") {
             this.PID = PID;
             this.PC = PC;

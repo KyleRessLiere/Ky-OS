@@ -9,8 +9,9 @@ module TSOS {
                     public X: Number  =0,   //X Register
                     public Y: Number  =0,   //Y Register
                     public Z: Number  =0,   //Z Flag
-                    public state: String  = "New",   //State of the process
-                    public location: String ="Memory") {  //Location (in memory/on the disk)
+                    public state: String  = "Resident",   //State of the process
+                    public location: String ="Memory"
+                    ) {  //Location (in memory/on the disk)
         }
 
     }

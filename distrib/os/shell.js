@@ -363,6 +363,22 @@ var TSOS;
         }
         shellRun(args) {
             // Check to see if the entered PID is valid
+            //gets number of pid
+            let pid = parseInt(args[0]);
+            if (args.length > 0) { //Checks to see if the arg is there
+                if (pid <= _PCBList.length) { //Checks to see if the entered PID exists and hasn't been terminated
+                    //make the entered PCB the current PCB
+                    _CurrentPCB = _PCBList[args[0]];
+                    // make CPU.isExecuting to true
+                    //_CPU.isExecuting = true;
+                }
+                else {
+                    _StdOut.putText("Ensure the entered PID number is valid.");
+                }
+            }
+            else {
+                _StdOut.putText("Please enter a PID number.");
+            }
             //Run the program
         }
         //	validates the user code in the	HTML5 text area

@@ -35,6 +35,12 @@ var _MemoryManager:any = null;
 
 var _PCBList: TSOS.PCB[] = [];
 
+var _CurrentPCB: TSOS.PCB = null;
+
+var _ReadyPCBList: TSOS.PCB[] = [];
+var _PIDCount: number = 0;
+
+
 
 var _OSclock: number = 0;  // Page 23.
 

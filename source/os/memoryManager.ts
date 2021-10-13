@@ -18,5 +18,9 @@ module TSOS {
               }
 
          }
+         public memorySection(){
+              var section = "1";
+              return section;
+         }
      
     }}

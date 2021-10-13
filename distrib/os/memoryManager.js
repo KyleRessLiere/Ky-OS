@@ -14,6 +14,10 @@ var TSOS;
                 _Memory.memoryArray[i] = "00";
             }
         }
+        memorySection() {
+            var section = "1";
+            return section;
+        }
     }
     TSOS.MemoryManager = MemoryManager;
 })(TSOS || (TSOS = {}));
