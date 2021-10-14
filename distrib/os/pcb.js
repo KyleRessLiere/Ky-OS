@@ -9,7 +9,7 @@ var TSOS;
         Y = 0, //Y Register
         Z = 0, //Z Flag
         state = "Resident", //State of the process
-        location = "Memory") {
+        location = "Memory", section = null) {
             this.PID = PID;
             this.PC = PC;
             this.IR = IR;
@@ -19,6 +19,7 @@ var TSOS;
             this.Z = Z;
             this.state = state;
             this.location = location;
+            this.section = section;
         }
     }
     TSOS.PCB = PCB;

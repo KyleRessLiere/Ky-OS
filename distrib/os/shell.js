@@ -379,7 +379,6 @@ var TSOS;
             else {
                 _StdOut.putText("Please enter a PID number.");
             }
-            //Run the program
         }
         //	validates the user code in the	HTML5 text area
         shellLoad() {
@@ -420,11 +419,14 @@ var TSOS;
                 //clears memory
                 _MemoryManager.clearMemory(0, 255);
                 //load user oce into memory based on starting index
-                _MemoryManager.load(code, 0);
+                _MemoryManager.load(code, 1);
+                //gets section of memmory to load into
                 var PCB = new TSOS.PCB();
+                _PCBList[_PCBList.length] = PCB;
                 _StdOut.putText("User Code Loaded");
                 _StdOut.advanceLine();
                 _StdOut.putText("PID:" + PCB.PID);
+                TSOS.Control.memoryUpdate();
             }
         }
     }

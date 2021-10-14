@@ -1,1 +1,1 @@
-{"version":3,"file":"memoryAccessor.js","sourceRoot":"","sources":["../../source/host/memoryAccessor.ts"],"names":[],"mappings":"AAAA,IAAO,IAAI,CAQV;AARD,WAAO,IAAI;IAEP,MAAa,cAAc;KAI1B;IAJY,mBAAc,iBAI1B,CAAA;AAEL,CAAC,EARM,IAAI,KAAJ,IAAI,QAQV"}
+{"version":3,"file":"memoryAccessor.js","sourceRoot":"","sources":["../../source/host/memoryAccessor.ts"],"names":[],"mappings":"AAAA,IAAO,IAAI,CAWV;AAXD,WAAO,IAAI;IAEP,MAAa,cAAc;QAChB,YAAY;YACf,OAAO,CAAC,CAAC;QACb,CAAC;KAIJ;IAPY,mBAAc,iBAO1B,CAAA;AAEL,CAAC,EAXM,IAAI,KAAJ,IAAI,QAWV"}

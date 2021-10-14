@@ -40,6 +40,8 @@ var _CurrentPCB: TSOS.PCB = null;
 var _ReadyPCBList: TSOS.PCB[] = [];
 var _PIDCount: number = 0;
 
+var _ActivePCBList = [];
+
 
 
 var _OSclock: number = 0;  // Page 23.

@@ -160,5 +160,13 @@ module TSOS {
       document.getElementById("display").style.background = "url('distrib/images/zebraAnimal.jpeg')";
       document.body.style.background= "url('distrib/images/zebraAnimal.jpeg')";
     }
+
+    //memory tables for
+    public static memoryUpdate(){
+      for (var i = 0; i < _Memory.memoryArray.length; i++) {
+        var entry = document.getElementById("memory" + i);
+        entry.innerHTML = _Memory.memoryArray[i];
+    }
+    }
   }
 }
