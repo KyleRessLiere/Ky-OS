@@ -362,14 +362,12 @@ var TSOS;
             }
         }
         shellRun(args) {
-            if (args.length > 0 && !(isNaN(Number(args[0])))) { //Checks to see if the arg is there and is actually a number
-                var enteredPID = Number(args[0]);
+            if (args.length > 0 && !(isNaN(Number(args[0])))) { //checks for number
+                var pid = Number(args[0]);
                 // Checks to see if the PID exists and hasn't already been run or terminated
-                if (enteredPID < _PCBList.length && _PCBList[enteredPID].state != "Terminated" && _PCBList[enteredPID].state != "Complete") {
-                    //make the entered PCB the current PCB
-                    _CurrentPCB = _PCBList[enteredPID]; // This will eventually be replaced by the scheduler
-                    // change the PCB status to waiting
-                    _PCBList[enteredPID].state = "Running"; //change waiting
+                if (pid < _PCBList.length && _PCBList[pid].state != "Terminated" && _PCBList[pid].state != "Complete") {
+                    _CurrentPCB = _PCBList[pid]; // This will eventually be replaced by the scheduler
+                    _PCBList[pid].state = "Running"; //change waiting next pro
                     // make CPU.isExecuting to true
                     _CPU.isExecuting = true;
                 }
@@ -383,7 +381,6 @@ var TSOS;
         }
         //	validates the user code in the	HTML5 text area
         shellLoad() {
-            console.log(_MemoryAccessor.sectionIndex("1"));
             let valid = true;
             let code = _UserCode.value;
             code = TSOS.Utils.trim(code); //removes fron or back spaces
