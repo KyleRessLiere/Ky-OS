@@ -359,6 +359,7 @@ this.commandList[this.commandList.length] = sc;
       }
     }
     public shellTrace(args: string[]) {
+      
       if (args.length > 0) {
         var setting = args[0];
         switch (setting) {
@@ -436,20 +437,37 @@ this.commandList[this.commandList.length] = sc;
     }
 
     public shellRun(args: string[]) {
-      // Check to see if the entered PID is valid
-
-      //Run the program
-  }
+      if (args.length > 0 && !(isNaN(Number(args[0])))) { //checks for number
+        var pid = Number(args[0]);
+        // Checks to see if the PID exists and hasn't already been run or terminated
+        if(pid < _PCBList.length && _PCBList[pid].state != "Terminated" && _PCBList[pid].state != "Complete") {
+            
+            _CurrentPCB = _PCBList[pid];  // 
+            
+            _PCBList[pid].state = "Running"; //change waiting next pro
+          
+            // make CPU.isExecuting to true
+            _CPU.isExecuting = true;
+        } else {
+            _StdOut.putText("Invalid PID");
+        }
+    } else {
+        _StdOut.putText("Please enter a PID number.");
+       
+      
+  }}
     //	validates the user code in the	HTML5 text area
     public shellLoad() {
+      
       let valid = true;
       let code = _UserCode.value;
+      code = code.toUpperCase();
       code = Utils.trim(code);  //removes fron or back spaces
       var charList = code.split('');//gets the characters
       var spaceList = code.split(' ');//get the spaces
       //checks for hex code
       for (var char of charList) {
-        char = char.toUpperCase();
+       
         switch (char){      
             case " ": break;
             case "0": break;
@@ -472,20 +490,29 @@ this.commandList[this.commandList.length] = sc;
             default:  valid = false;
         }
     }
+    
       
       if (!valid) {
         _StdOut.putText("Invalid Hex Code");
       } else {
 
         _StdOut.putText("User Program Submitted");
+        //gets section of memmory to load into
+        var PCB = new TSOS.PCB();
+        PCB.section = _MemoryManager.memorySection();
+        _PCBList[_PCBList.length] = PCB;
+        if (_PCBList.length > 1 && _PCBList[PCB.PID - 1].state != "Complete") { 
+          _PCBList[_PCBList.length - 2].state = "Terminated";
+      }
         //clears memory
         _MemoryManager.clearMemory(0,255)
         //load user oce into memory based on starting index
-        _MemoryManager.load(code,0); 
-        var PCB = new TSOS.PCB();
+        _MemoryManager.load(code,1);
+        
         _StdOut.putText("User Code Loaded");
         _StdOut.advanceLine();
         _StdOut.putText("PID:" + PCB.PID);
+        TSOS.Control.memoryUpdate();
       }
     }
   }

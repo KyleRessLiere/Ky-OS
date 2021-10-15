@@ -43,7 +43,7 @@ var TSOS;
             this.Yreg = _CurrentPCB.Y;
             this.Zflag = _CurrentPCB.Z;
             this.cpuUpdate();
-            switch (_CurrentPCB.IR.toUpperCase()) {
+            switch (_CurrentPCB.IR) {
                 case "A9":
                     this.loadAccConstant();
                     break;

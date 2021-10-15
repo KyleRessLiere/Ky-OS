@@ -366,13 +366,13 @@ var TSOS;
                 var pid = Number(args[0]);
                 // Checks to see if the PID exists and hasn't already been run or terminated
                 if (pid < _PCBList.length && _PCBList[pid].state != "Terminated" && _PCBList[pid].state != "Complete") {
-                    _CurrentPCB = _PCBList[pid]; // This will eventually be replaced by the scheduler
+                    _CurrentPCB = _PCBList[pid]; // 
                     _PCBList[pid].state = "Running"; //change waiting next pro
                     // make CPU.isExecuting to true
                     _CPU.isExecuting = true;
                 }
                 else {
-                    _StdOut.putText("Ensure the entered PID number is valid.");
+                    _StdOut.putText("Invalid PID");
                 }
             }
             else {
@@ -383,12 +383,12 @@ var TSOS;
         shellLoad() {
             let valid = true;
             let code = _UserCode.value;
+            code = code.toUpperCase();
             code = TSOS.Utils.trim(code); //removes fron or back spaces
             var charList = code.split(''); //gets the characters
             var spaceList = code.split(' '); //get the spaces
             //checks for hex code
             for (var char of charList) {
-                char = char.toUpperCase();
                 switch (char) {
                     case " ": break;
                     case "0": break;
