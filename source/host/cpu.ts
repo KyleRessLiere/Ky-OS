@@ -15,13 +15,13 @@ module TSOS {
 
     export class Cpu {
 
-        constructor(public PC: Number = 0,
-                    public Acc: Number = 0,
-                    public Xreg: Number = 0,
-                    public Yreg: Number = 0,
-                    public Zflag: Number = 0,
+        constructor(public PC: number = 0,
+                    public Acc: number = 0,
+                    public Xreg: number = 0,
+                    public Yreg: number = 0,
+                    public Zflag: number = 0,
                     public isExecuting: boolean = false,
-                    public IR: string = "") {
+                    public IR: String = "") {
 
         }
 
@@ -40,13 +40,21 @@ module TSOS {
             // TODO: Accumulate CPU usage and profiling statistics here.
             // Do the real work here. Be sure to set this.isExecuting appropriately.
             _CurrentPCB.state = "Running";
-            _CurrentPCB.IR = _Memory.memoryArray[_MemoryAccessor.sectionIndex(_CurrentPCB.section) + _CurrentPCB.PC];
+            _CurrentPCB.IR = _Memory.memoryArray[_MemoryAccessor.sectionIndex(_CurrentPCB.section) + _CurrentPCB.PC]; // fix memory accesor section index
            this.PC = _CurrentPCB.PC;
            this.Acc = _CurrentPCB.ACC;
            this.Xreg = _CurrentPCB.X;
            this.Yreg = _CurrentPCB.Y;
            this.Zflag = _CurrentPCB.Z;
 
+        }
+        public cpuUpdate(): void {
+            this.PC = _CurrentPCB.PC;
+            this.IR = _CurrentPCB.IR;
+            this.Acc = _CurrentPCB.ACC;
+            this.Xreg = _CurrentPCB.X;
+            this.Yreg = _CurrentPCB.Y;
+            this.Zflag = _CurrentPCB.Z;
         }
     }
 }

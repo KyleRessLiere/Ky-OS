@@ -362,15 +362,16 @@ var TSOS;
             }
         }
         shellRun(args) {
-            // Check to see if the entered PID is valid
-            //gets number of pid
-            let pid = parseInt(args[0]);
-            if (args.length > 0) { //Checks to see if the arg is there
-                if (pid <= _PCBList.length) { //Checks to see if the entered PID exists and hasn't been terminated
+            if (args.length > 0 && !(isNaN(Number(args[0])))) { //Checks to see if the arg is there and is actually a number
+                var enteredPID = Number(args[0]);
+                // Checks to see if the PID exists and hasn't already been run or terminated
+                if (enteredPID < _PCBList.length && _PCBList[enteredPID].state != "Terminated" && _PCBList[enteredPID].state != "Complete") {
                     //make the entered PCB the current PCB
-                    _CurrentPCB = _PCBList[args[0]];
+                    _CurrentPCB = _PCBList[enteredPID]; // This will eventually be replaced by the scheduler
+                    // change the PCB status to waiting
+                    _PCBList[enteredPID].state = "Running"; //change waiting
                     // make CPU.isExecuting to true
-                    //_CPU.isExecuting = true;
+                    _CPU.isExecuting = true;
                 }
                 else {
                     _StdOut.putText("Ensure the entered PID number is valid.");
@@ -382,6 +383,7 @@ var TSOS;
         }
         //	validates the user code in the	HTML5 text area
         shellLoad() {
+            console.log(_MemoryAccessor.sectionIndex("1"));
             let valid = true;
             let code = _UserCode.value;
             code = TSOS.Utils.trim(code); //removes fron or back spaces
@@ -416,13 +418,17 @@ var TSOS;
             }
             else {
                 _StdOut.putText("User Program Submitted");
+                //gets section of memmory to load into
+                var PCB = new TSOS.PCB();
+                PCB.section = _MemoryManager.memorySection();
+                _PCBList[_PCBList.length] = PCB;
+                if (_PCBList.length > 1 && _PCBList[PCB.PID - 1].state != "Complete") {
+                    _PCBList[_PCBList.length - 2].state = "Terminated";
+                }
                 //clears memory
                 _MemoryManager.clearMemory(0, 255);
                 //load user oce into memory based on starting index
                 _MemoryManager.load(code, 1);
-                //gets section of memmory to load into
-                var PCB = new TSOS.PCB();
-                _PCBList[_PCBList.length] = PCB;
                 _StdOut.putText("User Code Loaded");
                 _StdOut.advanceLine();
                 _StdOut.putText("PID:" + PCB.PID);

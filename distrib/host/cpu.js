@@ -36,8 +36,16 @@ var TSOS;
             // TODO: Accumulate CPU usage and profiling statistics here.
             // Do the real work here. Be sure to set this.isExecuting appropriately.
             _CurrentPCB.state = "Running";
-            _CurrentPCB.IR = _Memory.memoryArray[_MemoryAccessor.sectionIndex(_CurrentPCB.section) + _CurrentPCB.PC];
+            _CurrentPCB.IR = _Memory.memoryArray[_MemoryAccessor.sectionIndex(_CurrentPCB.section) + _CurrentPCB.PC]; // fix memory accesor section index
             this.PC = _CurrentPCB.PC;
+            this.Acc = _CurrentPCB.ACC;
+            this.Xreg = _CurrentPCB.X;
+            this.Yreg = _CurrentPCB.Y;
+            this.Zflag = _CurrentPCB.Z;
+        }
+        cpuUpdate() {
+            this.PC = _CurrentPCB.PC;
+            this.IR = _CurrentPCB.IR;
             this.Acc = _CurrentPCB.ACC;
             this.Xreg = _CurrentPCB.X;
             this.Yreg = _CurrentPCB.Y;

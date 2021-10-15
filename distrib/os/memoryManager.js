@@ -3,7 +3,7 @@ var TSOS;
     class MemoryManager {
         constructor() { }
         load(input, index) {
-            console.log(_MemoryAccessor.sectionIndex());
+            //console.log(_MemoryAccessor.sectionIndex());
             var userCode = input.split(" ");
             for (var i = 0; i < userCode.length; i++) {
                 _Memory.memoryArray[i] = userCode[i];
