@@ -367,7 +367,6 @@ var TSOS;
                 // Checks to see if the PID exists and hasn't already been run or terminated
                 if (pid < _PCBList.length && _PCBList[pid].state != "Terminated" && _PCBList[pid].state != "Complete") {
                     _CurrentPCB = _PCBList[pid]; // 
-                    console.log(_CurrentPCB);
                     _PCBList[pid].state = "Running"; //change waiting next pro
                     // make CPU.isExecuting to true
                     _CPU.isExecuting = true;
@@ -416,21 +415,23 @@ var TSOS;
             }
             else {
                 _StdOut.putText("User Program Submitted");
-                //gets section of memmory to load into
                 var PCB = new TSOS.PCB();
                 PCB.section = _MemoryManager.memorySection();
                 _PCBList[_PCBList.length] = PCB;
-                if (_PCBList.length > 1 && _PCBList[PCB.PID - 1].state != "Complete") {
+                if (_PCBList.length > 1 && _PCBList[PCB.PID - 1].state != "Complete") { // If there is another PCB
                     _PCBList[_PCBList.length - 2].state = "Terminated";
                 }
-                //clears memory
-                _MemoryManager.clearMemory(0, 255);
-                //load user oce into memory based on starting index
-                _MemoryManager.load(code, 1);
-                _StdOut.putText("User Code Loaded");
-                _StdOut.advanceLine();
-                _StdOut.putText("PID:" + PCB.PID);
+                console.log(_PCBList);
+                //clear memory before loading
+                _MemoryManager.clearMemory(0, 255); //This is just the whole memory array for now, will change once we add more processes
+                //use memory manager to load
+                _MemoryManager.load(code, "1");
+                // Update the PCB's IR
+                PCB.IR = _MemoryAccessor.readMemoryHex(PCB.section, PCB.PC);
                 TSOS.Control.memoryUpdate();
+                _StdOut.putText("hoho congrats on loading");
+                _StdOut.advanceLine();
+                _StdOut.putText("PID: " + PCB.PID);
             }
         }
     }

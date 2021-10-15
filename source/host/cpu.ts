@@ -40,14 +40,15 @@ module TSOS {
             // TODO: Accumulate CPU usage and profiling statistics here.
             // Do the real work here. Be sure to set this.isExecuting appropriately.
             _CurrentPCB.state = "Running";
-            _CurrentPCB.IR = _Memory.memoryArray[_MemoryAccessor.sectionIndex(_CurrentPCB.section) + _CurrentPCB.PC]; // fix memory accesor section index
-           this.PC = _CurrentPCB.PC;
-           this.Acc = _CurrentPCB.ACC;
-           this.Xreg = _CurrentPCB.X;
-           this.Yreg = _CurrentPCB.Y;
-           this.Zflag = _CurrentPCB.Z;
+           
+            
 
-           this.cpuUpdate();
+            this.PC = _CurrentPCB.PC;
+            this.IR = _CurrentPCB.IR;
+            this.Acc = _CurrentPCB.ACC;
+            this.Xreg = _CurrentPCB.X;
+            this.Yreg = _CurrentPCB.Y;
+            this.Zflag = _CurrentPCB.Z;
 
            switch (_CurrentPCB.IR) {
             case "A9": this.loadAccConstant();          break;
@@ -85,9 +86,15 @@ module TSOS {
         }
         
         this.PC++;
-        this.pcbUpdate();
-        this.pcbListUpdate();
 
+        // Update the IR
+        this.IR = _MemoryAccessor.readMemoryHex(_CurrentPCB.section, this.PC);
+
+        // Copy the CPU to the CurrentPCB
+        this.pcbUpdate();
+
+        // Copy Current PCB to the _PCBList
+        this.pcbListUpdate();
         //update gui 
         Control.memoryUpdate();
         }
@@ -100,7 +107,12 @@ module TSOS {
             this.Zflag = _CurrentPCB.Z;
         }
         public pcbUpdate(): void {
-            _PCBList[_CurrentPCB.PID] = _CurrentPCB;
+            _CurrentPCB.PC = this.PC;
+            _CurrentPCB.IR = this.IR;
+            _CurrentPCB.ACC = this.Acc;
+            _CurrentPCB.X = this.Xreg;
+            _CurrentPCB.Y= this.Yreg;
+            _CurrentPCB.Z = this.Zflag;
         }
         public pcbListUpdate(){
             _PCBList[_CurrentPCB.PID] = _CurrentPCB;
@@ -112,12 +124,15 @@ module TSOS {
 
         public loadAccMemory() {
             this.PC++;
+            console.log("memem laod")
             
 
 
         }
 
         public storeAcc() {
+            this.PC++;
+            console.log("testing");
 
         }
 
