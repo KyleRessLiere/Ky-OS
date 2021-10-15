@@ -81,7 +81,7 @@ module TSOS {
             default:
                 // There was an invalid op code
                 console.log("Invalid Op Code");
-               
+                // probably write some sort of notice to the user that something is broken
         }
         
         this.PC++;
@@ -112,7 +112,7 @@ module TSOS {
 
         public loadAccMemory() {
             this.PC++;
-            console.log("testing")
+            
 
 
         }

@@ -443,7 +443,7 @@ this.commandList[this.commandList.length] = sc;
         if(pid < _PCBList.length && _PCBList[pid].state != "Terminated" && _PCBList[pid].state != "Complete") {
             
             _CurrentPCB = _PCBList[pid];  // 
-            
+            console.log(_CurrentPCB)
             _PCBList[pid].state = "Running"; //change waiting next pro
           
             // make CPU.isExecuting to true

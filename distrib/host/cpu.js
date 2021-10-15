@@ -127,6 +127,7 @@ var TSOS;
                 default:
                     // There was an invalid op code
                     console.log("Invalid Op Code");
+                // probably write some sort of notice to the user that something is broken
             }
             this.PC++;
             this.pcbUpdate();
@@ -154,7 +155,6 @@ var TSOS;
         }
         loadAccMemory() {
             this.PC++;
-            console.log("testing");
         }
         storeAcc() {
         }

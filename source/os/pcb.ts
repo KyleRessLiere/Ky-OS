@@ -11,7 +11,7 @@ module TSOS {
                     public Z: number  =0,   //Z Flag
                     public state: String  = "Resident",   //State of the process
                     public location: String ="Memory",
-                    public section: String =  null
+                    public section: string =  null
                     ) {  //Location (in memory/on the disk)
         }
 

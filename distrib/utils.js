@@ -42,6 +42,16 @@ var TSOS;
             }
             return retVal;
         }
+        static decimalToHex(num) {
+            return num.toString(16);
+        }
+        static hexToDecimal(hex) {
+            return parseInt(hex, 16);
+        }
+        static incrementHexString(hex) {
+            var num = parseInt(hex, 16) + 1;
+            return num.toString(16);
+        }
     }
     TSOS.Utils = Utils;
 })(TSOS || (TSOS = {}));

@@ -367,6 +367,7 @@ var TSOS;
                 // Checks to see if the PID exists and hasn't already been run or terminated
                 if (pid < _PCBList.length && _PCBList[pid].state != "Terminated" && _PCBList[pid].state != "Complete") {
                     _CurrentPCB = _PCBList[pid]; // 
+                    console.log(_CurrentPCB);
                     _PCBList[pid].state = "Running"; //change waiting next pro
                     // make CPU.isExecuting to true
                     _CPU.isExecuting = true;
