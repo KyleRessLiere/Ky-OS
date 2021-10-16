@@ -37,47 +37,11 @@ var TSOS;
             // Do the real work here. Be sure to set this.isExecuting appropriately.
             _CurrentPCB.state = "Running";
             this.cpuUpdate();
+            TSOS.Control.memoryUpdate();
+            TSOS.Control.cpuUpdate();
+            TSOS.Control.processTableUpdate();
+            console.log(_CurrentPCB.IR);
             switch (_CurrentPCB.IR) {
-                case "A9":
-                    this.loadAccConstant();
-                    break;
-                case "AD":
-                    this.loadAccMemory();
-                    break;
-                case "8D":
-                    this.storeAcc();
-                    break;
-                case "6D":
-                    this.addWithCarry();
-                    break;
-                case "A2":
-                    this.loadXregFromConstant();
-                    break;
-                case "AE":
-                    this.loadXregFromMemory();
-                    break;
-                case "A0":
-                    this.loadYregFromConstant();
-                    break;
-                case "AC":
-                    this.loadYregFromMemory();
-                    break;
-                case "EA": break;
-                case "00":
-                    this.breakProcess();
-                    break;
-                case "EC":
-                    this.compareMemToXreg();
-                    break;
-                case "D0":
-                    this.branchBytes();
-                    break;
-                case "EE":
-                    this.incrementByte();
-                    break;
-                case "FF":
-                    this.systemCall();
-                    break;
                 case "A9":
                     this.loadAccConstant();
                     break; //load accumulator with a constant
@@ -91,47 +55,52 @@ var TSOS;
                     this.addWithCarry();
                     break; //add contents of memory to accumulator and store in accumulator
                 case "A2":
-                    this.loadXregFromConstant();
-                    break; //load Xreg with a constant
+                    this.loadXFromConstant();
+                    break; //load Xreg 
                 case "AE":
-                    this.loadXregFromMemory();
-                    break; //load Xreg from memory
+                    this.loadXFromMemory();
+                    break; //load Xrega
                 case "A0":
-                    this.loadYregFromConstant();
-                    break; //load Yreg with a constant
+                    this.loadYFromConstant();
+                    break; //load Yreg 
                 case "AC":
-                    this.loadYregFromMemory();
-                    break; //load Yreg from memory
-                case "EA": break; //no operation (we increment PC after the switch statement, so we don't get stuck here)
+                    this.loadYFromMemory();
+                    break; //load Yreg 
+                case "EA":
+                    break;
                 case "00":
-                    this.breakProcess();
-                    break; //break
+                    _CurrentPCB.state = "Complete";
+                    _CPU.isExecuting = false;
+                    _StdOut.putText("Finshed la process de " + _CurrentPCB.PID);
+                    _StdOut.advanceLine();
+                    _OsShell.putPrompt();
+                    break;
                 case "EC":
-                    this.compareMemToXreg();
-                    break; //compare byte in memory to Xreg, set Zflag to zero if equal
+                    this.compareMemToX();
+                    break;
                 case "D0":
                     this.branchBytes();
-                    break; //branch a given amount of bytes if Zflag is zero
+                    break;
                 case "EE":
                     this.incrementByte();
-                    break; //increment the value of a byte
+                    break;
                 case "FF":
                     this.systemCall();
-                    break; //system call (used for printing stuff)
+                    break;
                 default:
-                    // There was an invalid op code
                     console.log("Invalid Op Code");
-                // probably write some sort of notice to the user that something is broken
             }
             this.PC++;
             // Update the IR
             this.IR = _MemoryAccessor.readMemoryHex(_CurrentPCB.section, this.PC);
-            // Copy the CPU to the CurrentPCB
+            // update cpu with current pcb
             this.pcbUpdate();
-            // Copy Current PCB to the _PCBList
+            // update pcb list
             this.pcbListUpdate();
             //update gui 
+            TSOS.Control.processTableUpdate();
             TSOS.Control.memoryUpdate();
+            TSOS.Control.cpuUpdate();
         }
         cpuUpdate() {
             this.PC = _CurrentPCB.PC;
@@ -152,37 +121,136 @@ var TSOS;
         pcbListUpdate() {
             _PCBList[_CurrentPCB.PID] = _CurrentPCB;
         }
-        loadAccConstant() {
+        useInstruction() {
             this.PC++;
-            console.log("loadacccon");
+        }
+        loadAccConstant() {
+            //Pass over a opp code
+            this.useInstruction();
+            // Assign the following constant to the Acc
+            this.Acc = _MemoryAccessor.readOneMemoryByteToDecimal(_CurrentPCB.section, this.PC);
         }
         loadAccMemory() {
-            this.PC++;
-            console.log("memem laod");
+            //Pass over a opp code
+            this.useInstruction();
+            // Fetch the memory location where we want to load the Accumulator with
+            this.Acc = TSOS.Utils.hexToDecimal(_Memory.memoryArray[_MemoryAccessor.twoBytesToDecimal(_CurrentPCB.section, this.PC)]);
+            //Pass over a opp code
+            this.useInstruction();
         }
         storeAcc() {
-            this.PC++;
-            console.log("testing");
+            //Pass over a opp code
+            this.useInstruction();
+            // Fetch the memory location where we want to store the Accumulator
+            _Memory.memoryArray[_MemoryAccessor.twoBytesToDecimal(_CurrentPCB.section, this.PC)] = TSOS.Utils.decimalToHex(this.Acc);
+            this.useInstruction();
         }
         addWithCarry() {
+            //Pass over a opp code
+            this.useInstruction();
+            // Fetch the memory location where we want to add to the Accumulator
+            //add the value from the memory location
+            this.Acc += TSOS.Utils.hexToDecimal(_Memory.memoryArray[_MemoryAccessor.twoBytesToDecimal(_CurrentPCB.section, this.PC)]);
+            //Pass over a opp code
+            this.useInstruction();
         }
-        loadXregFromConstant() {
+        loadXFromConstant() {
+            //Pass over a opp code
+            this.useInstruction();
+            // Load accumulator with the decimal equivalent of a hex byte
+            this.Xreg = _MemoryAccessor.readOneMemoryByteToDecimal(_CurrentPCB.section, this.PC);
         }
-        loadXregFromMemory() {
+        loadXFromMemory() {
+            //Pass over a opp code
+            this.useInstruction();
+            // loads accumulator with a value that is stored in memory, with the two byte hex memory given by the next two bytes
+            this.Xreg = TSOS.Utils.hexToDecimal(_Memory.memoryArray[_MemoryAccessor.twoBytesToDecimal(_CurrentPCB.section, this.PC)]);
+            // We increment again because we are reading two bytes for the memory address
+            //Pass over a opp code
+            this.useInstruction();
         }
-        loadYregFromConstant() {
+        loadYFromConstant() {
+            //Pass over a opp code
+            this.useInstruction();
+            // Load accumulator with the decimal equivalent of a hex byte
+            this.Yreg = _MemoryAccessor.readOneMemoryByteToDecimal(_CurrentPCB.section, this.PC);
         }
-        loadYregFromMemory() {
+        loadYFromMemory() {
+            //Pass over a opp code
+            this.useInstruction();
+            // loads accumulator with a value that is stored in memory, with the two byte hex memory given by the next two bytes
+            this.Yreg = TSOS.Utils.hexToDecimal(_Memory.memoryArray[_MemoryAccessor.twoBytesToDecimal(_CurrentPCB.section, this.PC)]);
+            // We increment again because we are reading two bytes for the memory address
+            //Pass over a opp code
+            this.useInstruction();
         }
-        breakProcess() {
-        }
-        compareMemToXreg() {
+        compareMemToX() {
+            //Pass over a opp code
+            this.useInstruction();
+            var byteInMemory = TSOS.Utils.hexToDecimal(_Memory.memoryArray[_MemoryAccessor.twoBytesToDecimal(_CurrentPCB.section, this.PC)]);
+            if (byteInMemory == this.Xreg) {
+                this.Zflag = 1;
+            }
+            else {
+                this.Zflag = 0;
+            }
+            //Pass over a opp code
+            this.useInstruction();
         }
         branchBytes() {
+            //Pass over a opp code
+            this.useInstruction();
+            // If the Zflag is zero jump a number of bytes forward, if its more than the section of memory, start back at the beginning again
+            if (this.Zflag == 0) {
+                var bytes = _MemoryAccessor.readOneMemoryByteToDecimal(_CurrentPCB.section, this.PC);
+                if (bytes + this.PC > 256) {
+                    this.PC = (this.PC + bytes) % 256;
+                }
+                else {
+                    this.PC += bytes;
+                }
+            }
         }
         incrementByte() {
+            //Pass over a opp code
+            this.useInstruction();
+            // increment the value of a byte in memory
+            _Memory.memoryArray[_MemoryAccessor.twoBytesToDecimal(_CurrentPCB.section, this.PC)] =
+                TSOS.Utils.incrementHexString(_Memory.memoryArray[_MemoryAccessor.twoBytesToDecimal(_CurrentPCB.section, this.PC)]);
+            //Pass over a opp code
+            this.useInstruction();
         }
         systemCall() {
+            // does something specific based on the Xreg
+            var params = [];
+            if (this.Xreg == 1) {
+                // Print out the integer stored in the Yreg
+                console.log('System call print Yreg');
+                params[0] = this.Yreg.toString();
+                _KernelInterruptQueue.enqueue(new TSOS.Interrupt(SYSTEM_IRQ, params));
+            }
+            else if (this.Xreg == 2) {
+                console.log("System call print string");
+                // Print out the 00 terminated string stored at the address in the Y register
+                // This means the letters associated with the code in memory
+                var location = this.Yreg + _Memory.getSectionBase(_CurrentPCB.section);
+                var output = "";
+                var byteString;
+                for (var i = 0; i + location < _Memory.memoryArray.length; i++) {
+                    byteString = _Memory.memoryArray[location + i];
+                    if (byteString == "00") {
+                        break;
+                    }
+                    else {
+                        output += String.fromCharCode(TSOS.Utils.hexToDecimal(byteString));
+                    }
+                }
+                params[0] = output;
+                _KernelInterruptQueue.enqueue(new TSOS.Interrupt(SYSTEM_IRQ, params));
+            }
+            else {
+                console.log("System call with Xreg != 1 or 2");
+            }
         }
     }
     TSOS.Cpu = Cpu;
