@@ -205,7 +205,7 @@ module TSOS {
             this.useInstruction();
             // loads accumulator with a value that is stored in memory, with the two byte hex memory given by the next two bytes
             this.Yreg = Utils.hexToDecimal(_Memory.memoryArray[_MemoryAccessor.twoBytesToDecimal(_CurrentPCB.section, this.PC)]);
-            // We increment again because we are reading two bytes for the memory address
+            //
             //Pass over a opp code
             this.useInstruction();
 
@@ -229,7 +229,7 @@ module TSOS {
         public branchBytes() {
             //Pass over a opp code
             this.useInstruction();
-            // If the Zflag is zero jump a number of bytes forward, if its more than the section of memory, start back at the beginning again
+            // If the Zflag is zero jump foward
             if (this.Zflag == 0){
                 var bytes = _MemoryAccessor.readOneMemoryByteToDecimal(_CurrentPCB.section, this.PC);
                 if (bytes + this.PC > 256) {
@@ -257,7 +257,7 @@ module TSOS {
                 // Print out the integer stored in the Yreg
                 console.log('System call print Yreg');
                 params[0] = this.Yreg.toString();
-                _KernelInterruptQueue.enqueue(new TSOS.Interrupt(SYSTEM_IRQ, params));
+                _KernelInterruptQueue.enqueue(new Interrupt(SYSTEM_IRQ, params));
             } else if (this.Xreg == 2) {
                 console.log("System call print string")
                 // Print out the 00 terminated string stored at the address in the Y register
@@ -274,7 +274,7 @@ module TSOS {
                     }
                 }
                 params[0] = output;
-                _KernelInterruptQueue.enqueue(new TSOS.Interrupt(SYSTEM_IRQ, params));
+                _KernelInterruptQueue.enqueue(new Interrupt(SYSTEM_IRQ, params));
             } else {
                 console.log("System call with Xreg != 1 or 2");
             }
