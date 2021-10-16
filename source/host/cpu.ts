@@ -51,30 +51,39 @@ module TSOS {
            switch (_CurrentPCB.IR) {
         
             case "A9": 
-                 this.loadAccConstant();          
+                 this.loadAccConstant();   
+                 this.PC++;       
             break;  //load accumulator with a constant
             case "AD":
-                 this.loadAccMemory();           
+                 this.loadAccMemory();  
+                 this.PC++;         
                   break;  //load accumulator from memory
             case "8D": 
-                this.storeAcc();                 
+                this.storeAcc();      
+                this.PC++;           
                  break;  //store accumulator in memory
             case "6D": 
-                this.addWithCarry();            
+                this.addWithCarry();   
+                this.PC++;         
                 break;  //add contents of memory to accumulator and store in accumulator
             case "A2": 
-                this.loadXFromConstant();     
+                this.loadXFromConstant();  
+                this.PC++;   
                 break;  //load Xreg 
             case "AE": 
-                this.loadXFromMemory();       
+                this.loadXFromMemory();    
+                this.PC++;   
                 break;  //load Xrega
             case "A0": 
-                this.loadYFromConstant();     
+                this.loadYFromConstant();   
+                this.PC++;  
                 break;  //load Yreg 
             case "AC": 
-                this.loadYFromMemory();       
+                this.loadYFromMemory();  
+                this.PC++;     
                 break;  //load Yreg 
-            case "EA":                                  
+            case "EA":      
+                this.PC++;                            
                 break;  
             case "00": 
             _CurrentPCB.state = "Complete"
@@ -84,16 +93,20 @@ module TSOS {
                 _OsShell.putPrompt();
                 break;  
             case "EC": 
-            this.compareMemToX();        
+            this.compareMemToX();    
+            this.PC++;    
              break;  
             case "D0":
-                 this.branchBytes();             
+                 this.branchBytes();      
+                 this.PC++;       
                   break;  
             case "EE": 
-            this.incrementByte();           
+            this.incrementByte();  
+            this.PC++;         
              break;  
             case "FF":
-                 this.systemCall();              
+                 this.systemCall();    
+                 this.PC++;          
                   break;  
             default:
                
@@ -101,7 +114,7 @@ module TSOS {
                 
         }
         
-        this.PC++;
+        
 
         // Update the IR
         this.IR = _MemoryAccessor.readMemoryHex(_CurrentPCB.section, this.PC);

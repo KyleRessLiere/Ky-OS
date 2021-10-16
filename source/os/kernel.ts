@@ -130,7 +130,8 @@ module TSOS {
                 case SYSTEM_IRQ:
                     _StdOut.putText(params[0]); //
                 default:
-                    this.krnTrapError("Invalid Interrupt Request. irq=" + irq + " params=[" + params + "]");
+                    console.log("oof")
+                   // this.krnTrapError("Invalid Interrupt Request. irq=" + irq + " params=[" + params + "]");
             }
         }
 

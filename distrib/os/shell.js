@@ -418,7 +418,6 @@ var TSOS;
                 valid = false;
             //regex to seperate into array for every op code
             code = code.match(/.{1,2}/g);
-            console.log(code);
             if (valid) {
                 _StdOut.putText("Valid Code has been enterd");
                 _StdOut.advanceLine();
