@@ -131,9 +131,87 @@ var TSOS;
         }
         //memory tables for
         static memoryUpdate() {
+            this.memoryClear();
             for (var i = 0; i < _Memory.memoryArray.length; i++) {
                 var entry = document.getElementById("memory" + i);
                 entry.innerHTML = _Memory.memoryArray[i];
+            }
+        }
+        static memoryClear() {
+            for (var i = 0; i < _Memory.memoryArray.length; i++) {
+                var entry = document.getElementById("memory" + i);
+                entry.innerHTML = "00";
+            }
+        }
+        static cpuUpdate() {
+            this.cpuClear();
+            var cpuPC = document.getElementById("PC");
+            cpuPC.innerHTML = _CPU.PC.toString();
+            var cpuIR = document.getElementById("IR");
+            cpuIR.innerHTML = _CPU.IR.toString();
+            var cpuACC = document.getElementById("ACC");
+            cpuACC.innerHTML = _CPU.Acc.toString();
+            var cpuX = document.getElementById("X");
+            cpuX.innerHTML = _CPU.Xreg.toString();
+            var cpuY = document.getElementById("Y");
+            cpuY.innerHTML = _CPU.Yreg.toString();
+            var cpuZ = document.getElementById("Z");
+            cpuZ.innerHTML = _CPU.Zflag.toString();
+        }
+        static cpuClear() {
+            var cpuPC = document.getElementById("PC");
+            cpuPC.innerHTML = "-";
+            var cpuIR = document.getElementById("IR");
+            cpuIR.innerHTML = "-";
+            var cpuACC = document.getElementById("ACC");
+            cpuACC.innerHTML = "-";
+            var cpuX = document.getElementById("X");
+            cpuX.innerHTML = "-";
+            var cpuY = document.getElementById("Y");
+            cpuY.innerHTML = "-";
+            var cpuZ = document.getElementById("Z");
+            cpuZ.innerHTML = "-";
+        }
+        static processTableClear() {
+            var processTable = document.getElementById("ProcessTable");
+            // delete each row
+            for (var i = processTable.rows.length; i > 1; i--) {
+                processTable.deleteRow(i - 1);
+            }
+        }
+        static processTableUpdate() {
+            this.processTableClear();
+            var processTable = document.getElementById("ProcessTable");
+            for (var i = 0; i < _PCBList.length; i++) {
+                // Insert a row with the appropriate data for each PCB
+                var row = processTable.insertRow(i + 1);
+                // PID Entry
+                var cellPID = row.insertCell(0);
+                cellPID.innerHTML = _PCBList[i].PID.toString();
+                // PC Entry
+                var cellPC = row.insertCell(1);
+                cellPC.innerHTML = _PCBList[i].PC.toString();
+                // IR Entry
+                var cellIR = row.insertCell(2);
+                cellIR.innerHTML = _PCBList[i].IR.toString();
+                // ACC Entry
+                var cellACC = row.insertCell(3);
+                cellACC.innerHTML = _PCBList[i].ACC.toString();
+                // Xreg Entry
+                var cellXreg = row.insertCell(4);
+                cellXreg.innerHTML = _PCBList[i].X.toString();
+                // Yreg Entry
+                var cellYreg = row.insertCell(5);
+                cellYreg.innerHTML = _PCBList[i].Y.toString();
+                // Zflag Entry
+                var cellZflag = row.insertCell(6);
+                cellZflag.innerHTML = _PCBList[i].Z.toString();
+                // State Entry
+                var cellState = row.insertCell(7);
+                cellState.innerHTML = _PCBList[i].state.toString();
+                // Location Entry
+                var cellLocation = row.insertCell(8);
+                cellLocation.innerHTML = _PCBList[i].location.toString();
             }
         }
     }

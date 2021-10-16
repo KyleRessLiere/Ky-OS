@@ -501,7 +501,7 @@ this.commandList[this.commandList.length] = sc;
                 PCB.section = _MemoryManager.memorySection();
                 _PCBList[_PCBList.length] = PCB;
                 
-                if (_PCBList[PCB.PID - 1].state != "Complete" &&_PCBList.length > 1  ) // If there is another PCB
+                if (_PCBList.length > 1 && _PCBList[PCB.PID - 1].state != "Complete") // If there is another PCB
                     _PCBList[_PCBList.length - 2].state = "Terminated";
                 
 
@@ -515,7 +515,9 @@ this.commandList[this.commandList.length] = sc;
                 PCB.IR = _MemoryAccessor.readMemoryHex(PCB.section, PCB.PC);
 
                 // Update Memory GUI
+                Control.processTableUpdate();
                 Control.memoryUpdate();
+                Control.cpuUpdate();
 
 
                 // print out response

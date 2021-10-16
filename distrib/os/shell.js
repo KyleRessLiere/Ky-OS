@@ -413,6 +413,7 @@ var TSOS;
             //if not pairs of two then not valid
             if (code.length % 2 != 0)
                 valid = false;
+            //regex to seperate into array for every op code
             code = code.match(/.{1,2}/g);
             console.log(code);
             if (valid) {
@@ -422,28 +423,25 @@ var TSOS;
                 var PCB = new TSOS.PCB();
                 PCB.section = _MemoryManager.memorySection();
                 _PCBList[_PCBList.length] = PCB;
-                // For now we use this because we can only have one program in memory, and
-                // we want it to overwrite the existing program (like you said in class)
-                // and we shouldn't be able to run a program that isn't in memory, so we change its state to Terminated
                 if (_PCBList.length > 1 && _PCBList[PCB.PID - 1].state != "Complete") // If there is another PCB
                     _PCBList[_PCBList.length - 2].state = "Terminated";
-                console.log(_PCBList);
-                //clear memory before loading
-                _MemoryManager.clearMemory(0, 255); //This is just the whole memory array for now, will change once we add more processes
+                //clear all of memory 
+                _MemoryManager.clearMemory(0, 255);
                 //use memory manager to load
-                _MemoryManager.load(code, "1"); //This accepts the starting index, will probably change to the section (1,2,or 3)
-                // of the memory, once we add the other two sections
-                // Update the PCB's IR
+                _MemoryManager.load(code, "1");
+                // PCB Update 
                 PCB.IR = _MemoryAccessor.readMemoryHex(PCB.section, PCB.PC);
                 // Update Memory GUI
+                TSOS.Control.processTableUpdate();
                 TSOS.Control.memoryUpdate();
+                TSOS.Control.cpuUpdate();
                 // print out response
-                _StdOut.putText("User code loaded successfully");
+                _StdOut.putText("User code  hohohoho");
                 _StdOut.advanceLine();
                 _StdOut.putText("Process ID Number: " + PCB.PID);
             }
             else
-                _StdOut.putText("Please ensure user code is valid hexadecimal");
+                _StdOut.putText("Invalid hex try again");
         }
     }
     TSOS.Shell = Shell;
