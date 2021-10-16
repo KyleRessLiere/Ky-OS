@@ -4,38 +4,34 @@ module TSOS {
         constructor() {}
 
         public sectionIndex(section) {
-            var i: number;
-            switch (section) {
-                case "1":
-                    i = 0;
-                    break;
-                case "2":
-                    i = 256;
-                    break;
-                case "3":
-                    i = 512;
-                    break;
-                default:
-                    console.log("Invalid section");
-            }
-            return i;
+            //default to section 0 worry about in later projects
+            return 0;
 
         }
-        public readMemoryToDecimal(section: string, PC: number, bytes: number) {
+        
+        public readOneMemoryByteToDecimal(section: string, PC: number) {
             // returns a decimal representation of the next hex pair yet to be run/read
             var hex: string = "";
-            // we are reading two bytes (used to find places in memory entered as two bytes)
-            if (bytes == 2) {
-                // we read the second code first, because they get flipped around
-                hex = _Memory.memoryArray[this.sectionIndex(section) + PC + 1];
-                hex += _Memory.memoryArray[this.sectionIndex(section) + PC];
-            } else {
-                hex = _Memory.memoryArray[this.sectionIndex(section) + PC];
-            }
-         
+            // Reads the next byte in memory
+            hex = _Memory.memoryArray[_Memory.getSectionBase(section) + PC];
 
             return Utils.hexToDecimal(hex);
         }
+
+            // returns a decimal representation of two hex bytes
+            public twoBytesToDecimal(section: string, PC: number){
+            var hex: string = "";
+            // we read the two bytes by reading the second code first
+            hex = _Memory.memoryArray[_Memory.getSectionBase(section) + PC + 1];
+            hex += _Memory.memoryArray[_Memory.getSectionBase(section) + PC];
+
+            var index = Utils.hexToDecimal(hex) + _Memory.getSectionBase(section);
+
+            //catch later if out of section
+           return index;
+            
+        }
+           
         public readMemoryHex(section: string, PC: number) {
             
             var hex: string = _Memory.memoryArray[this.sectionIndex(section) + PC];
