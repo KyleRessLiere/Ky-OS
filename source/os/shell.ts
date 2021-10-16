@@ -179,6 +179,7 @@ this.commandList[this.commandList.length] = sc;
       // ... and finally write the prompt again.
       this.putPrompt();
     }
+
     public parseInput(buffer: string): UserCommand {
       var retVal = new UserCommand();
       // 1. Remove leading and trailing spaces.
@@ -462,6 +463,9 @@ this.commandList[this.commandList.length] = sc;
             code = code.replace(/\s+/g, "");
             code = code.toUpperCase();
             var valid = true;
+            if(code == ""){
+              valid = false;
+            }
             for (var i =0; i< code.length; i++) {
                 switch (code[i]){      
                     case " ": break;
@@ -490,7 +494,7 @@ this.commandList[this.commandList.length] = sc;
               valid = false;
             //regex to seperate into array for every op code
             code = code.match(/.{1,2}/g)
-            console.log(code)
+            
             
             if (valid) {
                 _StdOut.putText("Valid Code has been enterd");
@@ -515,9 +519,7 @@ this.commandList[this.commandList.length] = sc;
                 PCB.IR = _MemoryAccessor.readMemoryHex(PCB.section, PCB.PC);
 
                 // Update Memory GUI
-                Control.processTableUpdate();
                 Control.memoryUpdate();
-                Control.cpuUpdate();
 
 
                 // print out response
@@ -529,9 +531,7 @@ this.commandList[this.commandList.length] = sc;
              else 
                 _StdOut.putText("Invalid hex try again");
             
-          
+
       
-     
-    }
-  }
-}
+      
+}}}

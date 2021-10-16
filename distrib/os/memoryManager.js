@@ -8,7 +8,6 @@ var TSOS;
             for (var i = 0; i < code.length; i++) {
                 _Memory.memoryArray[i] = code[i];
             }
-            console.log(_Memory.memoryArray);
         }
         clearMemory(startIndex, endIndex) {
             //clears memory wihtin a given range

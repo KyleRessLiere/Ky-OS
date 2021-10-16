@@ -10,7 +10,7 @@ module TSOS {
                    _Memory.memoryArray[i] = code[i];
                    
               }
-              console.log(_Memory.memoryArray)
+              
          }
 
          public clearMemory(startIndex:number, endIndex:number){

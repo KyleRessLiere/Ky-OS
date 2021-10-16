@@ -386,6 +386,9 @@ var TSOS;
             code = code.replace(/\s+/g, "");
             code = code.toUpperCase();
             var valid = true;
+            if (code == "") {
+                valid = false;
+            }
             for (var i = 0; i < code.length; i++) {
                 switch (code[i]) {
                     case " ": break;
@@ -432,9 +435,7 @@ var TSOS;
                 // PCB Update 
                 PCB.IR = _MemoryAccessor.readMemoryHex(PCB.section, PCB.PC);
                 // Update Memory GUI
-                TSOS.Control.processTableUpdate();
                 TSOS.Control.memoryUpdate();
-                TSOS.Control.cpuUpdate();
                 // print out response
                 _StdOut.putText("User code  hohohoho");
                 _StdOut.advanceLine();
