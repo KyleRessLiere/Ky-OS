@@ -4,10 +4,11 @@ var TSOS;
         constructor() { }
         load(input, index) {
             //console.log(_MemoryAccessor.sectionIndex());
-            var userCode = input.split(" ");
-            for (var i = 0; i < userCode.length; i++) {
-                _Memory.memoryArray[i] = userCode[i];
+            let code = input;
+            for (var i = 0; i < code.length; i++) {
+                _Memory.memoryArray[i] = code[i];
             }
+            console.log(_Memory.memoryArray);
         }
         clearMemory(startIndex, endIndex) {
             //clears memory wihtin a given range

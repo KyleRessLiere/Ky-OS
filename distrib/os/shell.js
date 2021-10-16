@@ -381,15 +381,13 @@ var TSOS;
         }
         //	validates the user code in the	HTML5 text area
         shellLoad() {
-            let valid = true;
-            let code = _UserCode.value;
+            var code = _UserCode.value;
+            // remove and leading or trailing spaces
+            code = code.replace(/\s+/g, "");
             code = code.toUpperCase();
-            code = TSOS.Utils.trim(code); //removes fron or back spaces
-            var charList = code.split(''); //gets the characters
-            var spaceList = code.split(' '); //get the spaces
-            //checks for hex code
-            for (var char of charList) {
-                switch (char) {
+            var valid = true;
+            for (var i = 0; i < code.length; i++) {
+                switch (code[i]) {
                     case " ": break;
                     case "0": break;
                     case "1": break;
@@ -407,32 +405,45 @@ var TSOS;
                     case "D": break;
                     case "E": break;
                     case "F": break;
-                    default: valid = false;
+                    default:
+                        console.log("invalid hex digits");
+                        valid = false;
                 }
             }
-            if (!valid) {
-                _StdOut.putText("Invalid Hex Code");
-            }
-            else {
-                _StdOut.putText("User Program Submitted");
+            //if not pairs of two then not valid
+            if (code.length % 2 != 0)
+                valid = false;
+            code = code.match(/.{1,2}/g);
+            console.log(code);
+            if (valid) {
+                _StdOut.putText("Valid Code has been enterd");
+                _StdOut.advanceLine();
+                // create a PCB
                 var PCB = new TSOS.PCB();
                 PCB.section = _MemoryManager.memorySection();
                 _PCBList[_PCBList.length] = PCB;
-                if (_PCBList.length > 1 && _PCBList[PCB.PID - 1].state != "Complete") { // If there is another PCB
+                // For now we use this because we can only have one program in memory, and
+                // we want it to overwrite the existing program (like you said in class)
+                // and we shouldn't be able to run a program that isn't in memory, so we change its state to Terminated
+                if (_PCBList.length > 1 && _PCBList[PCB.PID - 1].state != "Complete") // If there is another PCB
                     _PCBList[_PCBList.length - 2].state = "Terminated";
-                }
                 console.log(_PCBList);
                 //clear memory before loading
                 _MemoryManager.clearMemory(0, 255); //This is just the whole memory array for now, will change once we add more processes
                 //use memory manager to load
-                _MemoryManager.load(code, "1");
+                _MemoryManager.load(code, "1"); //This accepts the starting index, will probably change to the section (1,2,or 3)
+                // of the memory, once we add the other two sections
                 // Update the PCB's IR
                 PCB.IR = _MemoryAccessor.readMemoryHex(PCB.section, PCB.PC);
+                // Update Memory GUI
                 TSOS.Control.memoryUpdate();
-                _StdOut.putText("hoho congrats on loading");
+                // print out response
+                _StdOut.putText("User code loaded successfully");
                 _StdOut.advanceLine();
-                _StdOut.putText("PID: " + PCB.PID);
+                _StdOut.putText("Process ID Number: " + PCB.PID);
             }
+            else
+                _StdOut.putText("Please ensure user code is valid hexadecimal");
         }
     }
     TSOS.Shell = Shell;

@@ -457,69 +457,79 @@ this.commandList[this.commandList.length] = sc;
   }}
     //	validates the user code in the	HTML5 text area
     public shellLoad() {
-      
-      let valid = true;
-      let code = _UserCode.value;
-      code = code.toUpperCase();
-      code = Utils.trim(code);  //removes fron or back spaces
-      var charList = code.split('');//gets the characters
-      var spaceList = code.split(' ');//get the spaces
-      //checks for hex code
-      for (var char of charList) {
-       
-        switch (char){      
-            case " ": break;
-            case "0": break;
-            case "1": break;
-            case "2": break;
-            case "3": break;
-            case "4": break;
-            case "5": break;
-            case "6": break;
-            case "7": break;
-            case "8": break;
-            case "9": break;
-            case "A": break;
-            case "B": break;
-            case "C": break;
-            case "D": break;
-            case "E": break;
-            case "F": break;
-           
-            default:  valid = false;
-        }
-    }
-    
-      
-      if (!valid) {
-        _StdOut.putText("Invalid Hex Code");
-      } else {
-
-        _StdOut.putText("User Program Submitted");
-        var PCB = new TSOS.PCB();
+      var code = _UserCode.value;
+            // remove and leading or trailing spaces
+            code = code.replace(/\s+/g, "");
+            code = code.toUpperCase();
+            var valid = true;
+            for (var i =0; i< code.length; i++) {
+                switch (code[i]){      
+                    case " ": break;
+                    case "0": break;
+                    case "1": break;
+                    case "2": break;
+                    case "3": break;
+                    case "4": break;
+                    case "5": break;
+                    case "6": break;
+                    case "7": break;
+                    case "8": break;
+                    case "9": break;
+                    case "A": break;
+                    case "B": break;
+                    case "C": break;
+                    case "D": break;
+                    case "E": break;
+                    case "F": break;
+                  
+                    default: console.log("invalid hex digits"); valid = false;
+                }
+            }
+            //if not pairs of two then not valid
+            if(code.length % 2 != 0)
+              valid = false;
+            //regex to seperate into array for every op code
+            code = code.match(/.{1,2}/g)
+            console.log(code)
+            
+            if (valid) {
+                _StdOut.putText("Valid Code has been enterd");
+                _StdOut.advanceLine();
+                
+                // create a PCB
+                var PCB = new TSOS.PCB();
                 PCB.section = _MemoryManager.memorySection();
                 _PCBList[_PCBList.length] = PCB;
                 
-                if (_PCBList.length > 1 && _PCBList[PCB.PID - 1].state != "Complete") { // If there is another PCB
+                if (_PCBList[PCB.PID - 1].state != "Complete" &&_PCBList.length > 1  ) // If there is another PCB
                     _PCBList[_PCBList.length - 2].state = "Terminated";
-                }
+                
 
-                console.log(_PCBList);
-
-                //clear memory before loading
-                _MemoryManager.clearMemory(0,255); //This is just the whole memory array for now, will change once we add more processes
+                //clear all of memory 
+                _MemoryManager.clearMemory(0,255);
 
                 //use memory manager to load
                 _MemoryManager.load(code,"1"); 
-                                                    
-                // Update the PCB's IR
+                                                      
+                // PCB Update 
                 PCB.IR = _MemoryAccessor.readMemoryHex(PCB.section, PCB.PC);
 
+                // Update Memory GUI
                 Control.memoryUpdate();
-                _StdOut.putText("hoho congrats on loading");
+
+
+                // print out response
+                _StdOut.putText("User code  hohohoho");
                 _StdOut.advanceLine();
-                _StdOut.putText("PID: " + PCB.PID);
-      }
+                _StdOut.putText("Process ID Number: " + PCB.PID);
+
+            }
+             else 
+                _StdOut.putText("Invalid hex try again");
+            
+          
+      
+     
     }
   }
 }
