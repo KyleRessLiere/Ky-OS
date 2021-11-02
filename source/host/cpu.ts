@@ -264,33 +264,7 @@ module TSOS {
         }
 
         public systemCall() {
-            // does something specific based on the Xreg
-            var params: string[] = [];
-            if (this.Xreg == 1){
-                // Print out the integer stored in the Yreg
-                console.log('System call print Yreg');
-                params[0] = this.Yreg.toString();
-                _KernelInterruptQueue.enqueue(new Interrupt(SYSTEM_IRQ, params));
-            } else if (this.Xreg == 2) {
-                console.log("System call print string")
-                // Print out the 00 terminated string stored at the address in the Y register
-                // This means the letters associated with the code in memory
-                var location = this.Yreg + _Memory.getSectionBase(_CurrentPCB.section);
-                var output: string = "";
-                var byteString: string;
-                for (var i = 0; i + location < _Memory.memoryArray.length; i++) {
-                    byteString = _Memory.memoryArray[location + i];
-                    if (byteString == "00") {
-                        break;
-                    } else {
-                        output += String.fromCharCode(Utils.hexToDecimal(byteString));
-                    }
-                }
-                params[0] = output;
-                _KernelInterruptQueue.enqueue(new Interrupt(SYSTEM_IRQ, params));
-            } else {
-                console.log("System call with Xreg != 1 or 2");
-            }
+           
 
 
         }
