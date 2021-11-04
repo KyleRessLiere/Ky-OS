@@ -116,6 +116,13 @@ this.commandList[this.commandList.length] = sc;
         "<int>- changes the RR quauntum"
       );
       this.commandList[this.commandList.length] = sc;
+      // Changes rr quantum
+      sc = new ShellCommand(
+        this.shellClearMem,
+        "clearmem",
+        "Clears all the memory"
+      );
+      this.commandList[this.commandList.length] = sc;
       //crashes the OS
       sc = new ShellCommand(
         this.shellCrash,
@@ -361,7 +368,12 @@ this.commandList[this.commandList.length] = sc;
             case "quantum": 
             _StdOut.putText(
               "Changes the RedRobin Quantum"
-            );ß
+            );
+            break;
+            case "clearmem": 
+            _StdOut.putText(
+              "Clears all partions of memory"
+            );
             break;
           // TODO: Make descriptive MANual page entries for the the rest of the shell commands here.
           default:
@@ -562,8 +574,13 @@ this.commandList[this.commandList.length] = sc;
       
   }
   console.log(_RoundRobinQuantum);
-  }
-
+  }//shellQuantum
+  public shellClearMem(): void {
+    //clears all of memory
+    _MemoryManager.clearMemory(0,767);
+    Control.memoryUpdate();
+    
+  }//clearmem
   
 }
 

@@ -63,6 +63,9 @@ var TSOS;
             // Changes rr quantum
             sc = new TSOS.ShellCommand(this.shellQuantum, "quantum", "<int>- changes the RR quauntum");
             this.commandList[this.commandList.length] = sc;
+            // Changes rr quantum
+            sc = new TSOS.ShellCommand(this.shellClearMem, "clearmem", "Clears all the memory");
+            this.commandList[this.commandList.length] = sc;
             //crashes the OS
             sc = new TSOS.ShellCommand(this.shellCrash, "bsod", "Crashes shelll and brings up BSOD MESSAGE");
             this.commandList[this.commandList.length] = sc;
@@ -287,7 +290,9 @@ var TSOS;
                         break;
                     case "quantum":
                         _StdOut.putText("Changes the RedRobin Quantum");
-                        ß;
+                        break;
+                    case "clearmem":
+                        _StdOut.putText("Clears all partions of memory");
                         break;
                     // TODO: Make descriptive MANual page entries for the the rest of the shell commands here.
                     default:
@@ -467,7 +472,12 @@ var TSOS;
                 _StdOut.putText(args[0] + " is a invalid quantum quantums must be numbers");
             }
             console.log(_RoundRobinQuantum);
-        }
+        } //shellQuantum
+        shellClearMem() {
+            //clears all of memory
+            _MemoryManager.clearMemory(0, 767);
+            TSOS.Control.memoryUpdate();
+        } //clearmem
     }
     TSOS.Shell = Shell;
 })(TSOS || (TSOS = {}));
