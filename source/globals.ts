@@ -23,6 +23,8 @@ const KEYBOARD_IRQ: number = 1;
 const SYSTEM_IRQ: number = 2;
 
 
+
+
 //
 // Global Variables
 // TODO: Make a global object and use that instead of the "_" naming convention in the global namespace.
@@ -30,6 +32,8 @@ const SYSTEM_IRQ: number = 2;
 var _CPU: TSOS.Cpu;  // Utilize TypeScript's type annotation system to ensure that _CPU is an instance of the Cpu class.
 
 var _Memory: TSOS.Memory;
+
+var _RoundRobinQuantum: number = 6;
 
 var _MemoryAccessor: TSOS.MemoryAccessor;
 

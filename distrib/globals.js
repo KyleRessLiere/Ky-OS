@@ -23,6 +23,7 @@ const SYSTEM_IRQ = 2;
 //
 var _CPU; // Utilize TypeScript's type annotation system to ensure that _CPU is an instance of the Cpu class.
 var _Memory;
+var _RoundRobinQuantum = 6;
 var _MemoryAccessor;
 var _MemoryManager = null;
 var _PCBList = [];

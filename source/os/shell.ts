@@ -109,6 +109,13 @@ this.commandList[this.commandList.length] = sc;
         "Zebra swarm"
       );
       this.commandList[this.commandList.length] = sc;
+      // Changes rr quantum
+      sc = new ShellCommand(
+        this.shellQuantum,
+        "quantum",
+        "<int>- changes the RR quauntum"
+      );
+      this.commandList[this.commandList.length] = sc;
       //crashes the OS
       sc = new ShellCommand(
         this.shellCrash,
@@ -351,6 +358,11 @@ this.commandList[this.commandList.length] = sc;
               "Wipes the current Screen Empty"
             );
             break;
+            case "quantum": 
+            _StdOut.putText(
+              "Changes the RedRobin Quantum"
+            );ß
+            break;
           // TODO: Make descriptive MANual page entries for the the rest of the shell commands here.
           default:
             _StdOut.putText("No manual entry for " + args[0] + ".");
@@ -529,9 +541,31 @@ this.commandList[this.commandList.length] = sc;
 
             }
              else 
-                _StdOut.putText("Invalid hex try again");
-            
+                _StdOut.putText("Invalid hex try again");  
+}
+  public shellQuantum(args: string[]): void {
+    var validQuantum = true;
+    // Check to see if the entered Quantum is vali
+    if ((args.length != 1)){
+      validQuantum = false;
+}
+    else if((isNaN(Number(args[0])))) { //Checks to see if the arg is there and is actually a number
+      validQuantum = false;
+  } 
+  if(validQuantum == true) {
+    _RoundRobinQuantum = parseInt(args[0]);
+    _StdOut.putText("Quantum changed to " + _RoundRobinQuantum);
 
+  }
+  else {
+    _StdOut.putText(args[0] + " is a invalid quantum quantums must be numbers") 
       
-      
-}}}
+  }
+  console.log(_RoundRobinQuantum);
+  }
+
+  
+}
+
+}
+
