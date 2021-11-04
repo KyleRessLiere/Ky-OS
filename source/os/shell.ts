@@ -88,6 +88,13 @@ this.commandList[this.commandList.length] = sc;
         "<on | off> - Turns the OS trace on or off."
       );
       this.commandList[this.commandList.length] = sc;
+      // ps 
+      sc = new ShellCommand(
+        this.shellPs,
+        "ps",
+        "Prints all the current processes"
+      );
+      this.commandList[this.commandList.length] = sc;
       // rot13 <string>
       sc = new ShellCommand(
         this.shellRot13,
@@ -375,6 +382,7 @@ this.commandList[this.commandList.length] = sc;
               "Clears all partions of memory"
             );
             break;
+            
           // TODO: Make descriptive MANual page entries for the the rest of the shell commands here.
           default:
             _StdOut.putText("No manual entry for " + args[0] + ".");
@@ -401,7 +409,7 @@ this.commandList[this.commandList.length] = sc;
             _StdOut.putText("Trace OFF");
             break;
           default:
-            _StdOut.putText("Invalid arguement.  Usage: trace <on | off>.");
+            _StdOut.putText("Invalid argument.  Usage: trace <on | off>.");
         }
       } else {
         _StdOut.putText("Usage: trace <on | off>");
@@ -516,12 +524,12 @@ this.commandList[this.commandList.length] = sc;
             //if not pairs of two then not valid
             if(code.length % 2 != 0)
               valid = false;
-            //regex to seperate into array for every op code
+            //regex to separate into array for every op code
             code = code.match(/.{1,2}/g)
             
             
             if (valid) {
-                _StdOut.putText("Valid Code has been enterd");
+                _StdOut.putText("Valid Code has been entered");
                 _StdOut.advanceLine();
                 
                 // create a PCB
@@ -555,7 +563,7 @@ this.commandList[this.commandList.length] = sc;
              else 
                 _StdOut.putText("Invalid hex try again");  
 }
-  public shellQuantum(args: string[]): void {
+    public shellQuantum(args: string[]): void {
     var validQuantum = true;
     // Check to see if the entered Quantum is vali
     if ((args.length != 1)){
@@ -575,14 +583,33 @@ this.commandList[this.commandList.length] = sc;
   }
   console.log(_RoundRobinQuantum);
   }//shellQuantum
-  public shellClearMem(): void {
+    public shellClearMem(): void {
     //clears all of memory
-    _MemoryManager.clearMemory(0,767);
+    _MemoryManager.clearMemory(0,);
     Control.memoryUpdate();
     
   }//clearmem
+
+  public shellPs(){
+    if(_PCBList.length > 0){
+      for(let i =0; i < _PCBList.length;i++){
+        _StdOut.putText("Process ID" + _PCBList[i].PID + "State" + _PCBList[i].state +"   ");
+
+      }
+    }
+      else{
+        _StdOut.putText("No current process")
+
+      }
+
+    }//shellPs
+
+  
+  }
+
+
   
 }
 
-}
+
 

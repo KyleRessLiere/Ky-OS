@@ -51,6 +51,9 @@ var TSOS;
             // trace <on | off>
             sc = new TSOS.ShellCommand(this.shellTrace, "trace", "<on | off> - Turns the OS trace on or off.");
             this.commandList[this.commandList.length] = sc;
+            // ps 
+            sc = new TSOS.ShellCommand(this.shellPs, "ps", "Prints all the current processes");
+            this.commandList[this.commandList.length] = sc;
             // rot13 <string>
             sc = new TSOS.ShellCommand(this.shellRot13, "rot13", "<string> - Does rot13 obfuscation on <string>.");
             this.commandList[this.commandList.length] = sc;
@@ -321,7 +324,7 @@ var TSOS;
                         _StdOut.putText("Trace OFF");
                         break;
                     default:
-                        _StdOut.putText("Invalid arguement.  Usage: trace <on | off>.");
+                        _StdOut.putText("Invalid argument.  Usage: trace <on | off>.");
                 }
             }
             else {
@@ -428,10 +431,10 @@ var TSOS;
             //if not pairs of two then not valid
             if (code.length % 2 != 0)
                 valid = false;
-            //regex to seperate into array for every op code
+            //regex to separate into array for every op code
             code = code.match(/.{1,2}/g);
             if (valid) {
-                _StdOut.putText("Valid Code has been enterd");
+                _StdOut.putText("Valid Code has been entered");
                 _StdOut.advanceLine();
                 // create a PCB
                 var PCB = new TSOS.PCB();
@@ -475,9 +478,19 @@ var TSOS;
         } //shellQuantum
         shellClearMem() {
             //clears all of memory
-            _MemoryManager.clearMemory(0, 767);
+            _MemoryManager.clearMemory(0);
             TSOS.Control.memoryUpdate();
         } //clearmem
+        shellPs() {
+            if (_PCBList.length > 0) {
+                for (let i = 0; i < _PCBList.length; i++) {
+                    _StdOut.putText("Process ID" + _PCBList[i].PID + "State" + _PCBList[i].state + "   ");
+                }
+            }
+            else {
+                _StdOut.putText("No current process");
+            }
+        } //shellPs
     }
     TSOS.Shell = Shell;
 })(TSOS || (TSOS = {}));
