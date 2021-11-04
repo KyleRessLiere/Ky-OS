@@ -18,12 +18,12 @@ var TSOS;
         }
         getSectionBase(section) {
             switch (section) {
-                case "1":
+                case "0":
                     return this.memorySectionOneBase;
                     break;
-                case "2":
+                case "1":
                     return this.memorySectionTwoBase;
-                case "3":
+                case "2":
                     return this.memorySectionThreeBase;
                 default:
                     console.log("Invalid section");
@@ -31,13 +31,13 @@ var TSOS;
         }
         getSectionEnd(section) {
             switch (section) {
-                case "1":
+                case "0":
                     return this.memorySectionOneEnd;
                     break;
-                case "2":
+                case "1":
                     return this.memorySectionTwoEnd;
                     break;
-                case "3":
+                case "2":
                     return this.memorySectionThreeEnd;
                     break;
                 default:

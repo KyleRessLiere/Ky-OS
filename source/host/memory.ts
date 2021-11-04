@@ -1,4 +1,4 @@
-module TSOS {
+ module TSOS {
 
     export class Memory {
         public memoryArray: string[] = new Array(768);
@@ -22,12 +22,12 @@ module TSOS {
         }
         public getSectionBase(section:string){
             switch(section){
-            case "1": 
+            case "0": 
             return this.memorySectionOneBase
             break;
-            case "2": 
+            case "1": 
             return this.memorySectionTwoBase
-            case "3": 
+            case "2": 
             return this.memorySectionThreeBase
             default:
                 console.log("Invalid section")
@@ -36,13 +36,13 @@ module TSOS {
         }
         public getSectionEnd(section:string){
             switch(section){
-                case "1": 
+                case "0": 
                 return this.memorySectionOneEnd;
                 break;
-                case "2": 
+                case "1": 
                 return this.memorySectionTwoEnd;
                 break;
-                case "3": 
+                case "2": 
                 return this.memorySectionThreeEnd
                 break;
                 default:  

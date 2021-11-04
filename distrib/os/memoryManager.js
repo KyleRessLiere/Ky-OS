@@ -10,14 +10,44 @@ var TSOS;
             }
         }
         clearMemory(startIndex, endIndex) {
-            //clears memory wihtin a given range
+            //clears memory within a given range
             for (var i = startIndex; i < endIndex; i++) {
                 _Memory.memoryArray[i] = "00";
             }
         }
         memorySection() {
-            var section = "1";
-            return section;
+            var sectionOne = "0";
+            var sectionTwo = "1";
+            var sectionThree = "2";
+            var sectionOneStatus = true;
+            var sectionTwoStatus = true;
+            var sectionThreeStatus = true;
+            for (var PCB of _PCBList) {
+                switch (PCB.section) {
+                    case "0":
+                        sectionOneStatus = false;
+                        break;
+                    case "1":
+                        sectionTwoStatus = false;
+                        break;
+                    case "2":
+                        sectionThreeStatus = false;
+                        break;
+                    default: console.log("Sorry this is a invalid section");
+                }
+            }
+            if (sectionOneStatus) {
+                return sectionOne;
+            }
+            else if (sectionTwoStatus) {
+                return sectionTwo;
+            }
+            else if (sectionThreeStatus) {
+                return sectionThree;
+            }
+            else {
+                console.log("Invalid section");
+            }
         }
     }
     TSOS.MemoryManager = MemoryManager;

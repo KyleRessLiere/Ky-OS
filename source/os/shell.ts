@@ -545,7 +545,7 @@ this.commandList[this.commandList.length] = sc;
                 _MemoryManager.clearMemory(0,255);
 
                 //use memory manager to load
-                _MemoryManager.load(code,"1"); 
+                _MemoryManager.load(code,"0"); 
                                                       
                 // PCB Update 
                 PCB.IR = _MemoryAccessor.readMemoryHex(PCB.section, PCB.PC);
@@ -585,7 +585,7 @@ this.commandList[this.commandList.length] = sc;
   }//shellQuantum
     public shellClearMem(): void {
     //clears all of memory
-    _MemoryManager.clearMemory(0,);
+    _MemoryManager.clearMemory(0,767);
     Control.memoryUpdate();
     
   }//clearmem
@@ -599,16 +599,10 @@ this.commandList[this.commandList.length] = sc;
     }
       else{
         _StdOut.putText("No current process")
-
       }
-
     }//shellPs
 
-  
-  }
-
-
-  
+  }  
 }
 
 

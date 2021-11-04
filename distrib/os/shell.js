@@ -445,7 +445,7 @@ var TSOS;
                 //clear all of memory 
                 _MemoryManager.clearMemory(0, 255);
                 //use memory manager to load
-                _MemoryManager.load(code, "1");
+                _MemoryManager.load(code, "0");
                 // PCB Update 
                 PCB.IR = _MemoryAccessor.readMemoryHex(PCB.section, PCB.PC);
                 // Update Memory GUI
