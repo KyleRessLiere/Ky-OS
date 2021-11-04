@@ -12,8 +12,12 @@ module TSOS {
               }
          }
 
-         public clearMemory(startIndex:number, endIndex:number){
+         public clearMemory(memSection:string){
               //clears memory within a given range
+             let startIndex = _Memory.getSectionBase(memSection);
+             let endIndex = _Memory.getSectionEnd(memSection);
+             
+            //clears memory 
               for(var i=startIndex;i<endIndex;i++){
                    _Memory.memoryArray[i] = "00";
               }
