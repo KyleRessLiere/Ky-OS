@@ -542,10 +542,10 @@ this.commandList[this.commandList.length] = sc;
                 
 
                 //clear all of memory 
-                _MemoryManager.clearMemory(0,255);
+                _MemoryManager.clearMemory(PCB.section);
 
                 //use memory manager to load
-                _MemoryManager.load(code,"0"); 
+                _MemoryManager.load(code,PCB.section); 
                                                       
                 // PCB Update 
                 PCB.IR = _MemoryAccessor.readMemoryHex(PCB.section, PCB.PC);
@@ -564,29 +564,29 @@ this.commandList[this.commandList.length] = sc;
                 _StdOut.putText("Invalid hex try again");  
 }
     public shellQuantum(args: string[]): void {
-    var validQuantum = true;
-    // Check to see if the entered Quantum is vali
-    if ((args.length != 1)){
-      validQuantum = false;
-}
-    else if((isNaN(Number(args[0])))) { //Checks to see if the arg is there and is actually a number
-      validQuantum = false;
-  } 
-  if(validQuantum == true) {
-    _RoundRobinQuantum = parseInt(args[0]);
-    _StdOut.putText("Quantum changed to " + _RoundRobinQuantum);
+      var validQuantum = true;
+      // Check to see if the entered Quantum is vali
+      if ((args.length != 1)){
+        validQuantum = false;
+  }
+      else if((isNaN(Number(args[0])))) { //Checks to see if the arg is there and is actually a number
+        validQuantum = false;
+    } 
+    if(validQuantum == true) {
+      _RoundRobinQuantum = parseInt(args[0]);
+      _StdOut.putText("Quantum changed to " + _RoundRobinQuantum);
 
-  }
-  else {
-    _StdOut.putText(args[0] + " is a invalid quantum quantums must be numbers") 
-      
-  }
-  console.log(_RoundRobinQuantum);
-  }//shellQuantum
-    public shellClearMem(): void {
-    //clears all of memory
-    _MemoryManager.clearMemory(0,767);
-    Control.memoryUpdate();
+    }
+    else {
+      _StdOut.putText(args[0] + " is a invalid quantum quantums must be numbers") 
+        
+    }
+    console.log(_RoundRobinQuantum);
+      }//shellQuantum
+  public shellClearMem(): void {
+      //clears all of memory
+      _MemoryManager.clearMemory("3");
+      Control.memoryUpdate();
     
   }//clearmem
 
