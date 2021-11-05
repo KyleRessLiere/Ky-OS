@@ -25,6 +25,9 @@ var TSOS;
                     return this.memorySectionTwoBase;
                 case "2":
                     return this.memorySectionThreeBase;
+                case "3":
+                    return this.memorySectionOneBase;
+                    break;
                 default:
                     console.log("Invalid section");
             }
@@ -38,6 +41,9 @@ var TSOS;
                     return this.memorySectionTwoEnd;
                     break;
                 case "2":
+                    return this.memorySectionThreeEnd;
+                    break;
+                case "3":
                     return this.memorySectionThreeEnd;
                     break;
                 default:
