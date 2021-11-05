@@ -36,6 +36,7 @@ module TSOS {
         }
 
         public cycle(): void {
+            let isCompleted = false;
             _Kernel.krnTrace('CPU cycle');
             // TODO: Accumulate CPU usage and profiling statistics here.
             // Do the real work here. Be sure to set this.isExecuting appropriately.
@@ -52,61 +53,69 @@ module TSOS {
         
             case "A9": 
                  this.loadAccConstant();   
-                 this.PC++;       
+                        
             break;  //load accumulator with a constant
             case "AD":
                  this.loadAccMemory();  
-                 this.PC++;         
+                      
                   break;  //load accumulator from memory
             case "8D": 
                 this.storeAcc();      
-                this.PC++;           
+                       
                  break;  //store accumulator in memory
             case "6D": 
                 this.addWithCarry();   
-                this.PC++;         
+                        
                 break;  //add contents of memory to accumulator and store in accumulator
             case "A2": 
                 this.loadXFromConstant();  
-                this.PC++;   
+                  
                 break;  //load Xreg 
             case "AE": 
                 this.loadXFromMemory();    
-                this.PC++;   
+                  
                 break;  //load Xrega
             case "A0": 
                 this.loadYFromConstant();   
-                this.PC++;  
+                
                 break;  //load Yreg 
             case "AC": 
                 this.loadYFromMemory();  
-                this.PC++;     
+                    
                 break;  //load Yreg 
-            case "EA":      
-                this.PC++;                            
+            case "EA":  
+            
+                  
+                                          
                 break;  
             case "00": 
-            _CurrentPCB.state = "Complete"
-                _CPU.isExecuting = false;
-                _StdOut.putText("Finshed la process de " + _CurrentPCB.PID);
+            isCompleted = true; 
+                _StdOut.putText("Finished la process de " + _CurrentPCB.PID);
                 _StdOut.advanceLine();
                 _OsShell.putPrompt();
+                _ReadyPCBList.splice(_MemoryManager.pidIndex(_ReadyPCBList,_CurrentPCB.PID),1)
+                _PCBList.splice(_MemoryManager.pidIndex(_PCBList,_CurrentPCB.PID), 1);
+                _CurrentPCB = null;
+                Control.cpuUpdate();
+                Control.memoryUpdate();
+                Control.processTableUpdate();
+                _Scheduler.currentProcess();
+                
                 break;  
             case "EC": 
             this.compareMemToX();    
-            this.PC++;    
+             
              break;  
             case "D0":
                  this.branchBytes();      
-                 this.PC++;       
+                     
                   break;  
             case "EE": 
             this.incrementByte();  
-            this.PC++;         
+                  
              break;  
             case "FF":
-                 this.systemCall();    
-                 this.PC++;          
+                 this.systemCall();             
                   break;  
             default:
                
@@ -114,7 +123,9 @@ module TSOS {
                 
         }
         
-        
+        this.PC++;
+       // console.log(_CurrentPCB.quantumRan);
+        //_CurrentPCB.quantumRan += 1
 
         // Update the IR
         this.IR = _MemoryAccessor.readMemoryHex(_CurrentPCB.section, this.PC);
@@ -127,6 +138,8 @@ module TSOS {
         Control.processTableUpdate();
         Control.memoryUpdate();
         Control.cpuUpdate();
+
+
         }
         public cpuUpdate(): void {
             this.PC = _CurrentPCB.PC;
@@ -264,13 +277,51 @@ module TSOS {
         }
 
         public systemCall() {
+            let memoryLocation = this.Yreg + _Memory.getSectionBase(_CurrentPCB.section);
+            let output: string = "";
+            let byteString: string;
+            var i = 0;
+        
+          let  outputPara: string[] = [];
+         if (this.Xreg == 2) {
+            console.log("System call print string")
+          
+           while(memoryLocation + i < _Memory.memoryArray.length){
            
+                byteString = _Memory.memoryArray[memoryLocation + i];
+                if (byteString != "00") {
+                  output += String.fromCharCode(Utils.hexToDecimal(byteString));
+                } else {
+                    break;
+                }
+                i++;
+            }
+            outputPara[0] = output;
+            _KernelInterruptQueue.enqueue(new TSOS.Interrupt(SYSTEM_IRQ, outputPara));
+        }
+          else if (this.Xreg == 1){
+             
+              
+              outputPara[0] = this.Yreg.toString();
+              _KernelInterruptQueue.enqueue(new TSOS.Interrupt(SYSTEM_IRQ, outputPara));
+              console.log('System call Yreg');
+          }
+           else {
+              console.log("System call with Xreg != 1 or 2");
+          }
+    }
+           
+          
+        
+
+
+          }
+
 
 
         }
         
-        
     }
     
     
-}
+    

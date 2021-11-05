@@ -54,6 +54,9 @@ var TSOS;
             // ps 
             sc = new TSOS.ShellCommand(this.shellPs, "ps", "Prints all the current processes");
             this.commandList[this.commandList.length] = sc;
+            // ps 
+            sc = new TSOS.ShellCommand(this.shellRunAll, "runall", "Runs all current processes");
+            this.commandList[this.commandList.length] = sc;
             // rot13 <string>
             sc = new TSOS.ShellCommand(this.shellRot13, "rot13", "<string> - Does rot13 obfuscation on <string>.");
             this.commandList[this.commandList.length] = sc;
@@ -288,6 +291,10 @@ var TSOS;
                     case "run":
                         _StdOut.putText("Runs a program for a given PID");
                         break;
+                    case "runall":
+                        _StdOut.putText("run all programs in memory");
+                        break;
+                        break;
                     case "cls":
                         _StdOut.putText("Wipes the current Screen Empty");
                         break;
@@ -506,6 +513,16 @@ var TSOS;
                 _StdOut.putText("No current process");
             }
         } //shellPs
+        shellRunAll(args) {
+            for (let i = 0; i < _PCBList.length; i++) {
+                if (_PCBList[i].state = "Resident") {
+                    _PCBList[i].state = "Waiting";
+                    _ReadyPCBList[_ReadyPCBList.length] = _PCBList[i];
+                }
+                console.log("tye");
+            }
+            _Scheduler.currentProcess();
+        }
     }
     TSOS.Shell = Shell;
 })(TSOS || (TSOS = {}));

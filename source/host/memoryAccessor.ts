@@ -4,8 +4,10 @@ module TSOS {
         constructor() {}
 
         public sectionIndex(section) {
-            //default to section 0 worry about in later projects
-            return 0;
+           let index:number;
+           index = parseInt(section,16);
+
+            return index;
 
         }
         

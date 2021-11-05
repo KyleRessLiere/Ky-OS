@@ -19,6 +19,27 @@ var TSOS;
                 _CPU.isExecuting = false;
             }
         } //current process
+        nextProcess() {
+            let found = false;
+            for (let i = 0; i < _ReadyPCBList.length; i++) {
+                //checks to see which process has hit quantum yet
+                if (_ReadyPCBList[i].quantumRan < _RoundRobinQuantum) {
+                    let currentPcb = [_ReadyPCBList[i]];
+                    //cpmtext switches to move onto next process
+                    _KernelInterruptQueue.enqueue(new TSOS.Interrupt(CONTEXT_IRQ, currentPcb));
+                    found = true;
+                    break;
+                }
+            }
+            //if no qunatums are reset qunatum to zero
+            if (found == false) {
+                for (let i = 0; i < _ReadyPCBList.length; i++) {
+                    _ReadyPCBList[i].quantumRan = 0;
+                }
+                let currentPcb = [_ReadyPCBList[0]];
+                _KernelInterruptQueue.enqueue(new TSOS.Interrupt(CONTEXT_IRQ, currentPcb));
+            }
+        } //next process
     }
     TSOS.Scheduler = Scheduler;
 })(TSOS || (TSOS = {}));

@@ -95,6 +95,13 @@ this.commandList[this.commandList.length] = sc;
         "Prints all the current processes"
       );
       this.commandList[this.commandList.length] = sc;
+      // ps 
+      sc = new ShellCommand(
+        this.shellRunAll,
+        "runall",
+        "Runs all current processes"
+      );
+      this.commandList[this.commandList.length] = sc;
       // rot13 <string>
       sc = new ShellCommand(
         this.shellRot13,
@@ -367,6 +374,12 @@ this.commandList[this.commandList.length] = sc;
               "Runs a program for a given PID"
             );
             break;
+            case "runall":
+            _StdOut.putText(
+              "run all programs in memory"
+            );
+            break;
+            break;
             case "cls":
             _StdOut.putText(
               "Wipes the current Screen Empty"
@@ -619,8 +632,21 @@ this.commandList[this.commandList.length] = sc;
         _StdOut.putText("No current process")
       }
     }//shellPs
+    public shellRunAll(args: string[]) {
+      
+      for (let i = 0; i < _PCBList.length; i++) {
+          if (_PCBList[i].state = "Resident") {
+             
+              _PCBList[i].state = "Waiting";
+              _ReadyPCBList[_ReadyPCBList.length] = _PCBList[i];
+          }
+          console.log("tye")
+      }
+      _Scheduler.currentProcess();
+  }
 
   }  
+  
 }
 
 

@@ -3,8 +3,9 @@ var TSOS;
     class MemoryAccessor {
         constructor() { }
         sectionIndex(section) {
-            //default to section 0 worry about in later projects
-            return 0;
+            let index;
+            index = parseInt(section, 16);
+            return index;
         }
         readOneMemoryByteToDecimal(section, PC) {
             // returns a decimal representation of the next hex pair yet to be run/read
