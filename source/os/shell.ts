@@ -556,6 +556,7 @@ this.commandList[this.commandList.length] = sc;
 
                 // Update Memory GUI
                 Control.memoryUpdate();
+                Control.processTableUpdate();
 
 
                 // print out response
@@ -597,7 +598,7 @@ this.commandList[this.commandList.length] = sc;
   public shellPs(){
     if(_PCBList.length > 0){
       for(let i =0; i < _PCBList.length;i++){
-        _StdOut.putText("Process ID" + _PCBList[i].PID + "State" + _PCBList[i].state +"   ");
+        _StdOut.putText("Process ID: " + _PCBList[i].PID + "State: " + _PCBList[i].state +"   ");
 
       }
     }

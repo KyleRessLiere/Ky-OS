@@ -452,6 +452,7 @@ var TSOS;
                 PCB.IR = _MemoryAccessor.readMemoryHex(PCB.section, PCB.PC);
                 // Update Memory GUI
                 TSOS.Control.memoryUpdate();
+                TSOS.Control.processTableUpdate();
                 // print out response
                 _StdOut.putText("User code  hohohoho");
                 _StdOut.advanceLine();
@@ -486,7 +487,7 @@ var TSOS;
         shellPs() {
             if (_PCBList.length > 0) {
                 for (let i = 0; i < _PCBList.length; i++) {
-                    _StdOut.putText("Process ID" + _PCBList[i].PID + "State" + _PCBList[i].state + "   ");
+                    _StdOut.putText("Process ID: " + _PCBList[i].PID + "State: " + _PCBList[i].state + "   ");
                 }
             }
             else {
