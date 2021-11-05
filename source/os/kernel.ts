@@ -38,6 +38,8 @@ module TSOS {
               // Memory Manger
             _MemoryManager = new MemoryManager(); // Construct
 
+            _Scheduler = new Scheduler(); // Construct
+
             
 
             //

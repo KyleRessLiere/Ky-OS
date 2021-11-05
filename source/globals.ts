@@ -22,6 +22,8 @@ const KEYBOARD_IRQ: number = 1;
 
 const SYSTEM_IRQ: number = 2;
 
+const CONTEXT_IRQ: number =3;
+
 
 
 
@@ -34,6 +36,8 @@ var _CPU: TSOS.Cpu;  // Utilize TypeScript's type annotation system to ensure th
 var _Memory: TSOS.Memory;
 
 var _RoundRobinQuantum: number = 6;
+
+var _Scheduler: any = null;
 
 var _MemoryAccessor: TSOS.MemoryAccessor;
 

@@ -57,6 +57,20 @@ module TSOS {
                     console.log("Invalid section");
                }
              
-         }
+         }//memorySection
+
+         
+         public isResident(pid: number): boolean{
+              for(let PCB of _PCBList)
+              if(PCB.PID == pid)
+              return true;
+         }//isResident
+
+         //finds the index in the pcb list given pid
+         public pidIndex(pid:number,pcbList:TSOS.PCB[]){
+              for(let i =0; i < pcbList.length; i ++)
+                   if(pcbList[i].PID == pid)
+                        return i;   
+         }//pid index
      
     }}
