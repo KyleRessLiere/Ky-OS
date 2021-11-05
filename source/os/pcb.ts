@@ -11,7 +11,8 @@ module TSOS {
                     public Z: number  =0,   //Z Flag
                     public state: String  = "Resident",   //State of the process
                     public location: String ="Memory",
-                    public section: string =  null
+                    public section: string =  null,
+                    public quantumRan: number = 0, //the amount of times the process has ran 
                     ) {  
         }
 

@@ -108,10 +108,10 @@ var TSOS;
                     _StdIn.handleInput();
                     break;
                 case SYSTEM_IRQ:
-                    _StdOut.putText(params[0]); //
+                    _StdOut.putText(params[0]);
+                    break;
                 default:
-                    console.log("oof");
-                // this.krnTrapError("Invalid Interrupt Request. irq=" + irq + " params=[" + params + "]");
+                    this.krnTrapError("Invalid Interrupt Request. irq=" + irq + " params=[" + params + "]");
             }
         }
         krnTimerISR() {
