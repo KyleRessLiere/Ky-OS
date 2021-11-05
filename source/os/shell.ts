@@ -531,7 +531,7 @@ this.commandList[this.commandList.length] = sc;
             if (valid) {
                 _StdOut.putText("Valid Code has been entered");
                 _StdOut.advanceLine();
-                
+                if(_MemoryManager.isMemoryAvailable() == true) {
                 // create a PCB
                 var PCB = new TSOS.PCB();
 
@@ -563,8 +563,13 @@ this.commandList[this.commandList.length] = sc;
                 _StdOut.putText("User code  hohohoho");
                 _StdOut.advanceLine();
                 _StdOut.putText("Process ID Number: " + PCB.PID);
+                }
+                else{
+                  _StdOut.putText("No space in memory is available consider clearning memory"); 
+                }
 
             }
+
              else 
                 _StdOut.putText("Invalid hex try again");  
 }
@@ -590,8 +595,16 @@ this.commandList[this.commandList.length] = sc;
       }//shellQuantum
   public shellClearMem(): void {
       //clears all of memory
+      if(_CPU.isExecuting == true) {
+        _StdOut.putText("Memory can only be cleard when their are no running procees")
+
+      }
+      else{
       _MemoryManager.clearMemory("3");
+      _PCBList = [];
+      _ReadyPCBList = [];
       Control.memoryUpdate();
+      }
     
   }//clearmem
 

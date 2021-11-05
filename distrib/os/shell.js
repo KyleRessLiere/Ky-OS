@@ -436,27 +436,32 @@ var TSOS;
             if (valid) {
                 _StdOut.putText("Valid Code has been entered");
                 _StdOut.advanceLine();
-                // create a PCB
-                var PCB = new TSOS.PCB();
-                PCB.PID = _ProcessCounter; //assign pid 
-                _ProcessCounter++; //adds a process
-                PCB.section = _MemoryManager.memorySection();
-                _PCBList[_PCBList.length] = PCB;
-                //if (_PCBList.length > 1 && _PCBList[PCB.PID - 1].state != "Complete") // If there is another PCB
-                //_PCBList[_PCBList.length - 2].state = "Terminated";
-                //clear memory within a certain section
-                _MemoryManager.clearMemory(PCB.section);
-                //use memory manager to load
-                _MemoryManager.load(code, PCB.section);
-                // PCB Update 
-                PCB.IR = _MemoryAccessor.readMemoryHex(PCB.section, PCB.PC);
-                // Update Memory GUI
-                TSOS.Control.memoryUpdate();
-                TSOS.Control.processTableUpdate();
-                // print out response
-                _StdOut.putText("User code  hohohoho");
-                _StdOut.advanceLine();
-                _StdOut.putText("Process ID Number: " + PCB.PID);
+                if (_MemoryManager.isMemoryAvailable() == true) {
+                    // create a PCB
+                    var PCB = new TSOS.PCB();
+                    PCB.PID = _ProcessCounter; //assign pid 
+                    _ProcessCounter++; //adds a process
+                    PCB.section = _MemoryManager.memorySection();
+                    _PCBList[_PCBList.length] = PCB;
+                    //if (_PCBList.length > 1 && _PCBList[PCB.PID - 1].state != "Complete") // If there is another PCB
+                    //_PCBList[_PCBList.length - 2].state = "Terminated";
+                    //clear memory within a certain section
+                    _MemoryManager.clearMemory(PCB.section);
+                    //use memory manager to load
+                    _MemoryManager.load(code, PCB.section);
+                    // PCB Update 
+                    PCB.IR = _MemoryAccessor.readMemoryHex(PCB.section, PCB.PC);
+                    // Update Memory GUI
+                    TSOS.Control.memoryUpdate();
+                    TSOS.Control.processTableUpdate();
+                    // print out response
+                    _StdOut.putText("User code  hohohoho");
+                    _StdOut.advanceLine();
+                    _StdOut.putText("Process ID Number: " + PCB.PID);
+                }
+                else {
+                    _StdOut.putText("No space in memory is available consider clearning memory");
+                }
             }
             else
                 _StdOut.putText("Invalid hex try again");
@@ -481,8 +486,15 @@ var TSOS;
         } //shellQuantum
         shellClearMem() {
             //clears all of memory
-            _MemoryManager.clearMemory("3");
-            TSOS.Control.memoryUpdate();
+            if (_CPU.isExecuting == true) {
+                _StdOut.putText("Memory can only be cleard when their are no running procees");
+            }
+            else {
+                _MemoryManager.clearMemory("3");
+                _PCBList = [];
+                _ReadyPCBList = [];
+                TSOS.Control.memoryUpdate();
+            }
         } //clearmem
         shellPs() {
             if (_PCBList.length > 0) {

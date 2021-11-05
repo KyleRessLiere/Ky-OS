@@ -2,7 +2,7 @@ module TSOS {
 
     export class MemoryManager {
          constructor(){}
-
+         
          public load(input,section){
              //console.log(_MemoryAccessor.sectionIndex());
               let code = input;
@@ -11,6 +11,14 @@ module TSOS {
                    
               }
          }
+         public isMemoryAvailable(): boolean {
+          let available = false;
+          if(_PCBList.length < 3){
+               available = true;
+          }
+          return available;
+          
+     }//isMemoryAvailable
 
          public clearMemory(memSection:string){
               //clears memory within a given range

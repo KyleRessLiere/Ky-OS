@@ -17,6 +17,7 @@ const TIMER_IRQ = 0; // Pages 23 (timer), 9 (interrupts), and 561 (interrupt pri
 // NOTE: The timer is different from hardware/host clock pulses. Don't confuse these.
 const KEYBOARD_IRQ = 1;
 const SYSTEM_IRQ = 2;
+const CONTEXT_IRQ = 3;
 //
 // Global Variables
 // TODO: Make a global object and use that instead of the "_" naming convention in the global namespace.
@@ -24,6 +25,7 @@ const SYSTEM_IRQ = 2;
 var _CPU; // Utilize TypeScript's type annotation system to ensure that _CPU is an instance of the Cpu class.
 var _Memory;
 var _RoundRobinQuantum = 6;
+var _Scheduler = null;
 var _MemoryAccessor;
 var _MemoryManager = null;
 var _PCBList = [];

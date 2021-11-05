@@ -9,6 +9,13 @@ var TSOS;
                 _Memory.memoryArray[i + _Memory.getSectionBase(section)] = code[i];
             }
         }
+        isMemoryAvailable() {
+            let available = false;
+            if (_PCBList.length < 3) {
+                available = true;
+            }
+            return available;
+        } //isMemoryAvailable
         clearMemory(memSection) {
             //clears memory within a given range
             let startIndex = _Memory.getSectionBase(memSection);
@@ -51,7 +58,18 @@ var TSOS;
             else {
                 console.log("Invalid section");
             }
-        }
+        } //memorySection
+        isResident(pid) {
+            for (let PCB of _PCBList)
+                if (PCB.PID == pid)
+                    return true;
+        } //isResident
+        //finds the index in the pcb list given pid
+        pidIndex(pid, pcbList) {
+            for (let i = 0; i < pcbList.length; i++)
+                if (pcbList[i].PID == pid)
+                    return i;
+        } //pid index
     }
     TSOS.MemoryManager = MemoryManager;
 })(TSOS || (TSOS = {}));
