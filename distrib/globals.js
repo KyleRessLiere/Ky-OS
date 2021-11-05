@@ -31,6 +31,7 @@ var _CurrentPCB = null;
 var _ReadyPCBList = [];
 var _PIDCount = 0;
 var _ActivePCBList = [];
+var _ProcessCounter = 0;
 var _OSclock = 0; // Page 23.
 var _Mode = 0; // (currently unused)  0 = Kernel Mode, 1 = User Mode.  See page 21.
 var _Canvas; // Initialized in Control.hostInit().

@@ -2,7 +2,7 @@ module TSOS {
 
     export class PCB {
 
-        constructor(public PID: number = _PCBList.length,  // Process ID
+        constructor(public PID: number = 0,  // Process ID
                     public PC: number = 0,  //Process Counter
                     public IR: String = "", //  //IR
                     public ACC: number =0, //Accumulator

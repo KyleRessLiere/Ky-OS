@@ -518,7 +518,7 @@ this.commandList[this.commandList.length] = sc;
                     case "E": break;
                     case "F": break;
                   
-                    default: console.log("invalid hex digits"); valid = false;
+                    default: console.log("invalid hex "); valid = false;
                 }
             }
             //if not pairs of two then not valid
@@ -534,14 +534,18 @@ this.commandList[this.commandList.length] = sc;
                 
                 // create a PCB
                 var PCB = new TSOS.PCB();
+
+                PCB.PID = _ProcessCounter; //assign pid 
+                _ProcessCounter ++;//adds a process
                 PCB.section = _MemoryManager.memorySection();
+
                 _PCBList[_PCBList.length] = PCB;
                 
-                if (_PCBList.length > 1 && _PCBList[PCB.PID - 1].state != "Complete") // If there is another PCB
-                    _PCBList[_PCBList.length - 2].state = "Terminated";
+                //if (_PCBList.length > 1 && _PCBList[PCB.PID - 1].state != "Complete") // If there is another PCB
+                    //_PCBList[_PCBList.length - 2].state = "Terminated";
                 
 
-                //clear all of memory 
+                //clear memory within a certain section
                 _MemoryManager.clearMemory(PCB.section);
 
                 //use memory manager to load
@@ -569,7 +573,7 @@ this.commandList[this.commandList.length] = sc;
       if ((args.length != 1)){
         validQuantum = false;
   }
-      else if((isNaN(Number(args[0])))) { //Checks to see if the arg is there and is actually a number
+      else if((isNaN(Number(args[0])))) { //Checks to see for number
         validQuantum = false;
     } 
     if(validQuantum == true) {

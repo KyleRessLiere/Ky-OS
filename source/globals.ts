@@ -48,6 +48,8 @@ var _PIDCount: number = 0;
 
 var _ActivePCBList = [];
 
+var _ProcessCounter = 0;
+
 
 
 var _OSclock: number = 0;  // Page 23.

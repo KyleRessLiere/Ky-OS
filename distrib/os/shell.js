@@ -424,7 +424,7 @@ var TSOS;
                     case "E": break;
                     case "F": break;
                     default:
-                        console.log("invalid hex digits");
+                        console.log("invalid hex ");
                         valid = false;
                 }
             }
@@ -438,14 +438,16 @@ var TSOS;
                 _StdOut.advanceLine();
                 // create a PCB
                 var PCB = new TSOS.PCB();
+                PCB.PID = _ProcessCounter; //assign pid 
+                _ProcessCounter++; //adds a process
                 PCB.section = _MemoryManager.memorySection();
                 _PCBList[_PCBList.length] = PCB;
-                if (_PCBList.length > 1 && _PCBList[PCB.PID - 1].state != "Complete") // If there is another PCB
-                    _PCBList[_PCBList.length - 2].state = "Terminated";
-                //clear all of memory 
-                _MemoryManager.clearMemory(0, 255);
+                //if (_PCBList.length > 1 && _PCBList[PCB.PID - 1].state != "Complete") // If there is another PCB
+                //_PCBList[_PCBList.length - 2].state = "Terminated";
+                //clear memory within a certain section
+                _MemoryManager.clearMemory(PCB.section);
                 //use memory manager to load
-                _MemoryManager.load(code, "0");
+                _MemoryManager.load(code, PCB.section);
                 // PCB Update 
                 PCB.IR = _MemoryAccessor.readMemoryHex(PCB.section, PCB.PC);
                 // Update Memory GUI
@@ -464,7 +466,7 @@ var TSOS;
             if ((args.length != 1)) {
                 validQuantum = false;
             }
-            else if ((isNaN(Number(args[0])))) { //Checks to see if the arg is there and is actually a number
+            else if ((isNaN(Number(args[0])))) { //Checks to see for number
                 validQuantum = false;
             }
             if (validQuantum == true) {
@@ -478,7 +480,7 @@ var TSOS;
         } //shellQuantum
         shellClearMem() {
             //clears all of memory
-            _MemoryManager.clearMemory(0);
+            _MemoryManager.clearMemory("3");
             TSOS.Control.memoryUpdate();
         } //clearmem
         shellPs() {

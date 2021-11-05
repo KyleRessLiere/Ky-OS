@@ -1,7 +1,7 @@
 var TSOS;
 (function (TSOS) {
     class PCB {
-        constructor(PID = _PCBList.length, // Process ID
+        constructor(PID = 0, // Process ID
         PC = 0, //Process Counter
         IR = "", //  //IR
         ACC = 0, //Accumulator
