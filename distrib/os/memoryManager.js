@@ -2,11 +2,11 @@ var TSOS;
 (function (TSOS) {
     class MemoryManager {
         constructor() { }
-        load(input, index) {
+        load(input, section) {
             //console.log(_MemoryAccessor.sectionIndex());
             let code = input;
             for (var i = 0; i < code.length; i++) {
-                _Memory.memoryArray[i] = code[i];
+                _Memory.memoryArray[i + _Memory.getSectionBase(section)] = code[i];
             }
         }
         clearMemory(memSection) {

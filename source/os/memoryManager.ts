@@ -3,11 +3,11 @@ module TSOS {
     export class MemoryManager {
          constructor(){}
 
-         public load(input,index){
+         public load(input,section){
              //console.log(_MemoryAccessor.sectionIndex());
               let code = input;
-              for(var i=0;i<code.length;i++){
-                   _Memory.memoryArray[i] = code[i];
+              for(var i = 0; i < code.length; i ++){
+               _Memory.memoryArray[i + _Memory.getSectionBase(section)] = code[i];
                    
               }
          }
