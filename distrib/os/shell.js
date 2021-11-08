@@ -452,6 +452,7 @@ var TSOS;
                     _PCBList[_PCBList.length] = PCB;
                     //if (_PCBList.length > 1 && _PCBList[PCB.PID - 1].state != "Complete") // If there is another PCB
                     //_PCBList[_PCBList.length - 2].state = "Terminated";
+                    console.log(_PCBList);
                     //clear memory within a certain section
                     _MemoryManager.clearMemory(PCB.section);
                     //use memory manager to load
@@ -514,12 +515,15 @@ var TSOS;
             }
         } //shellPs
         shellRunAll(args) {
-            for (let i = 0; i < _PCBList.length; i++) {
+            console.log(_PCBList[0].state);
+            let i = 0;
+            while (i < _PCBList.length) {
                 if (_PCBList[i].state = "Resident") {
+                    console.log(_PCBList[0].state);
                     _PCBList[i].state = "Waiting";
                     _ReadyPCBList[_ReadyPCBList.length] = _PCBList[i];
                 }
-                console.log("tye");
+                i++;
             }
             _Scheduler.currentProcess();
         }

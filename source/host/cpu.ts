@@ -43,11 +43,11 @@ module TSOS {
             _CurrentPCB.state = "Running";
            
             
-
             this.cpuUpdate();
             Control.memoryUpdate();
             Control.cpuUpdate();
             Control.processTableUpdate();
+            console.log(_CurrentPCB);
             console.log(_CurrentPCB.IR)
            switch (_CurrentPCB.IR) {
         
@@ -84,23 +84,10 @@ module TSOS {
                     
                 break;  //load Yreg 
             case "EA":  
-            
-                  
-                                          
+                this.PC++;                     
                 break;  
             case "00": 
             isCompleted = true; 
-                _StdOut.putText("Finished la process de " + _CurrentPCB.PID);
-                _StdOut.advanceLine();
-                _OsShell.putPrompt();
-                _ReadyPCBList.splice(_MemoryManager.pidIndex(_ReadyPCBList,_CurrentPCB.PID),1)
-                _PCBList.splice(_MemoryManager.pidIndex(_PCBList,_CurrentPCB.PID), 1);
-                _CurrentPCB = null;
-                Control.cpuUpdate();
-                Control.memoryUpdate();
-                Control.processTableUpdate();
-                _Scheduler.currentProcess();
-                
                 break;  
             case "EC": 
             this.compareMemToX();    
@@ -121,11 +108,12 @@ module TSOS {
                
                 console.log("Invalid Op Code");
                 
+                
         }
         
         this.PC++;
-       // console.log(_CurrentPCB.quantumRan);
-        //_CurrentPCB.quantumRan += 1
+        
+        _CurrentPCB.quantumRan += 1
 
         // Update the IR
         this.IR = _MemoryAccessor.readMemoryHex(_CurrentPCB.section, this.PC);
@@ -138,9 +126,25 @@ module TSOS {
         Control.processTableUpdate();
         Control.memoryUpdate();
         Control.cpuUpdate();
+        if(isCompleted == true){
+            this.switchProc();
+        }
 
 
         }
+        public switchProc(){
+            _StdOut.putText("Finished la process de " + _CurrentPCB.PID);
+                _StdOut.advanceLine();
+                _OsShell.putPrompt();
+                _ReadyPCBList.splice(_MemoryManager.pidIndex(_ReadyPCBList,_CurrentPCB.PID),1)
+                _PCBList.splice(_MemoryManager.pidIndex(_PCBList,_CurrentPCB.PID), 1);
+                _CurrentPCB = null;
+                Control.cpuUpdate();
+                Control.memoryUpdate();
+                Control.processTableUpdate();
+                _Scheduler.currentProcess();
+
+        }//switchProc
         public cpuUpdate(): void {
             this.PC = _CurrentPCB.PC;
             this.IR = _CurrentPCB.IR;
@@ -312,16 +316,13 @@ module TSOS {
     }
            
           
-        
-
-
+    
           }
 
 
 
         }
         
-    }
     
     
     
