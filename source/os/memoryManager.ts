@@ -66,6 +66,13 @@ module TSOS {
                }
              
          }//memorySection
+         public getPCB(pid:number){
+          for(var PCB of _PCBList) {
+               if (PCB.PID == pid){
+                   return true;
+               }
+           }
+         }
 
          
          public isResident(pid: number): boolean{

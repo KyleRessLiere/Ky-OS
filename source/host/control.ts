@@ -229,11 +229,11 @@ module TSOS {
     this.processTableClear();
     var processTable = <HTMLTableElement>document.getElementById("ProcessTable");
     for (var i = 0; i < _PCBList.length; i++) {
-        // Insert a row with the appropriate data for each PCB
+     
         var row = processTable.insertRow(i + 1);
         // PID Entry
         var cellPID = row.insertCell(0);
-        cellPID.innerHTML = _PCBList[i].PID.toString();
+       // cellPID.innerHTML = _PCBList[i].PID.toString();
         // PC Entry
         var cellPC = row.insertCell(1);
         cellPC.innerHTML = _PCBList[i].PC.toString();

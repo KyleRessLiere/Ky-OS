@@ -66,6 +66,12 @@ var TSOS;
             // prompt <string>
             sc = new TSOS.ShellCommand(this.shellZebra, "zebra", "Zebra swarm");
             this.commandList[this.commandList.length] = sc;
+            // prompt <string>
+            sc = new TSOS.ShellCommand(this.shellKill, "kill", "kills a process");
+            this.commandList[this.commandList.length] = sc;
+            // prompt <string>
+            sc = new TSOS.ShellCommand(this.shellKillAll, "killall", "kills all the  process");
+            this.commandList[this.commandList.length] = sc;
             // Changes rr quantum
             sc = new TSOS.ShellCommand(this.shellQuantum, "quantum", "<int>- changes the RR quauntum");
             this.commandList[this.commandList.length] = sc;
@@ -297,6 +303,12 @@ var TSOS;
                         break;
                     case "cls":
                         _StdOut.putText("Wipes the current Screen Empty");
+                    case "killall":
+                        _StdOut.putText("Destroys all running process");
+                        break;
+                    case "kill":
+                        _StdOut.putText("Kills the current process");
+                        break;
                         break;
                     case "quantum":
                         _StdOut.putText("Changes the RedRobin Quantum");
@@ -498,9 +510,9 @@ var TSOS;
                 _StdOut.putText("Memory can only be cleard when their are no running procees");
             }
             else {
-                _MemoryManager.clearMemory("3");
                 _PCBList = [];
                 _ReadyPCBList = [];
+                _MemoryManager.clearMemory("3");
                 TSOS.Control.memoryUpdate();
             }
         } //clearmem
@@ -515,17 +527,51 @@ var TSOS;
             }
         } //shellPs
         shellRunAll(args) {
-            console.log(_PCBList[0].state);
-            let i = 0;
-            while (i < _PCBList.length) {
-                if (_PCBList[i].state = "Resident") {
-                    console.log(_PCBList[0].state);
-                    _PCBList[i].state = "Waiting";
-                    _ReadyPCBList[_ReadyPCBList.length] = _PCBList[i];
+            if (_PCBList.length > 0) {
+                let i = 0;
+                while (i < _PCBList.length) {
+                    if (_PCBList[i].state = "Resident") {
+                        console.log(_PCBList[0].state);
+                        _PCBList[i].state = "Waiting";
+                        _ReadyPCBList[_ReadyPCBList.length] = _PCBList[i];
+                    }
+                    i++;
                 }
-                i++;
+                _Scheduler.currentProcess();
             }
-            _Scheduler.currentProcess();
+        }
+        shellKill(args) {
+            var pid = -1;
+            if (args.length > 0 && !(isNaN(Number(args[0])))) { //checks for number
+                pid = Number(args[0]);
+                // Checks to see if the PID exists and hasn't already been run or terminated
+                if (_MemoryManager.isResident(pid) == true) {
+                    if (_CurrentPCB != null) {
+                        if (_CurrentPCB.PID == pid) {
+                            _CurrentPCB = null;
+                        }
+                    }
+                    _MemoryManager.clearMemory(_MemoryManager.getPCB(pid).section);
+                    _PCBList.splice(_MemoryManager.pidIndex(_PCBList, pid), 1);
+                    TSOS.Control.processTableUpdate;
+                    TSOS.Control.cpuUpdate();
+                    TSOS.Control.memoryUpdate();
+                    _Scheduler.nextProcess();
+                }
+                else {
+                    _StdOut.putText("Invalid pid");
+                }
+            }
+        } //shellkill
+        shellKillAll(args) {
+            _CPU.isExecuting = false;
+            _StdOut.putText("All process have been elimanted");
+            _CurrentPCB = null;
+            _PCBList = [];
+            _MemoryManager.clearMemory("3");
+            TSOS.Control.cpuUpdate();
+            TSOS.Control.memoryUpdate();
+            TSOS.Control.processTableUpdate();
         }
     }
     TSOS.Shell = Shell;

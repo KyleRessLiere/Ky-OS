@@ -123,6 +123,20 @@ this.commandList[this.commandList.length] = sc;
         "Zebra swarm"
       );
       this.commandList[this.commandList.length] = sc;
+      // prompt <string>
+      sc = new ShellCommand(
+        this.shellKill,
+        "kill",
+        "kills a process"
+      );
+      this.commandList[this.commandList.length] = sc;
+      // prompt <string>
+      sc = new ShellCommand(
+        this.shellKillAll,
+        "killall",
+        "kills all the  process"
+      );
+      this.commandList[this.commandList.length] = sc;
       // Changes rr quantum
       sc = new ShellCommand(
         this.shellQuantum,
@@ -384,6 +398,16 @@ this.commandList[this.commandList.length] = sc;
             _StdOut.putText(
               "Wipes the current Screen Empty"
             );
+            case "killall": 
+            _StdOut.putText(
+              "Destroys all running process"
+            );
+            break;
+            case "kill": 
+            _StdOut.putText(
+              "Kills the current process"
+            );
+            break;
             break;
             case "quantum": 
             _StdOut.putText(
@@ -395,6 +419,7 @@ this.commandList[this.commandList.length] = sc;
               "Clears all partions of memory"
             );
             break;
+           
             
           // TODO: Make descriptive MANual page entries for the the rest of the shell commands here.
           default:
@@ -613,9 +638,10 @@ this.commandList[this.commandList.length] = sc;
 
       }
       else{
-      _MemoryManager.clearMemory("3");
+      
       _PCBList = [];
       _ReadyPCBList = [];
+      _MemoryManager.clearMemory("3");
       Control.memoryUpdate();
       }
     
@@ -635,7 +661,7 @@ this.commandList[this.commandList.length] = sc;
    
       
       public shellRunAll(args: string[]) {
-        console.log(_PCBList[0].state)
+      if(_PCBList.length > 0){
         let i =0;
         while(i < _PCBList.length) { 
             if (_PCBList[i].state = "Resident") {
@@ -646,8 +672,46 @@ this.commandList[this.commandList.length] = sc;
             i++;
         }
         _Scheduler.currentProcess();
+      }
     }
-  
+  public shellKill(args: string[]) {
+    var pid = -1;
+    if (args.length > 0 && !(isNaN(Number(args[0])))) { //checks for number
+      pid = Number(args[0]);
+      // Checks to see if the PID exists and hasn't already been run or terminated
+      if(_MemoryManager.isResident(pid) == true) {
+        if(_CurrentPCB != null) {
+          if(_CurrentPCB.PID == pid){
+            _CurrentPCB = null
+          }
+        }
+        _MemoryManager.clearMemory(_MemoryManager.getPCB(pid).section);
+        _PCBList.splice(_MemoryManager.pidIndex(_PCBList,pid), 1);
+
+
+
+        Control.processTableUpdate;
+        Control.cpuUpdate();
+        Control.memoryUpdate();
+
+        _Scheduler.nextProcess();
+
+      }
+    else{
+    _StdOut.putText("Invalid pid")
+    }}
+    
+  }//shellkill
+  public shellKillAll(args: string[]){
+    _CPU.isExecuting = false;
+    _StdOut.putText("All process have been elimanted");
+    _CurrentPCB = null;
+    _PCBList = [];
+    _MemoryManager.clearMemory("3");
+    Control.cpuUpdate();
+    Control.memoryUpdate();
+    Control.processTableUpdate();
+  }
 }
 
 }

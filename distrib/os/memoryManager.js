@@ -59,6 +59,13 @@ var TSOS;
                 console.log("Invalid section");
             }
         } //memorySection
+        getPCB(pid) {
+            for (var PCB of _PCBList) {
+                if (PCB.PID == pid) {
+                    return true;
+                }
+            }
+        }
         isResident(pid) {
             for (let PCB of _PCBList)
                 if (PCB.PID == pid)
