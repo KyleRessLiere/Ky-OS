@@ -37,7 +37,12 @@ var _CPU: TSOS.Cpu;  // Utilize TypeScript's type annotation system to ensure th
 
 var _Memory: TSOS.Memory;
 
-var _RoundRobinQuantum: number = 1;
+var _RoundRobinQuantum: number = 6;
+
+var _QuantumStore: number = 6;
+
+//default scheduling algortihim
+var _ScheduleAlgo = "RR";
 
 var _Scheduler: any = null;
 
@@ -57,6 +62,8 @@ var _ActivePCBList = [];
 var _ProcessCounter = 0;
 
 var _QuantumRan = 6;
+
+
 
 
 var _OSclock: number = 0;  // Page 23.

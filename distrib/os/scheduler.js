@@ -17,12 +17,10 @@ var TSOS;
                     // If there's only one ready process and its not running...
                     // Make that one process the running one
                     var params = [_ReadyPCBList[0]];
-                    console.log("test1");
                     _KernelInterruptQueue.enqueue(new TSOS.Interrupt(CONTEXT_IRQ, params));
                 }
                 else if ((_ReadyPCBList.length >= 2) && (_CurrentPCB == null)) {
                     // There are two or more ready processes but none currently running
-                    console.log("test2");
                     this.nextProcess();
                 }
                 else if (_ReadyPCBList.length >= 2) {

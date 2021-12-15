@@ -5,7 +5,6 @@ var TSOS;
         sectionIndex(section) {
             let index;
             index = parseInt(section, 16);
-            console.log(index);
             return index;
         }
         readOneMemoryByteToDecimal(section, PC) {

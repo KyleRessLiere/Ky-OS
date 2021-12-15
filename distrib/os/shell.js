@@ -66,8 +66,13 @@ var TSOS;
             // prompt <string>
             sc = new TSOS.ShellCommand(this.shellZebra, "zebra", "Zebra swarm");
             this.commandList[this.commandList.length] = sc;
+            sc = new TSOS.ShellCommand(this.shellGetSchedule, "getschedule", "Gets the current scheduling algo");
+            this.commandList[this.commandList.length] = sc;
             // prompt <string>
             sc = new TSOS.ShellCommand(this.shellKill, "kill", "kills a process");
+            this.commandList[this.commandList.length] = sc;
+            // prompt <string>
+            sc = new TSOS.ShellCommand(this.setSchedule, "setschedule", "Changes the program execution shceduling RR = round robin, fcfs = first come first serve and priority for priority queue");
             this.commandList[this.commandList.length] = sc;
             // prompt <string>
             sc = new TSOS.ShellCommand(this.shellKillAll, "killall", "kills all the  process");
@@ -468,11 +473,6 @@ var TSOS;
                     PCB.section = _MemoryManager.memorySection();
                     //Add it to global list of Resident PCBs
                     _PCBList[_PCBList.length] = PCB;
-                    //  console.log(_PCBList + "LOAD PCB LIST")
-                    //  console.log(_PCBList);
-                    //clear memory before loading
-                    // NOTE: Will probably change it such that when a program is completed or terminated the memory is cleared
-                    // instead of keeping the old program in memory and only removing it when a new one is loaded
                     _MemoryManager.clearMemory(PCB.section);
                     //use memory manager to load
                     _MemoryManager.load(code, PCB.section);
@@ -510,14 +510,14 @@ var TSOS;
                 _StdOut.putText("Quantum changed to " + _RoundRobinQuantum);
             }
             else {
-                _StdOut.putText(args[0] + " is a invalid quantum quantums must be numbers");
+                _StdOut.putText(args[0] + " is a invalid quantum quantum must be numbers");
             }
             console.log(_RoundRobinQuantum);
         } //shellQuantum
         shellClearMem() {
             //clears all of memory
             if (_CPU.isExecuting == true) {
-                _StdOut.putText("Memory can only be cleard when their are no running procees");
+                _StdOut.putText("Memory can only be cleared when their are no running processes");
             }
             else {
                 _PCBList = [];
@@ -583,7 +583,47 @@ var TSOS;
             TSOS.Control.cpuUpdate();
             TSOS.Control.memoryUpdate();
             TSOS.Control.processTableUpdate();
-        }
+        } //killall
+        setSchedule(args) {
+            let valid = true;
+            var scheduler = args[0];
+            switch (scheduler.toLowerCase()) {
+                case "rr":
+                    if (_ScheduleAlgo != "RR") {
+                        _ScheduleAlgo = "RR";
+                        _RoundRobinQuantum = _QuantumStore;
+                        _StdOut.putText("The algorithm is now set to " + _ScheduleAlgo);
+                    }
+                    else {
+                        _StdOut.putText("CURRENT ALGORITHM IS ALREADY ROUND ROBING LOL xd");
+                    }
+                    break;
+                case "fcfs":
+                    if (_ScheduleAlgo != "FCFS") {
+                        _ScheduleAlgo = "FCFS";
+                        _QuantumStore = _RoundRobinQuantum;
+                        _RoundRobinQuantum = Number.MAX_VALUE;
+                        _StdOut.putText("The algorithm is now set to " + _ScheduleAlgo);
+                    }
+                    else {
+                        _StdOut.putText("CURRENT ALGORITHM IS ALREADY First Come First Server LOL xd");
+                    }
+                    break;
+                case "priority":
+                    if (_ScheduleAlgo != "PRIORITY") {
+                        _ScheduleAlgo = "PRIORITY";
+                        _StdOut.putText("The algorithm is now set to " + _ScheduleAlgo);
+                    }
+                    else {
+                        _StdOut.putText("CURRENT ALGORITHM IS ALREADY PRIORITY LOL xd");
+                    }
+                    break;
+                default: _StdOut.putText("Invalid algorithm the valid algos are rr,fcfs and priority");
+            } //switch
+        } //setSchedule
+        shellGetSchedule() {
+            _StdOut.putText("The current algorithm is set to " + _ScheduleAlgo);
+        } //setSchedule
     }
     TSOS.Shell = Shell;
 })(TSOS || (TSOS = {}));

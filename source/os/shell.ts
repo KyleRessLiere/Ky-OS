@@ -123,11 +123,24 @@ this.commandList[this.commandList.length] = sc;
         "Zebra swarm"
       );
       this.commandList[this.commandList.length] = sc;
+      sc = new ShellCommand(
+        this.shellGetSchedule,
+        "getschedule",
+        "Gets the current scheduling algo"
+      );
+      this.commandList[this.commandList.length] = sc;
       // prompt <string>
       sc = new ShellCommand(
         this.shellKill,
         "kill",
         "kills a process"
+      );
+      this.commandList[this.commandList.length] = sc;
+      // prompt <string>
+      sc = new ShellCommand(
+        this.setSchedule,
+        "setschedule",
+        "Changes the program execution shceduling RR = round robin, fcfs = first come first serve and priority for priority queue"
       );
       this.commandList[this.commandList.length] = sc;
       // prompt <string>
@@ -585,13 +598,7 @@ this.commandList[this.commandList.length] = sc;
 
                   //Add it to global list of Resident PCBs
                   _PCBList[_PCBList.length] = PCB;
-                //  console.log(_PCBList + "LOAD PCB LIST")
-
-                //  console.log(_PCBList);
-
-                  //clear memory before loading
-                  // NOTE: Will probably change it such that when a program is completed or terminated the memory is cleared
-                  // instead of keeping the old program in memory and only removing it when a new one is loaded
+              
                   _MemoryManager.clearMemory(PCB.section);
 
                   //use memory manager to load
@@ -639,7 +646,7 @@ this.commandList[this.commandList.length] = sc;
 
     }
     else {
-      _StdOut.putText(args[0] + " is a invalid quantum quantums must be numbers") 
+      _StdOut.putText(args[0] + " is a invalid quantum quantum must be numbers") 
         
     }
     console.log(_RoundRobinQuantum);
@@ -647,7 +654,7 @@ this.commandList[this.commandList.length] = sc;
   public shellClearMem(): void {
       //clears all of memory
       if(_CPU.isExecuting == true) {
-        _StdOut.putText("Memory can only be cleard when their are no running procees")
+        _StdOut.putText("Memory can only be cleared when their are no running processes")
 
       }
       else{
@@ -729,8 +736,51 @@ this.commandList[this.commandList.length] = sc;
     Control.cpuUpdate();
     Control.memoryUpdate();
     Control.processTableUpdate();
-  }
+  }//killall
+  public setSchedule(args: string[]){
+    let valid = true;
+    var scheduler = args[0];
+    switch(scheduler.toLowerCase()){
+      case "rr": 
+      if(_ScheduleAlgo != "RR"){
+      _ScheduleAlgo = "RR";
+      _RoundRobinQuantum = _QuantumStore;
+      _StdOut.putText("The algorithm is now set to " + _ScheduleAlgo);
+      } else{
+        _StdOut.putText("CURRENT ALGORITHM IS ALREADY ROUND ROBING LOL xd")
+      }
+      break
+      case "fcfs": 
+      if(_ScheduleAlgo != "FCFS"){
+      _ScheduleAlgo = "FCFS";
+      _QuantumStore = _RoundRobinQuantum;
+      _RoundRobinQuantum = Number.MAX_VALUE;
+      _StdOut.putText("The algorithm is now set to " + _ScheduleAlgo);
+      }else{
+        _StdOut.putText("CURRENT ALGORITHM IS ALREADY First Come First Server LOL xd")
+      }
+
+      break
+      case "priority": 
+      if(_ScheduleAlgo != "PRIORITY"){
+      _ScheduleAlgo = "PRIORITY";
+      _StdOut.putText("The algorithm is now set to " + _ScheduleAlgo);
+      } else{
+        _StdOut.putText("CURRENT ALGORITHM IS ALREADY PRIORITY LOL xd")
+      }
+      break
+      default: _StdOut.putText("Invalid algorithm the valid algos are rr,fcfs and priority");
+    }//switch
+
+  }//setSchedule
+
+  public shellGetSchedule(){
+    _StdOut.putText("The current algorithm is set to " + _ScheduleAlgo); 
+
+  }//setSchedule
 }
+
+
 
 }
 

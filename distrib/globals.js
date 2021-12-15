@@ -25,7 +25,10 @@ const CONTEXT_IRQ = 4;
 //
 var _CPU; // Utilize TypeScript's type annotation system to ensure that _CPU is an instance of the Cpu class.
 var _Memory;
-var _RoundRobinQuantum = 1;
+var _RoundRobinQuantum = 6;
+var _QuantumStore = 6;
+//default scheduling algortihim
+var _ScheduleAlgo = "RR";
 var _Scheduler = null;
 var _MemoryAccessor;
 var _MemoryManager = null;
