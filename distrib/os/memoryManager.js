@@ -62,7 +62,7 @@ var TSOS;
         getPCB(pid) {
             for (var PCB of _PCBList) {
                 if (PCB.PID == pid) {
-                    return true;
+                    return PCB;
                 }
             }
         }
@@ -72,11 +72,20 @@ var TSOS;
                     return true;
         } //isResident
         //finds the index in the pcb list given pid
-        pidIndex(pid, pcbList) {
-            for (let i = 0; i < pcbList.length; i++)
-                if (pcbList[i].PID == pid)
+        pidIndex(list, givenPID) {
+            for (var i = 0; i < list.length; i++) {
+                if (list[i].PID == givenPID) {
                     return i;
-        } //pid index
+                }
+            } //pid index
+        }
+        PCBisReady(givenPID) {
+            for (var PCB of _ReadyPCBList) {
+                if (PCB.PID == givenPID) {
+                    return true;
+                }
+            }
+        }
     }
     TSOS.MemoryManager = MemoryManager;
 })(TSOS || (TSOS = {}));

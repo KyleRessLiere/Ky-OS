@@ -67,9 +67,9 @@ module TSOS {
              
          }//memorySection
          public getPCB(pid:number){
-          for(var PCB of _PCBList) {
+          for (var PCB of _PCBList) {
                if (PCB.PID == pid){
-                   return true;
+                   return PCB;
                }
            }
          }
@@ -82,10 +82,20 @@ module TSOS {
          }//isResident
 
          //finds the index in the pcb list given pid
-         public pidIndex(pid:number,pcbList:TSOS.PCB[]){
-              for(let i =0; i < pcbList.length; i ++)
-                   if(pcbList[i].PID == pid)
-                        return i;   
+         public pidIndex(list: TSOS.PCB[],givenPID:number){
+          for (var i = 0; i < list.length; i++) {
+               if (list[i].PID == givenPID) {
+                   
+                   return i;
+               } 
          }//pid index
-     
-    }}
+    }
+    public PCBisReady(givenPID: number) {
+     for (var PCB of _ReadyPCBList) {
+         if (PCB.PID == givenPID){
+             return true;
+         }
+     }
+ }
+
+}}

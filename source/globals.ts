@@ -22,7 +22,9 @@ const KEYBOARD_IRQ: number = 1;
 
 const SYSTEM_IRQ: number = 2;
 
-const CONTEXT_IRQ: number =3;
+const PROCESS_BREAK_IRQ: number =3;
+
+const CONTEXT_IRQ: number =4;
 
 
 
@@ -35,7 +37,7 @@ var _CPU: TSOS.Cpu;  // Utilize TypeScript's type annotation system to ensure th
 
 var _Memory: TSOS.Memory;
 
-var _RoundRobinQuantum: number = 6;
+var _RoundRobinQuantum: number = 1;
 
 var _Scheduler: any = null;
 
@@ -54,7 +56,7 @@ var _ActivePCBList = [];
 
 var _ProcessCounter = 0;
 
-var _QuantumRan = 0;
+var _QuantumRan = 6;
 
 
 var _OSclock: number = 0;  // Page 23.

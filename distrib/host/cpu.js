@@ -13,96 +13,112 @@
 var TSOS;
 (function (TSOS) {
     class Cpu {
-        constructor(PC = 0, Acc = 0, Xreg = 0, Yreg = 0, Zflag = 0, isExecuting = false, IR = "") {
+        constructor(PC = 0, IR = "", Acc = 0, Xreg = 0, Yreg = 0, Zflag = 0, isExecuting = false) {
             this.PC = PC;
+            this.IR = IR;
             this.Acc = Acc;
             this.Xreg = Xreg;
             this.Yreg = Yreg;
             this.Zflag = Zflag;
             this.isExecuting = isExecuting;
-            this.IR = IR;
         }
         init() {
             this.PC = 0;
+            this.IR = "";
             this.Acc = 0;
             this.Xreg = 0;
             this.Yreg = 0;
             this.Zflag = 0;
-            this.IR = "";
             this.isExecuting = false;
         }
         cycle() {
+            var isCompleted = false;
             _Kernel.krnTrace('CPU cycle');
             // TODO: Accumulate CPU usage and profiling statistics here.
             // Do the real work here. Be sure to set this.isExecuting appropriately.
+            //Change the PCB to state Running
             _CurrentPCB.state = "Running";
-            this.cpuUpdate();
-            TSOS.Control.memoryUpdate();
-            TSOS.Control.cpuUpdate();
-            TSOS.Control.processTableUpdate();
             console.log(_CurrentPCB.IR);
-            switch (_CurrentPCB.IR) {
-                case "A9":
-                    this.loadAccConstant();
-                    break; //load accumulator with a constant
-                case "AD":
-                    this.loadAccMemory();
-                    break; //load accumulator from memory
-                case "8D":
-                    this.storeAcc();
-                    break; //store accumulator in memory
-                case "6D":
-                    this.addWithCarry();
-                    break; //add contents of memory to accumulator and store in accumulator
-                case "A2":
-                    this.loadXFromConstant();
-                    break; //load Xreg 
-                case "AE":
-                    this.loadXFromMemory();
-                    break; //load Xrega
-                case "A0":
-                    this.loadYFromConstant();
-                    break; //load Yreg 
-                case "AC":
-                    this.loadYFromMemory();
-                    break; //load Yreg 
-                case "EA":
-                    break;
-                case "00":
-                    _CurrentPCB.state = "Complete";
-                    _CPU.isExecuting = false;
-                    _StdOut.putText("Finshed la process de " + _CurrentPCB.PID);
-                    _StdOut.advanceLine();
-                    _OsShell.putPrompt();
-                    break;
-                case "EC":
-                    this.compareMemToX();
-                    break;
-                case "D0":
-                    this.branchBytes();
-                    break;
-                case "EE":
-                    this.incrementByte();
-                    break;
-                case "FF":
-                    this.systemCall();
-                    break;
-                default:
-                    console.log("Invalid Op Code");
+            // Get the currentPCB and assign its values to corresponding cpu values
+            this.updateCPUWithPCB();
+            // Update the GUI
+            TSOS.Control.processTableUpdate();
+            TSOS.Control.cpuUpdate();
+            //console.log(_CurrentPCB + "CurrentPCB")
+            // Run the next code
+            try {
+                switch (_CurrentPCB.IR) {
+                    case "A9":
+                        this.loadAccConstant();
+                        break; //load accumulator with a constant
+                    case "AD":
+                        this.loadAccMemory();
+                        break; //load accumulator from memory
+                    case "8D":
+                        this.storeAcc();
+                        break; //store accumulator in memory
+                    case "6D":
+                        this.addWithCarry();
+                        break; //add contents of memory to accumulator and store in accumulator
+                    case "A2":
+                        this.loadXFromConstant();
+                        break; //load Xreg 
+                    case "AE":
+                        this.loadXFromMemory();
+                        break; //load Xrega
+                    case "A0":
+                        this.loadYFromConstant();
+                        break; //load Yreg 
+                    case "AC":
+                        this.loadYFromMemory();
+                        break; //load Yreg 
+                    case "EA":
+                        this.PC++;
+                        break;
+                    case "00":
+                        isCompleted = true;
+                        break;
+                    case "EC":
+                        this.compareMemToX();
+                        break;
+                    case "D0":
+                        this.branchBytes();
+                        break;
+                    case "EE":
+                        this.incrementByte();
+                        break;
+                    case "FF":
+                        this.systemCall();
+                        break;
+                    default:
+                        console.log("Invalid Op Code");
+                        var params = [_CurrentPCB.PID.toString(), 'Running Process Invalid Op Code'];
+                        _KernelInterruptQueue.enqueue(new TSOS.Interrupt(PROCESS_BREAK_IRQ, params));
+                }
             }
+            catch (Error) {
+                var params = [_CurrentPCB.PID.toString(), 'Running Process Memory Access Violation'];
+                _KernelInterruptQueue.enqueue(new TSOS.Interrupt(PROCESS_BREAK_IRQ, params));
+            }
+            // Increment the PC so we know to go on the next command the next cpu cycle for this process
             this.PC++;
+            _CurrentPCB.quantumRan++;
             // Update the IR
             this.IR = _MemoryAccessor.readMemoryHex(_CurrentPCB.section, this.PC);
-            // update cpu with current pcb
-            this.pcbUpdate();
-            // update pcb list
-            this.pcbListUpdate();
-            //update gui 
-            TSOS.Control.processTableUpdate();
+            // Copy the CPU to the CurrentPCB
+            this.updatePCBWithCPU();
+            // Update the GUI again
             TSOS.Control.memoryUpdate();
             TSOS.Control.cpuUpdate();
+            // Control.processTableUpdate();
+            console.log(_CurrentPCB);
+            _Scheduler.currentProcess();
+            if (isCompleted) {
+                console.log("Finished");
+                this.breakProcess();
+            }
         }
-        cpuUpdate() {
+        updateCPUWithPCB() {
             this.PC = _CurrentPCB.PC;
             this.IR = _CurrentPCB.IR;
             this.Acc = _CurrentPCB.ACC;
@@ -110,7 +126,7 @@ var TSOS;
             this.Yreg = _CurrentPCB.Y;
             this.Zflag = _CurrentPCB.Z;
         }
-        pcbUpdate() {
+        updatePCBWithCPU() {
             _CurrentPCB.PC = this.PC;
             _CurrentPCB.IR = this.IR;
             _CurrentPCB.ACC = this.Acc;
@@ -118,8 +134,26 @@ var TSOS;
             _CurrentPCB.Y = this.Yreg;
             _CurrentPCB.Z = this.Zflag;
         }
-        pcbListUpdate() {
-            _PCBList[_CurrentPCB.PID] = _CurrentPCB;
+        breakProcess() {
+            _CurrentPCB.state = "Complete";
+            TSOS.Control.processTableUpdate();
+            // the program is completed...
+            // I don't know if  I shouldn't be doing this OS stuff in the cpu. May need to change for better host/OS separation
+            _StdOut.advanceLine();
+            _StdOut.putText("Process " + _CurrentPCB.PID + " Complete!");
+            _StdOut.advanceLine();
+            _OsShell.putPrompt();
+            // clear that section in memory
+            _MemoryManager.clearMemory(_CurrentPCB.section);
+            // remove PCB from _ReadyPCBList and _PCBList
+            _ReadyPCBList.splice(_MemoryManager.pidIndex(_ReadyPCBList, _CurrentPCB.PID), 1); // the two parameters are the index and the number of PCBs removed
+            _PCBList.splice(_MemoryManager.pidIndex(_PCBList, _CurrentPCB.PID), 1);
+            // remove PCB from _CurrentPCB
+            _CurrentPCB = _PCBList[0];
+            TSOS.Control.memoryUpdate();
+            TSOS.Control.cpuUpdate();
+            TSOS.Control.cpuClear();
+            _Scheduler.currentProcess();
         }
         useInstruction() {
             this.PC++;
@@ -180,7 +214,7 @@ var TSOS;
             this.useInstruction();
             // loads accumulator with a value that is stored in memory, with the two byte hex memory given by the next two bytes
             this.Yreg = TSOS.Utils.hexToDecimal(_Memory.memoryArray[_MemoryAccessor.twoBytesToDecimal(_CurrentPCB.section, this.PC)]);
-            // We increment again because we are reading two bytes for the memory address
+            //
             //Pass over a opp code
             this.useInstruction();
         }
@@ -200,7 +234,7 @@ var TSOS;
         branchBytes() {
             //Pass over a opp code
             this.useInstruction();
-            // If the Zflag is zero jump a number of bytes forward, if its more than the section of memory, start back at the beginning again
+            // If the Zflag is zero jump foward
             if (this.Zflag == 0) {
                 var bytes = _MemoryAccessor.readOneMemoryByteToDecimal(_CurrentPCB.section, this.PC);
                 if (bytes + this.PC > 256) {

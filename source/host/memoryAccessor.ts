@@ -6,7 +6,7 @@ module TSOS {
         public sectionIndex(section) {
            let index:number;
            index = parseInt(section,16);
-
+          
             return index;
 
         }
@@ -35,8 +35,7 @@ module TSOS {
         }
            
         public readMemoryHex(section: string, PC: number) {
-            
-            var hex: string = _Memory.memoryArray[this.sectionIndex(section) + PC];
+            var hex: string = _Memory.memoryArray[_Memory.getSectionBase(section) + PC];
             return hex;
         }
 

@@ -118,6 +118,26 @@ var TSOS;
                 case CONTEXT_IRQ:
                     _CurrentPCB = params[0];
                     break;
+                case PROCESS_BREAK_IRQ: // Ctrl-C, or Other Error causing process to stop and be killed
+                    if (_CurrentPCB != null) {
+                        _CurrentPCB.state = "Terminated";
+                        _StdOut.advanceLine();
+                        _StdOut.putText("Process " + params[0] + " Terminated due to: " + params[1]);
+                        _StdOut.advanceLine();
+                        _OsShell.putPrompt();
+                        // clear that section in memory
+                        _MemoryManager.clearMemory(_CurrentPCB.section);
+                        // remove PCB from _ReadyPCBList and _PCBList
+                        _ReadyPCBList.splice(_MemoryManager.pidIndex(_ReadyPCBList, _CurrentPCB.PID), 1);
+                        _PCBList.splice(_MemoryManager.pidIndex(_PCBList, _CurrentPCB.PID), 1);
+                        // remove PCB from _CurrentPCB
+                        _CurrentPCB = null;
+                        TSOS.Control.processTableUpdate();
+                        TSOS.Control.cpuUpdate();
+                        TSOS.Control.memoryUpdate();
+                        _Scheduler.nextProcess();
+                        break;
+                    }
                 default:
                     this.krnTrapError("Invalid Interrupt Request. irq=" + irq + " params=[" + params + "]");
             }

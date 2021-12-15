@@ -508,24 +508,25 @@ this.commandList[this.commandList.length] = sc;
     }
 
     public shellRun(args: string[]) {
-      if (args.length > 0 && !(isNaN(Number(args[0])))) { //checks for number
-        var pid = Number(args[0]);
-        // Checks to see if the PID exists and hasn't already been run or terminated
-        if(pid < _PCBList.length && _PCBList[pid].state != "Terminated" && _PCBList[pid].state != "Complete") {
+      // Check to see if the entered PID is valid
+      if ((args.length = 1) && !(isNaN(Number(args[0])))) { //Checks to see if the arg is there and is actually a number
+        var enteredPID = Number(args[0]);
+        // Checks to see if the PID is loaded into memory
+        if(_MemoryManager.isResident(enteredPID)) {
+            // change the PCB status to waiting
+            //console.log(_MemoryManager.pidIndex(_PCBList,enteredPID) + "index")
+            _PCBList[_MemoryManager.pidIndex(_PCBList,enteredPID)].state = "Waiting";
+            // add the process to the ready queue
+            _ReadyPCBList[_ReadyPCBList.length] = _MemoryManager.getPCB(enteredPID);
             
-            _CurrentPCB = _PCBList[pid];  // 
-            _PCBList[pid].state = "Running"; //change waiting next pro
-          
-            // make CPU.isExecuting to true
-            _CPU.isExecuting = true;
+            _Scheduler.currentProcess();
         } else {
-            _StdOut.putText("Invalid PID");
+            _StdOut.putText("Ensure the entered PID number is valid.")
         }
     } else {
-        _StdOut.putText("Please enter a PID number.");
-       
-      
-  }}
+        _StdOut.putText("Please enter a PID number.")
+    }
+     }
     //	validates the user code in the	HTML5 text area
     public shellLoad() {
       var code = _UserCode.value;
@@ -570,28 +571,40 @@ this.commandList[this.commandList.length] = sc;
                 _StdOut.putText("Valid Code has been entered");
                 _StdOut.advanceLine();
                 if(_MemoryManager.isMemoryAvailable() == true) {
-                // create a PCB
-                var PCB = new TSOS.PCB();
+                  // create a PCB
+                  var PCB = new TSOS.PCB();
 
-                PCB.PID = _ProcessCounter; //assign pid 
-                _ProcessCounter ++;//adds a process
-                PCB.section = _MemoryManager.memorySection();
+                  
 
-                _PCBList[_PCBList.length] = PCB;
-                
-                //if (_PCBList.length > 1 && _PCBList[PCB.PID - 1].state != "Complete") // If there is another PCB
-                    //_PCBList[_PCBList.length - 2].state = "Terminated";
-                console.log(_PCBList)
+                  // give it a PID
+                  PCB.PID = _ProcessCounter;
+                  _ProcessCounter++;  // Increment to prevent duplicate PIDs
+                  
+                  // Assign it a section in memory
+                  PCB.section = _MemoryManager.memorySection();
 
-                //clear memory within a certain section
-                _MemoryManager.clearMemory(PCB.section);
+                  //Add it to global list of Resident PCBs
+                  _PCBList[_PCBList.length] = PCB;
+                //  console.log(_PCBList + "LOAD PCB LIST")
 
-                //use memory manager to load
-                _MemoryManager.load(code,PCB.section); 
-                                                      
-                // PCB Update 
-                PCB.IR = _MemoryAccessor.readMemoryHex(PCB.section, PCB.PC);
+                //  console.log(_PCBList);
 
+                  //clear memory before loading
+                  // NOTE: Will probably change it such that when a program is completed or terminated the memory is cleared
+                  // instead of keeping the old program in memory and only removing it when a new one is loaded
+                  _MemoryManager.clearMemory(PCB.section);
+
+                  //use memory manager to load
+                  
+                  _MemoryManager.load(code, PCB.section);
+                 
+                 
+                 
+                  // Update the PCB's IR
+                  PCB.IR = _MemoryAccessor.readMemoryHex(PCB.section, PCB.PC)//Changed to load beter kyle
+                  console.log(_Memory.memoryArray)
+                  console.log(PCB)
+                  console.log(PCB.IR)
                 // Update Memory GUI
                 Control.memoryUpdate();
                 Control.processTableUpdate();
@@ -660,20 +673,25 @@ this.commandList[this.commandList.length] = sc;
     }//shellPs
    
       
-      public shellRunAll(args: string[]) {
-      if(_PCBList.length > 0){
-        let i =0;
-        while(i < _PCBList.length) { 
-            if (_PCBList[i].state = "Resident") {
-              console.log(_PCBList[0].state)
-                _PCBList[i].state = "Waiting";
-                _ReadyPCBList[_ReadyPCBList.length] = _PCBList[i];
-            }
-            i++;
+    public shellRunAll(args: string[]) {
+      console.log("Running all")
+      for (var i = 0; i < _PCBList.length; i++) {
+        // if the process is resident (and not running or waiting) ...
+        console.log(_PCBList[i])
+        if (_PCBList[i].state = "Resident") {
+            // Make the process Waiting
+            _PCBList[i].state = "Waiting";
+            // Add it to the ready queue
+            _ReadyPCBList[_ReadyPCBList.length] = _PCBList[i];
+            console.log(_ReadyPCBList)
         }
-        _Scheduler.currentProcess();
-      }
     }
+    _Scheduler.currentProcess();
+}
+
+  
+
+    
   public shellKill(args: string[]) {
     var pid = -1;
     if (args.length > 0 && !(isNaN(Number(args[0])))) { //checks for number
@@ -704,7 +722,7 @@ this.commandList[this.commandList.length] = sc;
   }//shellkill
   public shellKillAll(args: string[]){
     _CPU.isExecuting = false;
-    _StdOut.putText("All process have been elimanted");
+    _StdOut.putText("All process have been eliminated");
     _CurrentPCB = null;
     _PCBList = [];
     _MemoryManager.clearMemory("3");

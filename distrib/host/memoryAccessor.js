@@ -5,6 +5,7 @@ var TSOS;
         sectionIndex(section) {
             let index;
             index = parseInt(section, 16);
+            console.log(index);
             return index;
         }
         readOneMemoryByteToDecimal(section, PC) {
@@ -25,7 +26,7 @@ var TSOS;
             return index;
         }
         readMemoryHex(section, PC) {
-            var hex = _Memory.memoryArray[this.sectionIndex(section) + PC];
+            var hex = _Memory.memoryArray[_Memory.getSectionBase(section) + PC];
             return hex;
         }
     }
