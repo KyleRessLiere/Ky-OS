@@ -129,6 +129,12 @@ this.commandList[this.commandList.length] = sc;
         "Gets the current scheduling algo"
       );
       this.commandList[this.commandList.length] = sc;
+      sc = new ShellCommand(
+        this.shellFormatDisk,
+        "format",
+        "—	Initialize	all	blocks	in	all	sectors	in	all	tracks	and	display	a	message	denoting	success	or	failure.	"
+      );
+      this.commandList[this.commandList.length] = sc;
       // prompt <string>
       sc = new ShellCommand(
         this.shellKill,
@@ -778,6 +784,17 @@ this.commandList[this.commandList.length] = sc;
     _StdOut.putText("The current algorithm is set to " + _ScheduleAlgo); 
 
   }//setSchedule
+
+  public shellFormatDisk(){
+    if(!_DiskFormatStatus){
+      _diskDriver.diskFormat();
+      _StdOut.putText("Disk Formatted !!! :)");
+    }
+    else{
+      _StdOut.putText("Oppsie Disk is already formatted")
+    }
+
+  }//shellFormatDisk
 }
 
 

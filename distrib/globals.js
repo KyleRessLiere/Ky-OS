@@ -27,6 +27,8 @@ var _CPU; // Utilize TypeScript's type annotation system to ensure that _CPU is 
 var _Memory;
 var _RoundRobinQuantum = 6;
 var _QuantumStore = 6;
+var _Disk;
+var _DiskFormatStatus = false;
 //default scheduling algortihim
 var _ScheduleAlgo = "RR";
 var _Scheduler = null;
@@ -62,6 +64,7 @@ var _OsShell;
 var _SarcasticMode = false;
 // Global Device Driver Objects - page 12
 var _krnKeyboardDriver = null;
+var _diskDriver = null;
 var _hardwareClockID = null;
 var _UserCode; //store user code from text area
 // For testing (and enrichment)...

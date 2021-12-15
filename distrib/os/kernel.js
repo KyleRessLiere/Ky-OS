@@ -29,6 +29,11 @@ var TSOS;
             _krnKeyboardDriver = new TSOS.DeviceDriverKeyboard(); // Construct it.
             _krnKeyboardDriver.driverEntry(); // Call the driverEntry() initialization routine.
             this.krnTrace(_krnKeyboardDriver.status);
+            // Load the Keyboard Device Driver
+            this.krnTrace("Loading the disk device driver.");
+            _diskDriver = new TSOS.DeviceDriverDisk(); // Construct it.
+            _diskDriver.driverEntry(); // Call the driverEntry() initialization routine.
+            this.krnTrace(_diskDriver.status);
             // Memory Manger
             _MemoryManager = new TSOS.MemoryManager(); // Construct
             _Scheduler = new TSOS.Scheduler(); // Construct

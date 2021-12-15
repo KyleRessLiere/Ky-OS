@@ -68,6 +68,8 @@ var TSOS;
             this.commandList[this.commandList.length] = sc;
             sc = new TSOS.ShellCommand(this.shellGetSchedule, "getschedule", "Gets the current scheduling algo");
             this.commandList[this.commandList.length] = sc;
+            sc = new TSOS.ShellCommand(this.shellFormatDisk, "format", "—	Initialize	all	blocks	in	all	sectors	in	all	tracks	and	display	a	message	denoting	success	or	failure.	");
+            this.commandList[this.commandList.length] = sc;
             // prompt <string>
             sc = new TSOS.ShellCommand(this.shellKill, "kill", "kills a process");
             this.commandList[this.commandList.length] = sc;
@@ -624,6 +626,15 @@ var TSOS;
         shellGetSchedule() {
             _StdOut.putText("The current algorithm is set to " + _ScheduleAlgo);
         } //setSchedule
+        shellFormatDisk() {
+            if (!_DiskFormatStatus) {
+                _diskDriver.diskFormat();
+                _StdOut.putText("Disk Formatted !!! :)");
+            }
+            else {
+                _StdOut.putText("Oppsie Disk is already formatted");
+            }
+        } //shellFormatDisk
     }
     TSOS.Shell = Shell;
 })(TSOS || (TSOS = {}));
