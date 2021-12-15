@@ -41,6 +41,9 @@ var _RoundRobinQuantum: number = 6;
 
 var _QuantumStore: number = 6;
 
+var _Disk: TSOS.Disk;
+var _DiskFormatStatus: boolean = false;
+
 //default scheduling algortihim
 var _ScheduleAlgo = "RR";
 
@@ -99,6 +102,8 @@ var _SarcasticMode: boolean = false;
 
 // Global Device Driver Objects - page 12
 var _krnKeyboardDriver: TSOS.DeviceDriverKeyboard  = null;
+
+var _krnDiskDriver: TSOS.DeviceDriverDisk = null;
 
 var _hardwareClockID: number = null;
 

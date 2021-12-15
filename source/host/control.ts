@@ -104,6 +104,9 @@ module TSOS {
       _Memory = new Memory();
       _Memory.init();
 
+      //creates a disk 
+      _Disk = new Disk();
+
       _MemoryAccessor = new MemoryAccessor();
 
       // ... then set the host clock pulse ...

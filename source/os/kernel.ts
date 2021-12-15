@@ -35,6 +35,12 @@ module TSOS {
             _krnKeyboardDriver.driverEntry();                    // Call the driverEntry() initialization routine.
             this.krnTrace(_krnKeyboardDriver.status);
 
+             // Load the Keyboard Device Driver
+             this.krnTrace("Loading the disk device driver.");
+             _krnDiskDriver = new DeviceDriverDisk();     // Construct it.
+             _krnDiskDriver.driverEntry();                    // Call the driverEntry() initialization routine.
+             this.krnTrace(_krnDiskDriver.status);
+
               // Memory Manger
             _MemoryManager = new MemoryManager(); // Construct
 
