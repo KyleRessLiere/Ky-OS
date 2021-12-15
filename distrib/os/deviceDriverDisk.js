@@ -38,6 +38,9 @@ var TSOS;
             console.log(block);
             console.log(sessionStorage);
         } //diskFormat
+        createFile(fileName) {
+            console.log(fileName);
+        }
     } //DeviceDriverDisk
     TSOS.DeviceDriverDisk = DeviceDriverDisk;
 })(TSOS || (TSOS = {})); //TSOS

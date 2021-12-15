@@ -643,9 +643,15 @@ var TSOS;
             }
         } //shellFormatDisk
         shellCreateFile(args) {
-            if (_DiskFormatStatus) {
-                if (args.length > 0) {
-                }
+            if (!_DiskFormatStatus) {
+                _StdOut.putText("Cant create a file until disk is formatted");
+            }
+            else if (_DiskFormatStatus && args.length > 0) {
+                _diskDriver.createFile(args[0]);
+                _StdOut.putText("File name " + args[0] + " has been created");
+            }
+            else {
+                _StdOut.putText("Invalid File name");
             }
         } //shellCreateFile
     }

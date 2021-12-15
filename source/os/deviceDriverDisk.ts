@@ -45,6 +45,11 @@ module TSOS {
             console.log(block);
             console.log(sessionStorage)
         }//diskFormat
-        
+
+
+        public createFile(fileName:string){
+            console.log(fileName);
+        }
+
     }//DeviceDriverDisk
 }//TSOS
