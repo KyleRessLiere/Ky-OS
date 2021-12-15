@@ -6,24 +6,36 @@ var TSOS;
 (function (TSOS) {
     class DeviceDriverDisk extends TSOS.DeviceDriver {
         constructor() {
-            // Override the base method pointers.
-            // The code below cannot run because "this" can only be
-            // accessed after calling super.
-            // super(this.krnKbdDriverEntry, this.krnKbdDispatchKeyPress);
-            // So instead...
             super();
             this.driverEntry = this.diskDriverEntry;
         }
         init() {
         }
         diskDriverEntry() {
-            // Initialization routine for this, the kernel-mode Disk Device Driver.
             this.status = "loaded";
-            // More?
         } //diskDriverEntry
         diskFormat() {
-            console.log("formattte");
-            _DiskFormatStatus = true;
+            const block = new Array(64);
+            //sets all blocks to 0
+            for (var i = 0; i < block.length; i++) {
+                if (i > 4) {
+                    block[i] = "00";
+                }
+                else {
+                    block[i] = "0";
+                }
+            } //for
+            //turns arrays into string 
+            let blockString = block.join();
+            for (var x = 0; x < _Disk.tracks; x++) {
+                for (var y = 0; y < _Disk.sectors; y++) {
+                    for (var z = 0; z < _Disk.blocks; z++) {
+                        sessionStorage.setItem(x + ":" + y + ":" + z, blockString);
+                    }
+                }
+            } //for
+            console.log(block);
+            console.log(sessionStorage);
         } //diskFormat
     } //DeviceDriverDisk
     TSOS.DeviceDriverDisk = DeviceDriverDisk;

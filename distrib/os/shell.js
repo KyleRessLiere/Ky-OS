@@ -629,6 +629,7 @@ var TSOS;
         shellFormatDisk() {
             if (!_DiskFormatStatus) {
                 _diskDriver.diskFormat();
+                _DiskFormatStatus = true;
                 _StdOut.putText("Disk Formatted !!! :)");
             }
             else {

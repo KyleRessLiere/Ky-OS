@@ -788,7 +788,9 @@ this.commandList[this.commandList.length] = sc;
   public shellFormatDisk(){
     if(!_DiskFormatStatus){
       _diskDriver.diskFormat();
+      _DiskFormatStatus = true;
       _StdOut.putText("Disk Formatted !!! :)");
+      
     }
     else{
       _StdOut.putText("Oppsie Disk is already formatted")
@@ -796,8 +798,6 @@ this.commandList[this.commandList.length] = sc;
 
   }//shellFormatDisk
 }
-
-
 
 }
 
