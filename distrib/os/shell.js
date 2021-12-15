@@ -71,6 +71,9 @@ var TSOS;
             sc = new TSOS.ShellCommand(this.shellFormatDisk, "format", "—	Initialize	all	blocks	in	all	sectors	in	all	tracks	and	display	a	message	denoting	success	or	failure.	");
             this.commandList[this.commandList.length] = sc;
             // prompt <string>
+            sc = new TSOS.ShellCommand(this.shellCreateFile, "create", "Creates a file given a entered name");
+            this.commandList[this.commandList.length] = sc;
+            // prompt <string>
             sc = new TSOS.ShellCommand(this.shellKill, "kill", "kills a process");
             this.commandList[this.commandList.length] = sc;
             // prompt <string>
@@ -627,15 +630,24 @@ var TSOS;
             _StdOut.putText("The current algorithm is set to " + _ScheduleAlgo);
         } //setSchedule
         shellFormatDisk() {
-            if (!_DiskFormatStatus) {
+            if (!_DiskFormatStatus && !_CPU.isExecuting) {
                 _diskDriver.diskFormat();
                 _DiskFormatStatus = true;
                 _StdOut.putText("Disk Formatted !!! :)");
+            }
+            else if (_CPU.isExecuting) {
+                _StdOut.putText("Cant format while executing");
             }
             else {
                 _StdOut.putText("Oppsie Disk is already formatted");
             }
         } //shellFormatDisk
+        shellCreateFile(args) {
+            if (_DiskFormatStatus) {
+                if (args.length > 0) {
+                }
+            }
+        } //shellCreateFile
     }
     TSOS.Shell = Shell;
 })(TSOS || (TSOS = {}));

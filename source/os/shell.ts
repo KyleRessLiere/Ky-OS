@@ -137,6 +137,13 @@ this.commandList[this.commandList.length] = sc;
       this.commandList[this.commandList.length] = sc;
       // prompt <string>
       sc = new ShellCommand(
+        this.shellCreateFile,
+        "create",
+        "Creates a file given a entered name"
+      );
+      this.commandList[this.commandList.length] = sc;
+      // prompt <string>
+      sc = new ShellCommand(
         this.shellKill,
         "kill",
         "kills a process"
@@ -169,6 +176,7 @@ this.commandList[this.commandList.length] = sc;
         "clearmem",
         "Clears all the memory"
       );
+      
       this.commandList[this.commandList.length] = sc;
       //crashes the OS
       sc = new ShellCommand(
@@ -786,17 +794,27 @@ this.commandList[this.commandList.length] = sc;
   }//setSchedule
 
   public shellFormatDisk(){
-    if(!_DiskFormatStatus){
+    if(!_DiskFormatStatus && !_CPU.isExecuting){
       _diskDriver.diskFormat();
       _DiskFormatStatus = true;
       _StdOut.putText("Disk Formatted !!! :)");
       
     }
+    else if(_CPU.isExecuting){
+      _StdOut.putText("Cant format while executing")
+    }
     else{
       _StdOut.putText("Oppsie Disk is already formatted")
     }
-
   }//shellFormatDisk
+  public shellCreateFile(args: string[]){
+    if(_DiskFormatStatus){
+        if(args.length > 0){
+
+        }
+    }
+
+  }//shellCreateFile
 }
 
 }

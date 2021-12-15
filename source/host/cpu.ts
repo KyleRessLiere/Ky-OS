@@ -263,7 +263,7 @@
             public loadYFromMemory() {
                 //Pass over a opp code
                 this.useInstruction();
-                // loads accumulator with a value that is stored in memory, with the two byte hex memory given by the next two bytes
+               
                 this.Yreg = Utils.hexToDecimal(_Memory.memoryArray[_MemoryAccessor.twoBytesToDecimal(_CurrentPCB.section, this.PC)]);
                 //
                 //Pass over a opp code
@@ -304,8 +304,7 @@
                 //Pass over a opp code
                 this.useInstruction();
                 // increment the value of a byte in memory
-                _Memory.memoryArray[_MemoryAccessor.twoBytesToDecimal(_CurrentPCB.section, this.PC)] =
-                        Utils.incrementHexString(_Memory.memoryArray[_MemoryAccessor.twoBytesToDecimal(_CurrentPCB.section, this.PC)]);
+                _Memory.memoryArray[_MemoryAccessor.twoBytesToDecimal(_CurrentPCB.section, this.PC)] = Utils.incrementHexString(_Memory.memoryArray[_MemoryAccessor.twoBytesToDecimal(_CurrentPCB.section, this.PC)]);
                 //Pass over a opp code
                 this.useInstruction();
             }

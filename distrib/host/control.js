@@ -216,19 +216,6 @@ var TSOS;
                 cellLocation.innerHTML = _PCBList[i].location.toString();
             }
         }
-        static updateDisk() {
-            var accessDisk = document.getElementById("taDisk");
-            var rowNum = 0;
-            var containDisk = "<th>T:S:B</th><th>In Use</th><th>Next</th><th>Data</th></tr>";
-            for (let i = 0; i < _Disk.tracks; i++) {
-                for (let j = 0; j < _Disk.sectors; j++) {
-                    for (let k = 0; k < _Disk.blocks; k++) {
-                        containDisk += "<tr><td>" + (i + ":" + j + ":" + k) + "</td><td>" + JSON.parse(sessionStorage.getItem(i + ":" + j + ":" + k)).inUse + "</td><td>" + JSON.parse(sessionStorage.getItem(i + ":" + j + ":" + k)).next + "</td><td>" + JSON.parse(sessionStorage.getItem(i + ":" + j + ":" + k)).data.join("").toString() + "</td</tr>";
-                    }
-                }
-            }
-            accessDisk.innerHTML = containDisk;
-        } //update disk
     }
     TSOS.Control = Control;
 })(TSOS || (TSOS = {}));

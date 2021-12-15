@@ -27,6 +27,7 @@ var TSOS;
             } //for
             //turns arrays into string 
             let blockString = block.join();
+            //formatting is as easy as x,y and z
             for (var x = 0; x < _Disk.tracks; x++) {
                 for (var y = 0; y < _Disk.sectors; y++) {
                     for (var z = 0; z < _Disk.blocks; z++) {
