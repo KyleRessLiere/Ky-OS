@@ -1,7 +1,7 @@
 /* TSOS.css */
 
 body {
-  background: #909193 url(distrib/images/linen.png) repeat;
+  background: #909193 url(distrib/images/grey.jpg) ;
   font-family: Helvetica, Verdana, Arial, sans-serif;
   font-size: 12pt;
   font-weight: normal;
@@ -78,3 +78,4 @@ h3 {
   font-size: 8pt;
   text-align: center;
 }
+

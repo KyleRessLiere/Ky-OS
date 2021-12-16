@@ -79,8 +79,19 @@
              tabindex="2"
              onclick="TSOS.Control.hostBtnReset_click(this);">
    </div>
-
-   <div id="divConsole" style="margin:4px; width:500px; height:500px; float:left;">
+   <div id="divLog" style="float: left;width: 100px;">
+      <label>
+         Host Log
+         <br>
+         <textarea style="background-color:#063970;width:200px;color: white;"
+          name="taHostLog"
+                   id  ="taHostLog"
+                   rows="26"
+                   cols="48"
+         ></textarea>
+      </label>
+   </div>
+   <div id="divConsole" style="margin:4px; width:500px; height:500px; float:left;margin-left: 100px;">
       <canvas id="display"
               width="500px"
               height="500px"
@@ -90,23 +101,14 @@
       </canvas>
    </div>
 
-   <div id="divLog" style="margin-left:520px;">
-      <label>
-         Host Log
-         <br>
-         <textarea name="taHostLog"
-                   id  ="taHostLog"
-                   rows="26"
-                   cols="48"
-         ></textarea>
-      </label>
-   </div>
+   
  
-   <div id="divUserProgramInput" style="margin-left:520px;">
+   <div id="divUserProgramInput" style="float: left;;">
       <label>
          User Program Input
          <br>
-         <textarea name="taProgramInput"
+         <textarea style="background-color:#063970;color:white"
+          name="taProgramInput"
                    id  ="taProgramInput"
                    rows="8"
                    cols="48"
@@ -114,9 +116,9 @@
       </label>
    </div>
 </div>
-<div id="CPU" style="width:30%">
+<div id="CPU" style="width:30%"float: left;>
    <label>CPU</label>
-   <div id="divCPUTable">
+   <div id="divCPUTable" style:float:left;>
       <table>
          <tr>
             <th>PC</th>
