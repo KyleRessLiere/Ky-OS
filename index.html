@@ -83,7 +83,7 @@
       <label>
          Host Log
          <br>
-         <textarea style="background-color:#063970;width:200px;color: white;"
+         <textarea style="background-color:#063970;width:200px;color: white;height: 500px;"
           name="taHostLog"
                    id  ="taHostLog"
                    rows="26"
@@ -92,6 +92,7 @@
       </label>
    </div>
    <div id="divConsole" style="margin:4px; width:500px; height:500px; float:left;margin-left: 100px;">
+      <label>Console</label>
       <canvas id="display"
               width="500px"
               height="500px"
@@ -103,7 +104,7 @@
 
    
  
-   <div id="divUserProgramInput" style="float: left;;">
+   <div id="divUserProgramInput" style= "horizontal-align:left">
       <label>
          User Program Input
          <br>
@@ -116,10 +117,11 @@
       </label>
    </div>
 </div>
-<div id="CPU" style="width:30%"float: left;>
-   <label>CPU</label>
-   <div id="divCPUTable" style:float:left;>
+<div id="CPU" style="width:30%;display: inline-block;">
+  
+   <div id="divCPUTable" style = "margin-top: 0;">
       <table>
+         <caption>CPU</caption>
          <tr>
             <th>PC</th>
             <th>IR</th>
@@ -139,10 +141,11 @@
       </table>
    </div>
 </div>
-<div id="Memory" style= width:30%">
-   <label>Memory</label>
-   <div id="divMemoryTable" style="height:139px; overflow-y:scroll;">
+<div id="Memory" style= "">
+   
+   <div id="divMemoryTable" style=" height:139px; overflow-y:scroll;">
       <table>
+         <caption>Memory</caption>
          <tr>
             <td style="font-weight:bold;">0x000</td>
             <td id="memory0">00</td>
@@ -1201,10 +1204,10 @@
          </tr>
       </table>
    </div>
-   <div id="processes" style="width:fit-content; margin:4px;">
-      <label>Processes</label>
+   <div id="processes" style=" display: inline-block;width:fit-content; ">
       <div id="divProcessTable"></div>
       <table id ="ProcessTable">
+         <caption>Processes</caption>
          <tr>
             <th>PID</th>
             <th>PC</th>
@@ -1229,22 +1232,14 @@
          </tr>
       </table>
    </div>
-   <div id="divHardDrive" style="float: right; margin-right: 200px; color: white;">
-      <label style="background-color: #063970;">
-         Hard Drive Disk
-         <br>
-         <table name = "taDisk" id = "taDisk" style="display: block; height: 200px; width: 600px; border: 1px solid ; overflow-y: scroll">
-            <tr>
-               <th>T:S:B</th>
-               <th>In Use</th>
-               <th>Next</th>
-               <th>Data </th>
-            </tr>
+   
+   <div id="divDisk" style="margin:4px;">
+      <label>Disk</label>
+      <div id="divDiskTable" style="overflow:scroll; width: 1000px; height: 250px;">
+         <table id="diskTable" style="height:250px; width:100%; ">
+            
          </table>
-      </label>
-   </div>
-
-</div>
+      </div>
 
 
 

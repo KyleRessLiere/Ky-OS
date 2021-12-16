@@ -47,7 +47,7 @@ module TSOS {
 
 
         public createFile(fileName: String) {
-            // W TODO Check for duplicate file names by using findFile function
+            
 
             var name: string[];
             var tsbName:string = "";
@@ -57,7 +57,7 @@ module TSOS {
 
             //get name tsb
             for (var x = 0; x < _Disk.sectors; x++) {
-                for (var y = 1; y < _Disk.blocks; y++) {    // We start at one to not override the Master Boot Record, which doesnt do anything in out OS but good practice to not override it
+                for (var y = 1; y < _Disk.blocks; y++) {   
                     name = sessionStorage.getItem("0:" + x + ":" + y).split(",");
                     if (name[0] == "0") {
                         console.log(name)
@@ -117,7 +117,7 @@ module TSOS {
             console.log()
             
             console.log(sessionStorage)
-           // Control.diskTableUpdate();
+            Control.diskTableUpdate();
         }
 
 

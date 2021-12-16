@@ -94,7 +94,7 @@ var TSOS;
             sessionStorage.setItem(tsbData, tsbDataArray.join());
             console.log();
             console.log(sessionStorage);
-            // Control.diskTableUpdate();
+            TSOS.Control.diskTableUpdate();
         }
     } //DeviceDriverDisk
     TSOS.DeviceDriverDisk = DeviceDriverDisk;

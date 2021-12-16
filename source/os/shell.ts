@@ -622,9 +622,6 @@ this.commandList[this.commandList.length] = sc;
                 if(_MemoryManager.isMemoryAvailable() == true) {
                   // create a PCB
                   var PCB = new TSOS.PCB();
-
-                  
-
                   // give it a PID
                   PCB.PID = _ProcessCounter;
                   _ProcessCounter++;  // Increment to prevent duplicate PIDs
@@ -658,9 +655,41 @@ this.commandList[this.commandList.length] = sc;
                 _StdOut.putText("User code  hohohoho");
                 _StdOut.advanceLine();
                 _StdOut.putText("Process ID Number: " + PCB.PID);
+                }//memoryAvaible
+                else if(_DiskFormatStatus){
+                  var PCB = new TSOS.PCB();
+
+                  // give it a PID
+                  PCB.PID = _ProcessCounter;
+                  _ProcessCounter++;  // Increment to prevent duplicate PIDs
+
+                  // give it a priority
+                  PCB.priority = priority;
+
+                  // Assign it a location
+                  PCB.location = "Disk";
+
+               
+                  PCB.section = "disk";
+
+              
+                  _PCBList[_PCBList.length] = PCB;
+
+                  console.log(_PCBList);
+
+                  //use memory manager to load
+                  _MemoryManager.loadMemory(code, PCB.section, PCB.PID);
+                  PCB.IR = code[0] + code[1] + "";
+                  PCB.swaps = 1;
+                  // Update Memory GUI
+                  Control.memoryUpdate();
+
+                  // Update PCB GUI
+                  Control.processTableUpdate();
+
                 }
-                else{
-                  _StdOut.putText("No space in memory is available consider clearning memory"); 
+                else if(!_DiskFormatStatus){
+                  _StdOut.putText("No avaible memory consider formatting disk and trying again");
                 }
 
             }

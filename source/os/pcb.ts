@@ -14,6 +14,7 @@ module TSOS {
                     public section: string =  null,
                     public quantumRan: number = 0, //the amount of times the process has ran 
                     public priority:number = 0, //
+                    public swaps:number = 0, //
                     ) {  
         }
 
