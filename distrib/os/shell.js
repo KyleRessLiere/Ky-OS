@@ -90,6 +90,7 @@ var TSOS;
             this.commandList[this.commandList.length] = sc;
             // Changes rr quantum
             sc = new TSOS.ShellCommand(this.shellClearMem, "clearmem", "Clears all the memory");
+            sc = new TSOS.ShellCommand(this.shellDelete, "delete", "<FileName> - Deletes given a FileName.");
             this.commandList[this.commandList.length] = sc;
             //crashes the OS
             sc = new TSOS.ShellCommand(this.shellCrash, "bsod", "Crashes shelll and brings up BSOD MESSAGE");
@@ -510,9 +511,30 @@ var TSOS;
                     _StdOut.putText("User code  hohohoho");
                     _StdOut.advanceLine();
                     _StdOut.putText("Process ID Number: " + PCB.PID);
+                } //memoryAvaible
+                else if (_DiskFormatStatus) {
+                    var PCB = new TSOS.PCB();
+                    // give it a PID
+                    PCB.PID = _ProcessCounter;
+                    _ProcessCounter++; // Increment to prevent duplicate PIDs
+                    // give it a priority
+                    PCB.priority = priority;
+                    // Assign it a location
+                    PCB.location = "Disk";
+                    PCB.section = "disk";
+                    _PCBList[_PCBList.length] = PCB;
+                    console.log(_PCBList);
+                    //use memory manager to load
+                    _MemoryManager.loadMemory(code, PCB.section, PCB.PID);
+                    PCB.IR = code[0] + code[1] + "";
+                    PCB.swaps = 1;
+                    // Update Memory GUI
+                    TSOS.Control.memoryUpdate();
+                    // Update PCB GUI
+                    TSOS.Control.processTableUpdate();
                 }
-                else {
-                    _StdOut.putText("No space in memory is available consider clearning memory");
+                else if (!_DiskFormatStatus) {
+                    _StdOut.putText("No avaible memory consider formatting disk and trying again");
                 }
             }
             else
@@ -671,6 +693,13 @@ var TSOS;
                 _StdOut.putText("Invalid File name");
             }
         } //shellCreateFile
+        shellDelete(args) {
+            if (_DiskFormatStatus == true) {
+            } ////if
+            else {
+                _StdOut.putText("Disk is not formatted format and try again");
+            } //else
+        } //shellDelete
         shellRead(args) {
         }
     }

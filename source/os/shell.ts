@@ -183,6 +183,11 @@ this.commandList[this.commandList.length] = sc;
         "clearmem",
         "Clears all the memory"
       );
+      sc = new ShellCommand(
+        this.shellDelete,
+        "delete",
+        "<FileName> - Deletes given a FileName."
+      );
       
       this.commandList[this.commandList.length] = sc;
       //crashes the OS
@@ -872,8 +877,17 @@ this.commandList[this.commandList.length] = sc;
     }
 
 }//shellCreateFile
-public shellRead(args: string[]){
+public shellDelete(args: string[]){
+  if(_DiskFormatStatus == true){
+    
 
+  }////if
+  else{
+    _StdOut.putText("Disk is not formatted format and try again")
+  }//else
+
+}//shellDelete
+public shellRead(args: string[]){
 
 }
   }

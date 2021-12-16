@@ -120,6 +120,36 @@ module TSOS {
             Control.diskTableUpdate();
         }
 
+        public deleteFile(fileName: string){
+
+
+        }//deleteFile
+
+        public tsbFileName(fileName: String) {
+            var dataArray: string[];
+            var name: string;
+            for (var x = 0; x < _Disk.sectors; x++) {
+                for (var y = 0; y < _Disk.sectors; y++) {
+                    dataArray = sessionStorage.getItem("0:" + x + ":" + y).split(",");
+                    //get tsbFileName
+                    for(var z = 4; z < dataArray.length; z++) {
+                        if (dataArray[z] == "00"){
+                            break;
+                        } else {
+                            name += String.fromCharCode(Utils.hexToDecimal(dataArray[z]));
+                        }
+                    }
+                    
+                    if (name == fileName) {
+                        return "0:" + x + ":" + y;
+                    }
+                }
+            }
+            return null;
+        }//tsbFileName
+
+    
+
 
     }//DeviceDriverDisk
 }//TSOS

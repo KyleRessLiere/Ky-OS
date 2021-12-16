@@ -37,14 +37,13 @@ var TSOS;
             } //for
         } //diskFormat
         createFile(fileName) {
-            // W TODO Check for duplicate file names by using findFile function
             var name;
             var tsbName = "";
             var tsbData = "";
             var data;
             //get name tsb
             for (var x = 0; x < _Disk.sectors; x++) {
-                for (var y = 1; y < _Disk.blocks; y++) { // We start at one to not override the Master Boot Record, which doesnt do anything in out OS but good practice to not override it
+                for (var y = 1; y < _Disk.blocks; y++) {
                     name = sessionStorage.getItem("0:" + x + ":" + y).split(",");
                     if (name[0] == "0") {
                         console.log(name);
@@ -96,6 +95,30 @@ var TSOS;
             console.log(sessionStorage);
             TSOS.Control.diskTableUpdate();
         }
+        deleteFile(fileName) {
+        } //deleteFile
+        tsbFileName(fileName) {
+            var dataArray;
+            var name;
+            for (var x = 0; x < _Disk.sectors; x++) {
+                for (var y = 0; y < _Disk.sectors; y++) {
+                    dataArray = sessionStorage.getItem("0:" + x + ":" + y).split(",");
+                    //get tsbFileName
+                    for (var z = 4; z < dataArray.length; z++) {
+                        if (dataArray[z] == "00") {
+                            break;
+                        }
+                        else {
+                            name += String.fromCharCode(TSOS.Utils.hexToDecimal(dataArray[z]));
+                        }
+                    }
+                    if (name == fileName) {
+                        return "0:" + x + ":" + y;
+                    }
+                }
+            }
+            return null;
+        } //tsbFileName
     } //DeviceDriverDisk
     TSOS.DeviceDriverDisk = DeviceDriverDisk;
 })(TSOS || (TSOS = {})); //TSOS

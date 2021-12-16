@@ -150,12 +150,12 @@ module TSOS {
                     if (_CurrentPCB != null){
                         _CurrentPCB.state = "Terminated";
                         _StdOut.advanceLine();
-                        _StdOut.putText("Process " + params[0] + " Terminated due to: " + params[1]);
+                        _StdOut.putText("Process " + params[0] + " Termination due to: " + params[1]);
                         _StdOut.advanceLine();
                         _OsShell.putPrompt();
-                        // clear that section in memory
+                       
                         _MemoryManager.clearMemory(_CurrentPCB.section);
-                        // remove PCB from _ReadyPCBList and _PCBList
+                        /
                         _ReadyPCBList.splice(_MemoryManager.pidIndex(_ReadyPCBList,_CurrentPCB.PID), 1);
                         _PCBList.splice(_MemoryManager.pidIndex(_PCBList,_CurrentPCB.PID), 1);
                         // remove PCB from _CurrentPCB
