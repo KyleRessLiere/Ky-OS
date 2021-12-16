@@ -172,6 +172,13 @@ this.commandList[this.commandList.length] = sc;
       this.commandList[this.commandList.length] = sc;
       // Changes rr quantum
       sc = new ShellCommand(
+        this.shellRead,
+        "read",
+        "<File name>- reads a file given a filenam"
+      );
+      this.commandList[this.commandList.length] = sc;
+      // Changes rr quantum
+      sc = new ShellCommand(
         this.shellClearMem,
         "clearmem",
         "Clears all the memory"
@@ -420,7 +427,7 @@ this.commandList[this.commandList.length] = sc;
               "run all programs in memory"
             );
             break;
-            break;
+            
             case "cls":
             _StdOut.putText(
               "Wipes the current Screen Empty"
@@ -555,8 +562,23 @@ this.commandList[this.commandList.length] = sc;
     }
      }
     //	validates the user code in the	HTML5 text area
-    public shellLoad() {
-      var code = _UserCode.value;
+    public shellLoad(args: string) {
+          let priority = 50
+          let input = args[0];
+          
+            if (args.length == 1 ) {  
+                if (parseInt(input) > 0 && parseInt(input) < 100) {
+                    priority = parseInt(input) ;
+                } else {
+                    _StdOut.putText("Please enter a priority greater than 0 and less than 100.");
+                    return;
+                }
+            } else {
+                _StdOut.putText("Please enter a valid number for a priority.");
+                return;
+            }
+        
+            var code = _UserCode.value;
             // remove and leading or trailing spaces
             code = code.replace(/\s+/g, "");
             code = code.toUpperCase();
@@ -607,6 +629,7 @@ this.commandList[this.commandList.length] = sc;
                   PCB.PID = _ProcessCounter;
                   _ProcessCounter++;  // Increment to prevent duplicate PIDs
                   
+                  PCB.priority = priority;
                   // Assign it a section in memory
                   PCB.section = _MemoryManager.memorySection();
 
@@ -623,9 +646,9 @@ this.commandList[this.commandList.length] = sc;
                  
                   // Update the PCB's IR
                   PCB.IR = _MemoryAccessor.readMemoryHex(PCB.section, PCB.PC)//Changed to load beter kyle
-                  console.log(_Memory.memoryArray)
+              //    console.log(_Memory.memoryArray)
                   console.log(PCB)
-                  console.log(PCB.IR)
+                 
                 // Update Memory GUI
                 Control.memoryUpdate();
                 Control.processTableUpdate();
@@ -820,5 +843,9 @@ this.commandList[this.commandList.length] = sc;
     }
 
 }//shellCreateFile
+public shellRead(args: string[]){
+
+
+}
   }
 }

@@ -11,55 +11,83 @@ var TSOS;
         constructor() { }
         // The function that decided which process gets run
         currentProcess() {
-            if (_ReadyPCBList.length > 0) {
-                console.log("test");
-                if ((_ReadyPCBList.length == 1) && (_CurrentPCB == null)) {
-                    // If there's only one ready process and its not running...
-                    // Make that one process the running one
-                    var params = [_ReadyPCBList[0]];
-                    _KernelInterruptQueue.enqueue(new TSOS.Interrupt(CONTEXT_IRQ, params));
-                }
-                else if ((_ReadyPCBList.length >= 2) && (_CurrentPCB == null)) {
-                    // There are two or more ready processes but none currently running
-                    this.nextProcess();
-                }
-                else if (_ReadyPCBList.length >= 2) {
-                    // if the current PCB's quantum is up ...
-                    if (!(_CurrentPCB.quantumRan < _RoundRobinQuantum)) {
-                        _CurrentPCB.state = "Waiting";
-                        this.nextProcess();
+            if (_ScheduleAlgo == "RR" || _ScheduleAlgo == "FCFS") {
+                if (_ReadyPCBList.length > 0) {
+                    if ((_ReadyPCBList.length == 1) && (_CurrentPCB == null)) {
+                        let pcb = [_ReadyPCBList[0]];
+                        _KernelInterruptQueue.enqueue(new TSOS.Interrupt(CONTEXT_IRQ, pcb));
                     }
+                    else if (((_CurrentPCB == null)) && _ReadyPCBList.length >= 2) {
+                        var nextFound = false;
+                        for (var i = 0; i < _ReadyPCBList.length; i++) {
+                            if (_ReadyPCBList[i].quantumRan < _RoundRobinQuantum) {
+                                var pcbRR = [_ReadyPCBList[i]];
+                                _KernelInterruptQueue.enqueue(new TSOS.Interrupt(CONTEXT_IRQ, pcbRR));
+                                nextFound = true;
+                                break;
+                            }
+                        }
+                        if (nextFound == false) {
+                            for (var i = 0; i < _ReadyPCBList.length; i++) {
+                                _ReadyPCBList[i].quantumRan = 0;
+                            }
+                            var params = [_ReadyPCBList[0]];
+                            _KernelInterruptQueue.enqueue(new TSOS.Interrupt(CONTEXT_IRQ, params));
+                        }
+                    }
+                    else if (_ReadyPCBList.length >= 2) {
+                        if ((_CurrentPCB.quantumRan < _RoundRobinQuantum) == false) {
+                            _CurrentPCB.state = "Waiting";
+                            var nextFound = false;
+                            for (var i = 0; i < _ReadyPCBList.length; i++) {
+                                if (_ReadyPCBList[i].quantumRan < _RoundRobinQuantum) {
+                                    var pcbRR = [_ReadyPCBList[i]];
+                                    _KernelInterruptQueue.enqueue(new TSOS.Interrupt(CONTEXT_IRQ, pcbRR));
+                                    nextFound = true;
+                                    break;
+                                }
+                            }
+                            if (nextFound == false) {
+                                for (var i = 0; i < _ReadyPCBList.length; i++) {
+                                    _ReadyPCBList[i].quantumRan = 0;
+                                }
+                                var params = [_ReadyPCBList[0]];
+                                _KernelInterruptQueue.enqueue(new TSOS.Interrupt(CONTEXT_IRQ, params));
+                            }
+                        }
+                    }
+                    _CPU.isExecuting = true;
                 }
-                _CPU.isExecuting = true;
-            }
-            else {
-                // There is nothing in _ReadyPCBList
-                _CPU.isExecuting = false;
-            }
-        }
-        nextProcess() {
-            var nextFound = false;
-            for (var i = 0; i < _ReadyPCBList.length; i++) {
-                // check the quantum of each process to find next one to run
-                if (_ReadyPCBList[i].quantumRan < _RoundRobinQuantum) {
-                    // Make that one process the running one
-                    var params = [_ReadyPCBList[i]];
-                    _KernelInterruptQueue.enqueue(new TSOS.Interrupt(CONTEXT_IRQ, params));
-                    nextFound = true;
-                    break;
+                else {
+                    _CPU.isExecuting = false;
                 }
             }
-            // If all of the PCBs have used their quanta up...
-            if (!nextFound) {
-                // reset all of their quanta
-                for (var i = 0; i < _ReadyPCBList.length; i++) {
-                    _ReadyPCBList[i].quantumRan = 0;
+            else if (_ScheduleAlgo == "PRIORITY") {
+                if (_ReadyPCBList.length > 0) {
+                    if ((_CurrentPCB == null) && (_ReadyPCBList.length == 1)) {
+                        var params = [_ReadyPCBList[0]];
+                        _KernelInterruptQueue.enqueue(new TSOS.Interrupt(CONTEXT_IRQ, params));
+                    }
+                    else if ((_ReadyPCBList.length >= 2) && (_CurrentPCB == null)) {
+                        var tempPCB = _ReadyPCBList[0];
+                        for (var i = 1; i < _ReadyPCBList.length; i++) {
+                            //compare priority to find the highest (well technically lowest numerical) one
+                            if (tempPCB.priority > _ReadyPCBList[i].priority) { //lower number means higher priority
+                                tempPCB = _ReadyPCBList[i];
+                            }
+                            // context switch to the next process
+                            var params = [tempPCB];
+                            _KernelInterruptQueue.enqueue(new TSOS.Interrupt(CONTEXT_IRQ, params));
+                        }
+                    }
+                    _CPU.isExecuting = true;
+                    //when theirs is nothing left stop execution
                 }
-                // run the first one in the ready queue
-                var params = [_ReadyPCBList[0]];
-                _KernelInterruptQueue.enqueue(new TSOS.Interrupt(CONTEXT_IRQ, params));
+                else {
+                    _CPU.isExecuting = false;
+                }
             }
-        }
+        } //currentProcess
     }
     TSOS.Scheduler = Scheduler;
 })(TSOS || (TSOS = {}));

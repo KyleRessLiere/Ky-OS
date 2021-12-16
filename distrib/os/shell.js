@@ -86,6 +86,9 @@ var TSOS;
             sc = new TSOS.ShellCommand(this.shellQuantum, "quantum", "<int>- changes the RR quauntum");
             this.commandList[this.commandList.length] = sc;
             // Changes rr quantum
+            sc = new TSOS.ShellCommand(this.shellRead, "read", "<File name>- reads a file given a filenam");
+            this.commandList[this.commandList.length] = sc;
+            // Changes rr quantum
             sc = new TSOS.ShellCommand(this.shellClearMem, "clearmem", "Clears all the memory");
             this.commandList[this.commandList.length] = sc;
             //crashes the OS
@@ -310,7 +313,6 @@ var TSOS;
                     case "runall":
                         _StdOut.putText("run all programs in memory");
                         break;
-                        break;
                     case "cls":
                         _StdOut.putText("Wipes the current Screen Empty");
                     case "killall":
@@ -427,7 +429,22 @@ var TSOS;
             }
         }
         //	validates the user code in the	HTML5 text area
-        shellLoad() {
+        shellLoad(args) {
+            let priority = 50;
+            let input = args[0];
+            if (args.length == 1) {
+                if (parseInt(input) > 0 && parseInt(input) < 100) {
+                    priority = parseInt(input);
+                }
+                else {
+                    _StdOut.putText("Please enter a priority greater than 0 and less than 100.");
+                    return;
+                }
+            }
+            else {
+                _StdOut.putText("Please enter a valid number for a priority.");
+                return;
+            }
             var code = _UserCode.value;
             // remove and leading or trailing spaces
             code = code.replace(/\s+/g, "");
@@ -474,6 +491,7 @@ var TSOS;
                     // give it a PID
                     PCB.PID = _ProcessCounter;
                     _ProcessCounter++; // Increment to prevent duplicate PIDs
+                    PCB.priority = priority;
                     // Assign it a section in memory
                     PCB.section = _MemoryManager.memorySection();
                     //Add it to global list of Resident PCBs
@@ -483,9 +501,8 @@ var TSOS;
                     _MemoryManager.load(code, PCB.section);
                     // Update the PCB's IR
                     PCB.IR = _MemoryAccessor.readMemoryHex(PCB.section, PCB.PC); //Changed to load beter kyle
-                    console.log(_Memory.memoryArray);
+                    //    console.log(_Memory.memoryArray)
                     console.log(PCB);
-                    console.log(PCB.IR);
                     // Update Memory GUI
                     TSOS.Control.memoryUpdate();
                     TSOS.Control.processTableUpdate();
@@ -654,6 +671,8 @@ var TSOS;
                 _StdOut.putText("Invalid File name");
             }
         } //shellCreateFile
+        shellRead(args) {
+        }
     }
     TSOS.Shell = Shell;
 })(TSOS || (TSOS = {}));

@@ -9,7 +9,8 @@ var TSOS;
         Y = 0, //Y Register
         Z = 0, //Z Flag
         state = "Resident", //State of the process
-        location = "Memory", section = null, quantumRan = 0) {
+        location = "Memory", section = null, quantumRan = 0, //the amount of times the process has ran 
+        priority = 0) {
             this.PID = PID;
             this.PC = PC;
             this.IR = IR;
@@ -21,6 +22,7 @@ var TSOS;
             this.location = location;
             this.section = section;
             this.quantumRan = quantumRan;
+            this.priority = priority;
         }
     }
     TSOS.PCB = PCB;
