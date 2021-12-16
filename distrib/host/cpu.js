@@ -282,7 +282,7 @@ var TSOS;
                 _KernelInterruptQueue.enqueue(new TSOS.Interrupt(SYSTEM_IRQ, temp));
             }
             else {
-                console.log("System call with Xreg != 1 or 2");
+                console.log("Xreg != 1 or 2");
             }
         }
     }

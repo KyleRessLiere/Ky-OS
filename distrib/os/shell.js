@@ -695,6 +695,18 @@ var TSOS;
         } //shellCreateFile
         shellDelete(args) {
             if (_DiskFormatStatus == true) {
+                if (args.length > 0) {
+                    let fileName = args[0];
+                    let tsb = _diskDriver.tsbFileName(fileName);
+                    if (tsb == null) {
+                        _StdOut.putText("No such file name shall be found here");
+                    }
+                    else if (tsb != null) {
+                        _StdOut.putText("File has been found");
+                        _diskDriver.deleteFile(tsb);
+                        _StdOut.putText("File Has been destroyed");
+                    }
+                }
             } ////if
             else {
                 _StdOut.putText("Disk is not formatted format and try again");

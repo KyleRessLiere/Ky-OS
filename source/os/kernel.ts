@@ -155,7 +155,7 @@ module TSOS {
                         _OsShell.putPrompt();
                        
                         _MemoryManager.clearMemory(_CurrentPCB.section);
-                        /
+                        
                         _ReadyPCBList.splice(_MemoryManager.pidIndex(_ReadyPCBList,_CurrentPCB.PID), 1);
                         _PCBList.splice(_MemoryManager.pidIndex(_PCBList,_CurrentPCB.PID), 1);
                         // remove PCB from _CurrentPCB

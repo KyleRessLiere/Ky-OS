@@ -96,27 +96,67 @@ var TSOS;
             TSOS.Control.diskTableUpdate();
         }
         deleteFile(fileName) {
+            let i = 0;
+            this.deleteFileDataBlock(fileName);
+            //deletes name blockString
+            var empty = new Array(64);
+            while (i < empty.length) {
+                if (i < 4) {
+                    empty[i] = "0";
+                }
+                else {
+                    empty[i] = "00";
+                }
+                i++;
+            }
+            sessionStorage.setItem(fileName, empty.join());
+            //delte
+            TSOS.Control.diskTableUpdate();
         } //deleteFile
+        // deletes the block(s) that hold the file data
+        deleteFileDataBlock(fileNameTSB) {
+            var nameBlockArray = sessionStorage.getItem(fileNameTSB).split(",");
+            var dataBlockTSB = nameBlockArray[1] + ":" + nameBlockArray[2] + ":" + nameBlockArray[3];
+            var dataBlockArray = sessionStorage.getItem(dataBlockTSB).split(",");
+            var nextBlockTSB = dataBlockArray[1] + ":" + dataBlockArray[2] + ":" + dataBlockArray[3];
+            if (nextBlockTSB != "FF:FF:FF") {
+                this.deleteFileDataBlock(dataBlockTSB); // More recursion??? Man this guys is on fire!
+            }
+            var emptyBlock = new Array(64);
+            for (var i = 0; i < emptyBlock.length; i++) {
+                if (i < 4) {
+                    emptyBlock[i] = "0";
+                }
+                else {
+                    emptyBlock[i] = "00";
+                }
+            }
+            sessionStorage.setItem(dataBlockTSB, emptyBlock.join());
+        }
+        //returns null if file not found
         tsbFileName(fileName) {
             var dataArray;
-            var name;
-            for (var x = 0; x < _Disk.sectors; x++) {
-                for (var y = 0; y < _Disk.sectors; y++) {
-                    dataArray = sessionStorage.getItem("0:" + x + ":" + y).split(",");
-                    //get tsbFileName
-                    for (var z = 4; z < dataArray.length; z++) {
-                        if (dataArray[z] == "00") {
-                            break;
+            var dataName;
+            for (var j = 0; j < _Disk.sectors; j++) {
+                for (var k = 0; k < _Disk.sectors; k++) {
+                    dataArray = sessionStorage.getItem("0:" + j + ":" + k).split(",");
+                    //
+                    dataName = "";
+                    for (var w = 4; w < dataArray.length; w++) {
+                        if (dataArray[w] == "00") {
+                            w = dataArray.length;
                         }
                         else {
-                            name += String.fromCharCode(TSOS.Utils.hexToDecimal(dataArray[z]));
+                            dataName += String.fromCharCode(TSOS.Utils.hexToDecimal(dataArray[w]));
                         }
                     }
-                    if (name == fileName) {
-                        return "0:" + x + ":" + y;
+                    ///
+                    if (dataName == fileName) {
+                        return "0:" + j + ":" + k;
                     }
                 }
             }
+            // if we get here we didn't find the file, so ...
             return null;
         } //tsbFileName
     } //DeviceDriverDisk
