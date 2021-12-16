@@ -77,12 +77,12 @@ var TSOS;
             // Assign their used bits to 1 to show they are being used
             tsbNameArray[0] = "1";
             tsbDataArray[0] = "1";
-            tsbDataArray[1] = "FF";
-            tsbDataArray[2] = "FF";
-            tsbDataArray[3] = "FF";
             tsbNameArray[1] = tsbData[0];
             tsbNameArray[2] = tsbData[2];
             tsbNameArray[3] = tsbData[4];
+            tsbDataArray[1] = "FF";
+            tsbDataArray[2] = "FF";
+            tsbDataArray[3] = "FF";
             // enters the fileName 
             for (var i = 0; i < fileName.length; i++) {
                 //turns into hexadecimal

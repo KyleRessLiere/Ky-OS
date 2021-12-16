@@ -42,8 +42,7 @@ module TSOS {
                     }
                 }
             }//for
-            console.log(block);
-            console.log(sessionStorage)
+            
         }//diskFormat
 
 
@@ -58,19 +57,19 @@ module TSOS {
 
             //get name tsb
             for (var x = 0; x < _Disk.sectors; x++) {
-                for (var y = 1; y < _Disk.blocks; y++) {    
+                for (var y = 1; y < _Disk.blocks; y++) {    // We start at one to not override the Master Boot Record, which doesnt do anything in out OS but good practice to not override it
                     name = sessionStorage.getItem("0:" + x + ":" + y).split(",");
                     if (name[0] == "0") {
-                       
-                        tsbName = "0:" + x + ":" + y;
-                        
+                        console.log(name)
+                        console.log("0:" + x + ":" + y);
+                        tsbName =  "0:" + x + ":" + y;
                         x = Number.MAX_VALUE;
                         y = Number.MAX_VALUE;
-
+                        
                     }
                 }
             }
-            //nametsb
+            //data
             for (var x = 1; x < _Disk.tracks; x++) {
                 for (var y = 0; y < _Disk.sectors; y++) {
                     for (var z = 0; z < _Disk.sectors; z++) {
@@ -85,21 +84,24 @@ module TSOS {
                 }
             }
 
-        
+            console.log(tsbName, tsbData)
             let tempName:string = sessionStorage.getItem(tsbName);
             let tempData:string = sessionStorage.getItem(tsbData);
             let tsbNameArray: string[] = tempName.split(",");
             let tsbDataArray: string[] = tempData.split(",");
 
             // Assign their used bits to 1 to show they are being used
-            tsbNameArray[0],tsbDataArray[0] = "1";
+            tsbNameArray[0] = "1"
+            tsbDataArray[0] = "1";
+
+            tsbNameArray[1] = tsbData[0];
+            tsbNameArray[2] = tsbData[2];
+            tsbNameArray[3] = tsbData[4];
             
             tsbDataArray[1] = "FF";
             tsbDataArray[2] = "FF";
             tsbDataArray[3] = "FF";
-            tsbNameArray[1] = tsbData[0];
-            tsbNameArray[2] = tsbData[2];
-            tsbNameArray[3] = tsbData[4];
+            
 
             // enters the fileName 
             for (var i = 0; i < fileName.length; i++) {
@@ -108,7 +110,7 @@ module TSOS {
             }
            
             // save to session storage
-            
+            console.log(tsbName);
             sessionStorage.setItem(tsbName, tsbNameArray.join());
             sessionStorage.setItem(tsbData, tsbDataArray.join());
 
