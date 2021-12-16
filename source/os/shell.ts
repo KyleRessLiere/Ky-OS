@@ -811,7 +811,7 @@ this.commandList[this.commandList.length] = sc;
     if(!_DiskFormatStatus){
       _StdOut.putText("Cant create a file until disk is formatted");
 }
-    else if(_DiskFormatStatus && args.length > 0){
+    else if(_DiskFormatStatus && args.length > 0 && args[0].length < 64){
       _diskDriver.createFile(args[0]);
       _StdOut.putText("File name " + args[0] + " has been created")
     }
