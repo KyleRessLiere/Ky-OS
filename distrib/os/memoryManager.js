@@ -2,12 +2,18 @@ var TSOS;
 (function (TSOS) {
     class MemoryManager {
         constructor() { }
-        load(input, section) {
-            //console.log(_MemoryAccessor.sectionIndex());
-            let code = input;
-            for (var i = 0; i < code.length; i++) {
-                _Memory.memoryArray[i + _Memory.getSectionBase(section)] = code[i];
+        load(input, section, pid) {
+            if (section != "disk") {
+                // load them into memory
+                for (var i = 0; i < input.length; i++) {
+                    _Memory.memoryArray[i + _Memory.getSectionBase(section)] = input[i];
+                }
             }
+            else {
+                _diskDriver.createSwap(pid, input);
+            }
+            TSOS.Control.cpuUpdate;
+            TSOS.Control.memoryUpdate;
         }
         isMemoryAvailable() {
             let available = false;
@@ -43,6 +49,7 @@ var TSOS;
                     case "2":
                         sectionThreeStatus = false;
                         break;
+                    case "disk": break;
                     default: console.log("Sorry this is a invalid section");
                 }
             }
@@ -85,7 +92,76 @@ var TSOS;
                     return true;
                 }
             }
+        } //pcbisReady
+        rollInProcess(PID) {
+            var data = [];
+            var PCB = this.getPCB(PID);
+            var pcbs = [];
+            let i = 0;
+            while (i < _PCBList.length) {
+                if (_PCBList[i].location == "Memory") {
+                    pcbs[pcbs.length] = _PCBList[i];
+                }
+                i++;
+            }
+            if (pcbs.length < 3) {
+                // get the data
+                data = _diskDriver.getRollInData(PID);
+                PCB.section = this.memorySection();
+                PCB.location = "Memory";
+                this.load(data, PCB.section, PID);
+            }
+            else {
+                this.rollOutProcess();
+                // get the data
+                data = _diskDriver.getRollInData(PID);
+                // change the section
+                PCB.section = this.memorySection();
+                // change the location
+                PCB.location = "Memory";
+                this.load(data, PCB.section, PID);
+            }
         }
+        rollOutProcess() {
+            var rollOutPCB = _Scheduler.rollOutDecision();
+            _PCBList[this.pidIndex(_PCBList, rollOutPCB.PID)].swaps++;
+            // write the data from memory to the disk
+            var rollOutDataArray = [];
+            let i = _Memory.getSectionBase(rollOutPCB.section);
+            while (i < _Memory.getSectionEnd(rollOutPCB.section)) {
+                rollOutDataArray[rollOutDataArray.length] = _Memory.memoryArray[i];
+                i++;
+            }
+            _diskDriver.createSwap(rollOutPCB.PID, rollOutDataArray);
+            this.clearMemory(rollOutPCB.section);
+            let index = this.pidIndex(_PCBList, rollOutPCB.PID);
+            _PCBList[index].location = "Disk";
+            _PCBList[index].section = "disk";
+        }
+        // loads a process on the disk of there is free space in memory
+        loadDiskProcess() {
+            //check to se if their is process running
+            let process = false;
+            let i = 0;
+            while (i < _PCBList.length) {
+                if (_PCBList[i].location == "Disk") {
+                    process = true;
+                    i++;
+                }
+            }
+            if (process) {
+                var PCB;
+                let i = 0;
+                while (i < _PCBList.length) {
+                    if (_PCBList[i].location == "Disk") {
+                        let x = 0;
+                        PCB = _PCBList[i];
+                        i++;
+                    }
+                }
+                this.rollInProcess(PCB.PID);
+            }
+        } //loadDiskProcess
     }
     TSOS.MemoryManager = MemoryManager;
 })(TSOS || (TSOS = {}));

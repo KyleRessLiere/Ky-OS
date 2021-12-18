@@ -11,6 +11,7 @@ var TSOS;
         constructor() { }
         // The function that decided which process gets run
         currentProcess() {
+            console.log("lol");
             if (_ScheduleAlgo == "RR" || _ScheduleAlgo == "FCFS") {
                 if (_ReadyPCBList.length > 0) {
                     if ((_ReadyPCBList.length == 1) && (_CurrentPCB == null)) {
@@ -71,23 +72,74 @@ var TSOS;
                     else if ((_ReadyPCBList.length >= 2) && (_CurrentPCB == null)) {
                         var tempPCB = _ReadyPCBList[0];
                         for (var i = 1; i < _ReadyPCBList.length; i++) {
-                            //compare priority to find the highest (well technically lowest numerical) one
-                            if (tempPCB.priority > _ReadyPCBList[i].priority) { //lower number means higher priority
+                            if (tempPCB.priority > _ReadyPCBList[i].priority) {
                                 tempPCB = _ReadyPCBList[i];
                             }
-                            // context switch to the next process
                             var params = [tempPCB];
                             _KernelInterruptQueue.enqueue(new TSOS.Interrupt(CONTEXT_IRQ, params));
                         }
                     }
                     _CPU.isExecuting = true;
-                    //when theirs is nothing left stop execution
                 }
                 else {
                     _CPU.isExecuting = false;
                 }
             }
         } //currentProcess
+        rollOutDecision() {
+            var swapPCB;
+            var memoryPCBs = [];
+            let i = 0;
+            while (i < _PCBList.length) {
+                if (_PCBList[i].location == "Memory") {
+                    memoryPCBs[memoryPCBs.length] = _PCBList[i];
+                }
+                i++;
+            }
+            swapPCB = memoryPCBs[0];
+            if (_ScheduleAlgo == "Priority") {
+                i = 1;
+                while (i < memoryPCBs.length) {
+                    if (memoryPCBs[i].priority > swapPCB.priority) {
+                        swapPCB = memoryPCBs[i];
+                    }
+                    i++;
+                }
+            }
+            else {
+                i = 1;
+                while (i < memoryPCBs.length) {
+                    if (memoryPCBs[i].swaps < swapPCB.swaps) {
+                        swapPCB = memoryPCBs[i];
+                    }
+                    i++;
+                }
+            }
+            return swapPCB;
+        }
+        nextProcess() {
+            var nextFound = false;
+            for (var i = 0; i < _ReadyPCBList.length; i++) {
+                // check the quantum of each process to find next one to run
+                if (_ReadyPCBList[i].quantumRan < _RoundRobinQuantum) {
+                    // Make that one process the running one
+                    var params = [_ReadyPCBList[i]];
+                    _KernelInterruptQueue.enqueue(new TSOS.Interrupt(CONTEXT_IRQ, params));
+                    nextFound = true;
+                    break;
+                }
+            }
+            // If all of the PCBs have used their quanta up...
+            if (!nextFound) {
+                // reset all of their quanta
+                for (var i = 0; i < _ReadyPCBList.length; i++) {
+                    _ReadyPCBList[i].quantumRan = 0;
+                }
+                // run the first one in the ready queue
+                var params = [_ReadyPCBList[0]];
+                _KernelInterruptQueue.enqueue(new TSOS.Interrupt(CONTEXT_IRQ, params));
+            }
+        }
     }
     TSOS.Scheduler = Scheduler;
 })(TSOS || (TSOS = {}));

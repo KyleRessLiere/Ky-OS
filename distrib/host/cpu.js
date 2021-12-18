@@ -253,38 +253,36 @@ var TSOS;
             this.useInstruction();
         }
         systemCall() {
-            // does something specific based on the Xreg
-            let temp = [];
+            var params = [];
             if (this.Xreg == 1) {
-                temp[0] = this.Yreg.toString();
-                _KernelInterruptQueue.enqueue(new TSOS.Interrupt(SYSTEM_IRQ, temp));
+                // Print out the integer stored in the Yreg
+                console.log('System call print Yreg');
+                params[0] = this.Yreg.toString();
+                _KernelInterruptQueue.enqueue(new TSOS.Interrupt(SYSTEM_IRQ, params));
             }
             else if (this.Xreg == 2) {
                 console.log("System call print string");
-                let location = this.Yreg + _Memory.getSectionBase(_CurrentPCB.section);
-                let print = "";
-                let byteString;
-                let i = 0;
-                while (i + location < _Memory.memoryArray.length)
-                    ;
-                {
+                // Print out the 00 terminated string stored at the address in the Y register
+                // This means the letters associated with the code in memory
+                var location = this.Yreg + _Memory.getSectionBase(_CurrentPCB.section);
+                var output = "";
+                var byteString;
+                for (var i = 0; i + location < _Memory.memoryArray.length; i++) {
                     byteString = _Memory.memoryArray[location + i];
                     if (byteString == "00") {
-                        i = _Memory.memoryArray.length;
+                        break;
                     }
                     else {
-                        let hex = TSOS.Utils.hexToDecimal(byteString);
-                        print += String.fromCharCode(hex);
+                        output += String.fromCharCode(TSOS.Utils.hexToDecimal(byteString));
                     }
-                    i++;
                 }
-                temp[0] = print;
-                _KernelInterruptQueue.enqueue(new TSOS.Interrupt(SYSTEM_IRQ, temp));
+                params[0] = output;
+                _KernelInterruptQueue.enqueue(new TSOS.Interrupt(SYSTEM_IRQ, params));
             }
             else {
-                console.log("Xreg != 1 or 2");
+                console.log("System call with Xreg != 1 or 2");
             }
-        }
+        } //systemCall
     }
     TSOS.Cpu = Cpu;
 })(TSOS || (TSOS = {}));
