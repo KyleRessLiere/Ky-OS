@@ -112,6 +112,7 @@ var TSOS;
                 this.load(data, PCB.section, PID);
             }
             else {
+                let x = 0;
                 this.rollOutProcess();
                 // get the data
                 data = _diskDriver.getRollInData(PID);
@@ -126,13 +127,14 @@ var TSOS;
             var rollOutPCB = _Scheduler.rollOutDecision();
             _PCBList[this.pidIndex(_PCBList, rollOutPCB.PID)].swaps++;
             // write the data from memory to the disk
-            var rollOutDataArray = [];
+            var data = [];
             let i = _Memory.getSectionBase(rollOutPCB.section);
             while (i < _Memory.getSectionEnd(rollOutPCB.section)) {
-                rollOutDataArray[rollOutDataArray.length] = _Memory.memoryArray[i];
+                let x = 0;
+                data[data.length] = _Memory.memoryArray[i];
                 i++;
             }
-            _diskDriver.createSwap(rollOutPCB.PID, rollOutDataArray);
+            _diskDriver.createSwap(rollOutPCB.PID, data);
             this.clearMemory(rollOutPCB.section);
             let index = this.pidIndex(_PCBList, rollOutPCB.PID);
             _PCBList[index].location = "Disk";

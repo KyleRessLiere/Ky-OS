@@ -179,6 +179,13 @@ this.commandList[this.commandList.length] = sc;
       this.commandList[this.commandList.length] = sc;
       // Changes rr quantum
       sc = new ShellCommand(
+        this.shellWrite,
+        "write",
+        "<File name>- writes to a file"
+      );
+      this.commandList[this.commandList.length] = sc;
+      // Changes rr quantum
+      sc = new ShellCommand(
         this.shellClearMem,
         "clearmem",
         "Clears all the memory"
@@ -571,17 +578,9 @@ this.commandList[this.commandList.length] = sc;
           let priority = 50
           let input = args[0];
           
-            if (args.length == 1 ) {  
-                if (parseInt(input) > 0 && parseInt(input) < 100) {
+            
                     priority = parseInt(input) ;
-                } else {
-                    _StdOut.putText("Please enter a priority greater than 0 and less than 100.");
-                    return;
-                }
-            } else {
-                _StdOut.putText("Please enter a valid number for a priority.");
-                return;
-            }
+             
         
             var code = _UserCode.value;
             // remove and leading or trailing spaces
@@ -625,6 +624,7 @@ this.commandList[this.commandList.length] = sc;
                 _StdOut.putText("Valid Code has been entered");
                 _StdOut.advanceLine();
                 if(_MemoryManager.isMemoryAvailable() == true) {
+                
                   // create a PCB
                   var PCB = new TSOS.PCB();
                   // give it a PID
@@ -634,7 +634,7 @@ this.commandList[this.commandList.length] = sc;
                   PCB.priority = priority;
                   // Assign it a section in memory
                   PCB.section = _MemoryManager.memorySection();
-
+                  PCB.location = "Memory";
                   //Add it to global list of Resident PCBs
                   _PCBList[_PCBList.length] = PCB;
               
@@ -642,14 +642,15 @@ this.commandList[this.commandList.length] = sc;
 
                   //use memory manager to load
                   
-                  _MemoryManager.load(code, PCB.section);
+                  _MemoryManager.load(code, PCB.section,PCB.PID);
                  
                  
                  
                   // Update the PCB's IR
                   PCB.IR = _MemoryAccessor.readMemoryHex(PCB.section, PCB.PC)//Changed to load beter kyle
               //    console.log(_Memory.memoryArray)
-                  console.log(PCB)
+              console.log(PCB)
+                  
                  
                 // Update Memory GUI
                 Control.memoryUpdate();
@@ -666,6 +667,7 @@ this.commandList[this.commandList.length] = sc;
 
                   // give it a PID
                   PCB.PID = _ProcessCounter;
+                  
                   _ProcessCounter++;  // Increment to prevent duplicate PIDs
 
                   // give it a priority
@@ -683,9 +685,13 @@ this.commandList[this.commandList.length] = sc;
                   console.log(_PCBList);
 
                   //use memory manager to load
-                  _MemoryManager.loadMemory(code, PCB.section, PCB.PID);
-                  PCB.IR = code[0] + code[1] + "";
+                  _MemoryManager.load(code, PCB.section, PCB.PID);
+                  PCB.IR = code[0];
                   PCB.swaps = 1;
+                  console.log(PCB)
+                  _StdOut.putText("User code  hohohoho");
+                  _StdOut.advanceLine();
+                  _StdOut.putText("Process ID Number: " + PCB.PID);
                   // Update Memory GUI
                   Control.memoryUpdate();
 
@@ -694,7 +700,7 @@ this.commandList[this.commandList.length] = sc;
 
                 }
                 else if(!_DiskFormatStatus){
-                  _StdOut.putText("No avaible memory consider formatting disk and trying again");
+                  _StdOut.putText("No available memory consider formatting disk and trying again");
                 }
 
             }
@@ -893,8 +899,6 @@ public shellDelete(args: string[]){
         _StdOut.putText("File Has been destroyed")
       }
     }
-
-
   }////if
   else{
     _StdOut.putText("Disk is not formatted format and try again")
@@ -902,7 +906,55 @@ public shellDelete(args: string[]){
 
 }//shellDelete
 public shellRead(args: string[]){
+  if(_DiskFormatStatus == true){
+    if(args.length > 0 ){
+      let fileName = args[0];
+      let tsb = _diskDriver.tsbFileName(fileName);
+      if(tsb == null){
+        _StdOut.putText("No such file name shall be found here")
+        
+      }
+      else if(tsb != null){
+        _StdOut.putText("File has been found");
+        _StdOut.advanceLine();
+        let test =_diskDriver.readFile(tsb);
+        _StdOut.putText("The file:" + fileName + " contents are" + test);
+      }
+    }
+  }////if
+  else{
+    _StdOut.putText("Disk is not formatted format and try again")
+  }//else
+}//shellRead
 
-}
+public shellWrite(args: string[]){
+  if(_DiskFormatStatus == true){
+    if(args.length > 0 ){
+      let fileName = args[0];
+      let tsb = _diskDriver.tsbFileName(fileName);
+      if(tsb == null){
+        _StdOut.putText("No such file name shall be found here")
+        
+      }
+      else if(tsb != null){
+        _StdOut.putText("File has been found");
+        _StdOut.advanceLine();
+        //gets the message
+        let messageArr = args.slice(1);
+        let message = messageArr.join(" ");
+        _diskDriver.writeFile(tsb,message,"user");
+        _StdOut.putText("File written successfully")
+       
+      }
+      else{
+        _StdOut.putText("Failed to write to file")
+      }
+    }
+  }////if
+  else{
+    _StdOut.putText("Disk is not formatted format and try again")
+  }//else
+  
+}//shellwrite
   }
 }

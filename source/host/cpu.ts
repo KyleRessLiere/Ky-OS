@@ -311,35 +311,35 @@
     
            
             public systemCall() {
-                // does something specific based on the Xreg
-                let temp: string[] = [];
-                if (this.Xreg == 1){
-                    temp[0] = this.Yreg.toString();
-                    _KernelInterruptQueue.enqueue(new TSOS.Interrupt(SYSTEM_IRQ, temp));
-                } else if (this.Xreg == 2) {
-                    console.log("System call print string")
-                    let location = this.Yreg + _Memory.getSectionBase(_CurrentPCB.section);
-                    let print: string = "";
-                    let byteString: string;
-                    let i = 0;
-                    while ( i + location < _Memory.memoryArray.length); {
-                        byteString = _Memory.memoryArray[location + i];
-                        if (byteString == "00") {
-                            i = _Memory.memoryArray.length;
-                        } else {
-                            let hex = Utils.hexToDecimal(byteString);
-                            print += String.fromCharCode(hex);
-                        }
-                        i++;
+                var input: string[] = [];
+                let x = this.Xreg;
+            if (x > 0 && x < 2){
+               
+                console.log('System call print Yreg');
+                input[0] = this.Yreg.toString();
+                _KernelInterruptQueue.enqueue(new TSOS.Interrupt(SYSTEM_IRQ, input));
+            } else if (this.Xreg == 2) {
+                
+                var location = this.Yreg + _Memory.getSectionBase(_CurrentPCB.section);
+                var print: string = "";
+                var byteMessage: string;
+                let i =0;
+                while ( i + location < _Memory.memoryArray.length) {
+                    byteMessage = _Memory.memoryArray[location + i];
+                    if (byteMessage== "00") {
+                        break;
+                    } else {
+                        print += String.fromCharCode(Utils.hexToDecimal(byteMessage));
                     }
-                    temp[0] = print;
-                    _KernelInterruptQueue.enqueue(new TSOS.Interrupt(SYSTEM_IRQ, temp));
-                } else {
-                    console.log("Xreg != 1 or 2");
+                    i++;
                 }
-    
-    
+                input[0] = print;
+                _KernelInterruptQueue.enqueue(new TSOS.Interrupt(SYSTEM_IRQ, input));
+            } else {
+                console.log("System call with Xreg != 1 or 2");
             }
+               
+            }//systemCall
     
     
         }
