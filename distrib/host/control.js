@@ -240,25 +240,25 @@ var TSOS;
             for (var i = 0; i < _Disk.tracks; i++) {
                 for (var j = 0; j < _Disk.sectors; j++) {
                     for (var k = 0; k < _Disk.blocks; k++) {
-                        // We have to get disk data from session storage ...
-                        dataArray = sessionStorage.getItem(i + ":" + j + ":" + k).split(",");
-                        // ... create the table row ...
+                        let data = sessionStorage.getItem(i + ":" + j + ":" + k);
+                        dataArray = data.split(",");
                         var row = diskTable.insertRow(rowNumber);
                         rowNumber++;
-                        // ... create the TSB Cell ...
                         var cellTSB = row.insertCell(0);
                         cellTSB.innerHTML = i + ":" + j + ":" + k;
-                        // ... create the Used Cell ...
+                        let dataZero = dataArray[0];
                         var cellUsed = row.insertCell(1);
-                        cellUsed.innerHTML = dataArray[0].valueOf();
-                        // ... create the Next Cell ...
+                        cellUsed.innerHTML = dataZero.valueOf();
+                        let dataOne = dataArray[1];
+                        let dataTwo = dataArray[2];
+                        let dataThree = dataArray[3];
                         var cellNext = row.insertCell(2);
-                        cellNext.innerHTML = dataArray[1] + ":" + dataArray[2] + ":" + dataArray[3];
-                        // ... create the Data Cell
+                        cellNext.innerHTML = dataOne + ":" + dataTwo + ":" + dataOne[3];
                         var cellData = row.insertCell(3);
                         var dataString = new String();
-                        for (var w = 4; w < dataArray.length; w++) { //Does someone know the commonly used letter in a 4th for loop? Ill use w cause its a pretty cool letter
-                            dataString += dataArray[w].valueOf();
+                        for (var w = 4; w < dataArray.length; w++) {
+                            let dta = dataArray[w].valueOf();
+                            dataString += dta;
                         }
                         cellData.innerHTML = dataString.valueOf();
                     }
