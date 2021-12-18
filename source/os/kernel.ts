@@ -144,9 +144,13 @@ module TSOS {
                     _StdOut.putText(params[0]);
                     break;
                 case CONTEXT_IRQ:
-                    _CurrentPCB = params[0];
+                    let temp = params[0];
+                    _CurrentPCB = temp;
+                    if (_CurrentPCB.location == "Disk"){
+                        _MemoryManager.rollInProcess(temp.PID);
+                    }
                     break;
-                case PROCESS_BREAK_IRQ:               // Ctrl-C, or Other Error causing process to stop and be killed
+                case PROCESS_BREAK_IRQ:               
                     if (_CurrentPCB != null){
                         _CurrentPCB.state = "Terminated";
                         _StdOut.advanceLine();
@@ -155,9 +159,10 @@ module TSOS {
                         _OsShell.putPrompt();
                        
                         _MemoryManager.clearMemory(_CurrentPCB.section);
-                        
-                        _ReadyPCBList.splice(_MemoryManager.pidIndex(_ReadyPCBList,_CurrentPCB.PID), 1);
-                        _PCBList.splice(_MemoryManager.pidIndex(_PCBList,_CurrentPCB.PID), 1);
+                        let readyPidIndex = _MemoryManager.pidIndex(_ReadyPCBList,_CurrentPCB.PID)
+                        _ReadyPCBList.splice(readyPidIndex, 1);
+                        let pidIndex = _MemoryManager.pidIndex(_PCBList,_CurrentPCB.PID)
+                        _PCBList.splice(pidIndex, 1);
                         // remove PCB from _CurrentPCB
                         _CurrentPCB = null;
                         Control.processTableUpdate();

@@ -47,7 +47,8 @@ module TSOS {
 
 
         public createFile(fileName: String) {
-            
+            let fileExist = this.tsbFileName(fileName);
+            if (this.tsbFileName(fileName) == null) {
 
             var name: string[];
             var tsbName:string = "";
@@ -96,6 +97,7 @@ module TSOS {
 
             tsbNameArray[1] = tsbData[0];
             tsbNameArray[2] = tsbData[2];
+            let truth = true;
             tsbNameArray[3] = tsbData[4];
             
             tsbDataArray[1] = "FF";
@@ -104,65 +106,77 @@ module TSOS {
             
 
             // enters the fileName 
-            for (var i = 0; i < fileName.length; i++) {
+            let i = 0;
+            while(i < fileName.length) {
                 //turns into hexadecimal
                 tsbNameArray[i + 4] = Utils.decimalToHex(fileName.charCodeAt(i));
+                i++
             }
            
             // save to session storage
             console.log(tsbName);
-            sessionStorage.setItem(tsbName, tsbNameArray.join());
-            sessionStorage.setItem(tsbData, tsbDataArray.join());
+            let tsbNameJoin = tsbNameArray.join(); 
+            let tsbDataJoin = tsbDataArray.join(); 
+            sessionStorage.setItem(tsbName, tsbNameJoin);
+            sessionStorage.setItem(tsbData, tsbDataJoin);
 
             console.log()
             
             console.log(sessionStorage)
             Control.diskTableUpdate();
+            return truth;
+        }
+        else{
+            return false;
+        }
         }
 
         public deleteFile(fileName: string){
             let i = 0;
-            this.deleteFileDataBlock(fileName);
+            const max = 4;
+            this.deleteFileData(fileName);
             //deletes name blockString
             var empty: String[] = new Array(64);
             while(i < empty.length) {
-                if (i < 4) {
-                    empty[i] = "0";
+                if (i > max) {
+                    empty[i] = "00";
                 } else {
-                    empty[i] = "00"
+                    empty[i] = "0"
                 }
                 i++;
             }
-            sessionStorage.setItem(fileName, empty.join());
-
-           
-
-            
-
+            let emptyJoin = empty.join();
+            sessionStorage.setItem(fileName, emptyJoin);
             Control.diskTableUpdate();
             
 
 
         }//deleteFile
 
-          // deletes the block(s) that hold the file data
-          public deleteFileDataBlock(fileNameTSB: string) {
-            var name = sessionStorage.getItem(fileNameTSB).split(",");
-            var dataTsb = name[1] + ":" + name[2] + ":" + name[3];
-            var dataBlockArray = sessionStorage.getItem(dataTsb).split(",");
-            var nextBlockTSB = dataBlockArray[1] + ":" + dataBlockArray[2] + ":" + dataBlockArray[3];
-            if (nextBlockTSB != "FF:FF:FF"){
-                this.deleteFileDataBlock(dataTsb);  
+         
+          public deleteFileData(fileName: string) {
+            let end ="FF:FF:FF"
+            let tempName = sessionStorage.getItem(fileName);
+            var name = tempName.split(",");
+            var data = name[1] + ":" + name[2] + ":" + name[3];
+            let tempData = sessionStorage.getItem(data)
+            var dataBlock = tempData.split(",");
+            var nextBlock = dataBlock[1] + ":" + dataBlock[2] + ":" + dataBlock[3];
+            if (nextBlock!= end){
+                this.deleteFileData(data);  
             }
             var emptyBlock: String[] = new Array(64);
-            for (var i = 0; i < emptyBlock.length; i++) {
+            let i = 0;
+            while(i < emptyBlock.length) {
                 if (i < 4) {
                     emptyBlock[i] = "0";
                 } else {
                     emptyBlock[i] = "00"
                 }
+                i++;
             }
-            sessionStorage.setItem(dataTsb, emptyBlock.join());
+            let emptyJoin = emptyBlock.join();
+            sessionStorage.setItem(data, emptyJoin);
 
         }
 
@@ -171,22 +185,28 @@ module TSOS {
         public tsbFileName(fileName: String) {
             var dataArray: string[];
             var name: string;
-            for (var j = 0; j < _Disk.sectors; j++) {
-                for (var k = 0; k < _Disk.sectors; k++) {
-                    dataArray = sessionStorage.getItem("0:" + j + ":" + k).split(",");
+            const max = 4;
+            
+            let temp;
+            for (var x = 0; x < _Disk.sectors; x++) {
+                for (var y = 0; y < _Disk.sectors; y++) {
+                    temp = sessionStorage.getItem("0:" + x + ":" + y);
+                    dataArray = temp.split(",");
 
                     //
                     name = "";
-                    for(var w = 4; w < dataArray.length; w++) {
-                        if (dataArray[w] == "00"){
-                            w =  dataArray.length;
+                    for(var z = max; z < dataArray.length; z++) {
+                        if (dataArray[z] == "00"){
+                            z =  dataArray.length;
+                            let w = true
+
                         } else {
-                            name += String.fromCharCode(Utils.hexToDecimal(dataArray[w]));
+                            name += String.fromCharCode(Utils.hexToDecimal(dataArray[z]));
                         }
                     }
                     ///
                     if (name == fileName) {
-                        return "0:" + j + ":" + k;
+                        return "0:" + x + ":" + y;
                     }
                 }
             }
@@ -194,7 +214,203 @@ module TSOS {
             return null;
         }//tsbFileName
 
-    
+        public readFile(fileName: string){
+            let nameTemp = sessionStorage.getItem(fileName)
+            const name: string[] = nameTemp.split(",");
+            let dataTemp = sessionStorage.getItem(name[1] + ":" + name[2] + ":" + name[3]);
+            const data: string[] = dataTemp.split(",");
+            return this.readFileData(data);
+
+        }
+        public readFileData(file: string[]){
+            let i = 4;
+            const end = "FF:FF:FF";
+            var data: string = null;
+            while( i < file.length) {
+                if (file[i] == "00"){
+                    return data;
+                } else {
+                    data += String.fromCharCode(Utils.hexToDecimal(data[i]));
+                }
+            }
+            
+            var nextBlockTSB = file[1] + ":" + file[2] + ":" + file[3];
+            if (nextBlockTSB == end){
+                return data;
+            } else {
+               
+                data += this.readFileData(sessionStorage.getItem(nextBlockTSB).split(","));
+            }
+            
+        }
+
+        public writeFile(fileName: string, input: string, type: string){
+            this.deleteFileData(fileName);
+            const one ="1";
+            let tempaArr = sessionStorage.getItem(fileName);//
+            var nameArray = tempaArr.split(",");
+            var data = nameArray[1] + ":" + nameArray[2] + ":" + nameArray[3];
+
+            const emptyArr: String[] = new Array(64);
+            let i = 0;
+            while(i < emptyArr.length) {
+                if (i < 4) {
+                    emptyArr[i] = "0";
+                } else {
+                    emptyArr[i] = "00"
+                }
+                i++
+            }
+         
+            emptyArr[0] = one;
+            sessionStorage.setItem(data,emptyArr.join());
+            
+            if (type == "swap") {
+                // Write the hex to disk
+                this.writeBlocks(input.split(","), data);
+            } else {
+                
+                var userDataArray: string[] = [];
+                let i =0;
+                while (i < input.length) {
+                    userDataArray[userDataArray.length] = Utils.decimalToHex(input.charCodeAt(i));
+                    i++;
+                }
+                // Write to the actual data blocks
+                this.writeBlocks(userDataArray,data);
+        }
+    }//write
+
+    public writeBlocks(dataArray: string[], dataBlock: string) {
+        const maxLen = 60
+       
+        if (dataArray.length > maxLen) {
+            //finds next tsb
+            let nextAvailableBlock: string = "";
+            let nextAvailableBlockArr:String[] ;
+            for (var x = 1; x < _Disk.tracks; x++) {
+                for (var y = 0; y < _Disk.sectors; y++) {
+                    for (var z = 0; z < _Disk.sectors; z++) {
+                        nextAvailableBlockArr = sessionStorage.getItem(x + ":" + y + ":" + z).split(",");
+                        if (nextAvailableBlockArr[0] == "0") {
+                            nextAvailableBlock = x+ ":" + y + ":" + z;
+                            x  =Number.MAX_VALUE;
+                            y  =Number.MAX_VALUE;
+                            z =Number.MAX_VALUE;
+                            
+                    }
+                }
+            }
+            }
+            //
+            const max = 4;
+           
+            var emptyBlock: String[] = new Array(64);
+            let l =0;
+            while ( l < emptyBlock.length) {
+                if (l < max) {
+                    emptyBlock[l] = "0";
+                } else {
+                    emptyBlock[l] = "00"
+                }
+                l++;
+            }
+            // and change used bit back to in use
+            emptyBlock[0] = "1";
+            let tempEmpt = emptyBlock.join()
+            sessionStorage.setItem(nextAvailableBlock ,tempEmpt);
+
+            var newArray = dataArray.splice(0,maxLen);
+            this.writeBlocks(dataArray,nextAvailableBlock ); 
+            let blockOne = nextAvailableBlock [0]
+            let blockTwo = nextAvailableBlock [2]
+            let blockThree =  nextAvailableBlock [4]
+           
+            var dataBlockArray: string[] = ["1",blockOne,blockTwo, blockThree];
+            z = 0;
+            while ( z < maxLen){
+                dataBlockArray[dataBlockArray.length] = newArray[z];
+                z++
+            }
+            // and put it into session storage
+            let tempArr = dataBlockArray.join()
+            sessionStorage.setItem(dataBlock,tempArr);
+        } else {    
+            let i = dataArray.length;
+            while( i < maxLen ){
+                dataArray[dataArray.length] = "00";
+                i++;
+            }
+         
+            var lastBlock = ["1","FF","FF","FF"];  
+            let concatBlock = lastBlock.concat(dataArray);
+            let joinBlock = concatBlock.join();
+            sessionStorage.setItem(dataBlock,joinBlock);
+        }
+    }//writeToDatablocks
+
+public readSwap(fileName:string) {
+            var swapData: string[] = [];
+            const end = "FF:FF:FF"
+            let tempName = sessionStorage.getItem(fileName)
+            var nameArray: string[] = tempName.split(",");
+            let nameOne = nameArray[1] 
+            let nameTwo = nameArray[2] 
+            let nameThree= nameArray[3] 
+            var dataTSB: string =nameOne + ":" + nameTwo + ":" + nameThree
+            var dataTSBArray: string[] = sessionStorage.getItem(dataTSB).split(",");
+            
+            let i = 4;
+            while ( i < dataTSBArray.length) {
+                swapData[swapData.length] = dataTSBArray[i];
+                i++;
+            }
+            let dataOne = dataTSBArray[1] ;
+            let dataTwo = dataTSBArray[2] ;
+            let dataThree= dataTSBArray[3] ;
+
+            var nextBlock: string =dataOne + ":" + dataTwo + ":" + dataThree;
+            if (!(nextBlock == end)) {
+                let swapFile = this.readSwap(dataTSB)
+                swapData = swapData.concat(swapFile);
+                return swapData;
+            } else {
+                return swapData;
+            }
+        }
+    public getRollInData(PID: number) {
+        const max =  256
+        var rollInNameTSB = this.tsbFileName("SwapFile " + PID);
+        var rollInData = this.readSwap(rollInNameTSB);
+
+        // deletes the swap file from the disk
+        this.deleteFile(rollInNameTSB);
+
+        return rollInData.slice(0,max);
+
+    }
+
+     public makeSwap(PID, inputArray: string[]) {
+            // create a swap file name block
+            if (this.createFile("SwapFile " + PID)) {
+                // Add 00s onto the end to take up the necessary space
+                let i =inputArray.length;
+                while (i < 256) {
+                    inputArray[inputArray.length] = "00";
+                    i++;
+                }
+                let fileName = this.tsbFileName("SwapFile " + PID)
+                let joinArr = inputArray.join();
+                let swap = "swap";
+                this.writeFile(fileName,joinArr,swap); 
+            } else {
+                console.log("Error, swap file already exists.");
+            }
+
+        }
+
+
+
 
 
     }//DeviceDriverDisk

@@ -16,6 +16,7 @@
     
         // The function that decided which process gets run
         public currentProcess(){
+            console.log("lol");
             if (_ScheduleAlgo == "RR" || _ScheduleAlgo== "FCFS") {
                 if (_ReadyPCBList.length > 0) {
                     if ((_ReadyPCBList.length == 1) && (_CurrentPCB == null)) {
@@ -96,7 +97,7 @@
         
             
         }//currentProcess
-        public rollOutDecision() {
+        public rollOut() {
             var swapPCB: TSOS.PCB;
             var memoryPCBs: TSOS.PCB[] = [];
             let i =0;
@@ -127,29 +128,7 @@
             }
             return swapPCB;
         }
-        public nextProcess() {
-            var nextFound = false;
-            for (var i = 0; i < _ReadyPCBList.length; i++) {
-                // check the quantum of each process to find next one to run
-                if (_ReadyPCBList[i].quantumRan < _RoundRobinQuantum) {
-                    // Make that one process the running one
-                    var params = [_ReadyPCBList[i]];
-                    _KernelInterruptQueue.enqueue(new TSOS.Interrupt(CONTEXT_IRQ, params));
-                    nextFound = true;
-                    break;
-                }
-            }
-            // If all of the PCBs have used their quanta up...
-            if (!nextFound) {
-                // reset all of their quanta
-                for (var i = 0; i < _ReadyPCBList.length; i++){
-                    _ReadyPCBList[i].quantumRan = 0;
-                }
-                // run the first one in the ready queue
-                var params = [_ReadyPCBList[0]];
-                _KernelInterruptQueue.enqueue(new TSOS.Interrupt(CONTEXT_IRQ, params));
-            }
-        }
+        
         
 
 

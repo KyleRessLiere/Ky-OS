@@ -10,7 +10,7 @@ var TSOS;
                 }
             }
             else {
-                _diskDriver.createSwap(pid, input);
+                _diskDriver.makeSwap(pid, input);
             }
             TSOS.Control.cpuUpdate;
             TSOS.Control.memoryUpdate;
@@ -124,9 +124,9 @@ var TSOS;
             }
         }
         rollOutProcess() {
-            var rollOutPCB = _Scheduler.rollOutDecision();
-            _PCBList[this.pidIndex(_PCBList, rollOutPCB.PID)].swaps++;
-            // write the data from memory to the disk
+            var rollOutPCB = _Scheduler.rollOut();
+            let index = this.pidIndex(_PCBList, rollOutPCB.PID);
+            _PCBList[index].swaps++;
             var data = [];
             let i = _Memory.getSectionBase(rollOutPCB.section);
             while (i < _Memory.getSectionEnd(rollOutPCB.section)) {
@@ -134,9 +134,9 @@ var TSOS;
                 data[data.length] = _Memory.memoryArray[i];
                 i++;
             }
-            _diskDriver.createSwap(rollOutPCB.PID, data);
+            _diskDriver.makeSwap(rollOutPCB.PID, data);
             this.clearMemory(rollOutPCB.section);
-            let index = this.pidIndex(_PCBList, rollOutPCB.PID);
+            index = this.pidIndex(_PCBList, rollOutPCB.PID);
             _PCBList[index].location = "Disk";
             _PCBList[index].section = "disk";
         }

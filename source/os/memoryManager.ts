@@ -11,7 +11,7 @@ module TSOS {
                    _Memory.memoryArray[i + _Memory.getSectionBase(section)] = input[i];
                }
            } else {
-               _diskDriver.createSwap(pid,input);
+               _diskDriver.makeSwap(pid,input);
            }
            Control.cpuUpdate;
            Control.memoryUpdate;
@@ -139,10 +139,11 @@ module TSOS {
 
  public rollOutProcess() {
    
-     var rollOutPCB: TSOS.PCB = _Scheduler.rollOutDecision();
-     _PCBList[this.pidIndex(_PCBList,rollOutPCB.PID)].swaps++;
+     var rollOutPCB: TSOS.PCB = _Scheduler.rollOut();
+     let index = this.pidIndex(_PCBList,rollOutPCB.PID)
+     _PCBList[index].swaps++;
 
-     // write the data from memory to the disk
+     
      var data: string[] = [];
      let i = _Memory.getSectionBase(rollOutPCB.section);
      while (i < _Memory.getSectionEnd(rollOutPCB.section)){
@@ -150,12 +151,12 @@ module TSOS {
         data[data.length] = _Memory.memoryArray[i];
          i++;
      }
-     _diskDriver.createSwap(rollOutPCB.PID,data);
+     _diskDriver.makeSwap(rollOutPCB.PID,data);
 
   
      this.clearMemory(rollOutPCB.section);
 
-     let index = this.pidIndex(_PCBList,rollOutPCB.PID);
+      index = this.pidIndex(_PCBList,rollOutPCB.PID);
      _PCBList[index].location = "Disk";
      _PCBList[index].section = "disk";
  }
